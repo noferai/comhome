@@ -1,0 +1,1 @@
+web: gunicorn ComfortableHome.wsgi --log-file -
