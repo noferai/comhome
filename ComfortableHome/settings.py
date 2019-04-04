@@ -26,7 +26,7 @@ INSTALLED_APPS = [
     'simple_pagination',
     'compressor',
     'common',
-    'staff',
+    'accounts',
     'cases',
     'contacts',
     'emails',

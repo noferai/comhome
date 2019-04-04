@@ -6,8 +6,8 @@ from django.shortcuts import get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.views.generic import (
     CreateView, UpdateView, DetailView, TemplateView, View, DeleteView)
-from staff.forms import AccountForm, AccountCommentForm, AccountAttachmentForm
-from staff.models import Account
+from accounts.forms import AccountForm, AccountCommentForm, AccountAttachmentForm
+from accounts.models import Account
 from common.models import User, Address, Team, Comment, Attachments
 from common.utils import INDCHOICES, COUNTRIES, CURRENCY_CODES, CASE_TYPE, PRIORITY_CHOICE, STATUS_CHOICE
 from contacts.models import Contact

@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import pgettext_lazy
 from django.utils.translation import ugettext_lazy as _
 
-from staff.models import Account
+from accounts.models import Account
 from contacts.models import Contact
 from common.models import User, Team
 from common.utils import STAGES, SOURCES, CURRENCY_CODES

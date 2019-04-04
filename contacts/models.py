@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from staff.models import Account
+from accounts.models import Account
 from common.models import Address, User, Team
 from phonenumber_field.modelfields import PhoneNumberField
 

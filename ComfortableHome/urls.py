@@ -7,7 +7,7 @@ app_name = 'ComfortableHome'
 urlpatterns = [
     path('', include('common.urls', namespace="common")),
     path('', include('django.contrib.auth.urls')),
-    path('accounts/', include('staff.urls', namespace="accounts")),
+    path('accounts/', include('accounts.urls', namespace="accounts")),
     path('leads/', include('leads.urls', namespace="leads")),
     path('contacts/', include('contacts.urls', namespace="contacts")),
     path('opportunities/', include('opportunity.urls', namespace="opportunities")),

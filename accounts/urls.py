@@ -1,5 +1,5 @@
 from django.urls import path
-from staff.views import (
+from accounts.views import (
 	AccountsListView, CreateAccountView, AccountDetailView, AccountUpdateView,
 	AccountDeleteView, AddCommentView, UpdateCommentView, DeleteCommentView,
 	AddAttachmentView, DeleteAttachmentsView
