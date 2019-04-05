@@ -15,6 +15,7 @@ urlpatterns = [
     path('emails/', include('emails.urls', namespace="emails")),
     # path('planner/', include('planner.urls', namespace="planner")),
     path('logout/', views.LogoutView, {'next_page': '/login/'}, name="logout"),
+    path('', include('news.urls')),
 ]
 
 handler404 = handler404
