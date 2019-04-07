@@ -3,14 +3,18 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse, Http404
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.views.generic import (
     CreateView, UpdateView, DetailView, TemplateView, View, DeleteView)
 from common.models import User, Document
-from common.forms import UserForm, LoginForm, ChangePasswordForm, PasswordResetEmailForm,DocumentForm
+from common.forms import UserForm, LoginForm, ChangePasswordForm, PasswordResetEmailForm, DocumentForm
 from django.contrib.auth.views import PasswordResetView
 from django.urls import reverse_lazy
 from django.conf import settings
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from common.serializers import UserSerializer
 
 
 def handler404(request, exception):
@@ -159,7 +163,6 @@ class CreateUserView(AdminRequiredMixin, CreateView):
             return JsonResponse(data)
         return super(CreateUserView, self).form_valid(form)
 
-
     def form_invalid(self, form):
         response = super(CreateUserView, self).form_invalid(form)
         if self.request.is_ajax():
@@ -209,7 +212,6 @@ class UpdateUserView(LoginRequiredMixin, UpdateView):
             return JsonResponse(data)
         return super(UpdateUserView, self).form_valid(form)
 
-
     def form_invalid(self, form):
         response = super(UpdateUserView, self).form_invalid(form)
         if self.request.is_ajax():
@@ -240,7 +242,6 @@ class PasswordResetView(PasswordResetView):
     email_template_name = 'registration/password_reset_email.html'
 
 
-
 class DocumentCreateView(LoginRequiredMixin, CreateView):
     model = Document
     form_class = DocumentForm
@@ -257,7 +258,6 @@ class DocumentCreateView(LoginRequiredMixin, CreateView):
             return JsonResponse(data)
         return super(DocumentCreateView, self).form_valid(form)
 
-
     def form_invalid(self, form):
         response = super(DocumentCreateView, self).form_invalid(form)
         if self.request.is_ajax():
@@ -271,7 +271,6 @@ class DocumentCreateView(LoginRequiredMixin, CreateView):
         if "errors" in kwargs:
             context["errors"] = kwargs["errors"]
         return context
-
 
 
 class DocumentListView(LoginRequiredMixin, TemplateView):
@@ -320,7 +319,6 @@ class UpdateDocumentView(LoginRequiredMixin, UpdateView):
             return JsonResponse(data)
         return super(UpdateDocumentView, self).form_valid(form)
 
-
     def form_invalid(self, form):
         response = super(UpdateDocumentView, self).form_invalid(form)
         if self.request.is_ajax():
@@ -360,3 +358,20 @@ def download_document(request, pk):
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
             return response
     raise Http404
+
+
+class ListUsers(APIView):
+    """
+    View to list all users in the system.
+
+    * Requires token authentication.
+    * Only admin users are able to access this view.
+    """
+    #authentication_classes = (authentication.TokenAuthentication,)
+    #permission_classes = (permissions.IsAdminUser,)
+
+    def get(self, request, format=None):
+        if request.method == 'GET':
+            users = User.objects.all()
+            serializer = UserSerializer(users, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)

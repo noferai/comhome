@@ -5,7 +5,7 @@ from common.views import (
     HomeView, LoginView, ForgotPasswordView, LogoutView, ChangePasswordView, ProfileView,
     UsersListView, CreateUserView, UpdateUserView, UserDetailView, UserDeleteView, PasswordResetView,
     DocumentListView, DocumentCreateView, UpdateDocumentView, DocumentDetailView, DocumentDeleteView, 
-    download_document)
+    download_document, ListUsers)
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -44,5 +44,8 @@ urlpatterns = [
 
     # download
     path('documents/<int:pk>/download/', download_document, name='download_document'),
+
+    # api
+    re_path(r'^api/$', ListUsers.as_view())
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
