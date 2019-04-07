@@ -375,3 +375,8 @@ class ListUsers(APIView):
             users = User.objects.all()
             serializer = UserSerializer(users, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
+
+class Autorization(APIView):
+    """
+    View to autorization user
+    """
