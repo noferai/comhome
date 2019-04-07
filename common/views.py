@@ -248,7 +248,6 @@ class DocumentCreateView(LoginRequiredMixin, CreateView):
     template_name = "doc_create.html"
 
     def form_valid(self, form):
-        print('heeee')
         doc = form.save(commit=False)
         doc.created_by = self.request.user
         doc.save()

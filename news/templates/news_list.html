@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load paginate %}
+
+{% block content %}
+    <div class="row marl heading_create">
+    <div class="heading col-md-12">
+     <div class="no-gutters row">
+      <div class="col-md-6">
+      </div>
+      <div class="col-md-6">
+        <div class="create_new text-right">
+          <a href="{% url 'news:new_entry' %}"><i class="fa fa-plus"></i>Добавить новость</a>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+<div class="filter_row row marl">
+    <div class="col-md-9 col-lg-10 col-xl-10">
+       <div class="table_container_row row marl no-gutters">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+         <div class="panel-heading-list card-title">
+         Список новостей
+          <span class="float-right total_count">{% if show_pageitems %} {% show_pageitems %}{% else %}Новостей: {{news_obj_list|length}}{% endif %}</span>
+        </div>
+          <div class="table-responsive">
+          <table class="table ">
+            <thead>
+            {% if news_obj_list|length > 0 %}
+              <tr>
+                <th width="5%">ID</th>
+                <th width="90%">Заголовок</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if per_page %}
+                {% paginate per_page news_obj_list %}
+              {% else%}
+                {% paginate 10 news_obj_list %}
+              {% endif %}
+              {% for each_entry in news_obj_list %}
+              <tr id="news_details{{each_entry.id}}" class="text-center">
+                <td scope="row">{{ forloop.counter }}</td>
+                <td>{% if each_entry.title %}<a href="#">{{ each_entry.title }}</a>{% endif %}</td>
+                <td class="actions">
+                   <a href="#}" class="btn btn-info view"><i class="fas fa-eye"></i> View</a>
+                  <a href="#" class="btn btn-success edit"><i class="fas fa-pencil-alt"></i></a>
+                  <a href="#" class="btn btn-danger delete remove_account"><i class="fas fa-trash-alt"></i></a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          </div>
+          {% ifequal news_obj_list|length 0 %}
+            <h6 class="text-center">Новостей нет</h6>
+          {% endifequal %}
+          <div class="text-center row marl">
+            {% show_pages %}
+          </div>
+        </div>
+      </div>
+      <br clear="all">
+    </div>
+  </div>
+    </div>
+  </div>
+    {% endif %}
+{% endblock %}
