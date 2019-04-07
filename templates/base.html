@@ -20,7 +20,7 @@
     <!-- header starts here -->
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-  <a class="navbar-brand" href="{% url 'common:home' %}">Django CRM</a>
+  <a class="navbar-brand" href="{% url 'common:home' %}">ComHome</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -36,6 +36,7 @@
         <li class="nav-item"><a class="nav-link" id="opportunities"href="{% url 'opportunities:list' %}">Opportunities</a></li>
         <li class="nav-item"><a class="nav-link" id="cases" href="{% url 'cases:list' %}">Cases</a></li>
         <li class="nav-item"><a class="nav-link" id="documents" href="{% url 'common:doc_list' %}">Documents</a></li>
+        <li class="nav-item"><a class="nav-link" id="documents" href="{% url 'news:news_list' %}">News</a></li>
       </ul>
 
     <ul class="navbar-nav navbar-right my-2 my-lg-0">
