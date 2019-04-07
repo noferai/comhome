@@ -1,13 +1,13 @@
 from django.db import models
-# TODO: в частности тут про добавление автора
+from common.models import User
 from django.conf import settings
 from django.utils import timezone
 
 
 class Entry(models.Model):
     # TODO: добавить автоматическое добавление автора для записи новостей
-    # author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    author = models.CharField(max_length=20)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    #author = models.CharField(max_length=20)
 
     # TODO: уточнить на счёт структуы новости
     title = models.CharField(max_length=200)
