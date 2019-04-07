@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'planner',
     'sorl.thumbnail',
     'phonenumber_field',
+    'news',
 ]
 
 MIDDLEWARE = [
