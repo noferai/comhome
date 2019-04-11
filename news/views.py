@@ -2,7 +2,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import (
     CreateView, UpdateView, DetailView, TemplateView, DeleteView)
 from django.shortcuts import redirect
-from .models import Entry
 from .forms import EntryForm
 
 from rest_framework.views import APIView
@@ -142,9 +141,6 @@ class EntryDeleteView(LoginRequiredMixin, DeleteView):
         self.object = self.get_object()
         self.object.delete()
         return redirect("news:list")
-
-def news_list(request):
-    return render(request, 'news.html', {})
 
 
 class NewsGetApi(APIView):
