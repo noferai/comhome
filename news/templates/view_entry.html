@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+    <p>Автор: {{ entry_record.author.username }}</p>
+    <p>Заголовок: {{ entry_record.title }}</p>
+    <p>Текст: {{ entry_record.text }}</p>
+
+{% endblock %}
