@@ -5,6 +5,7 @@ from djchoices import DjangoChoices, ChoiceItem
 class RequestTypeChoices(DjangoChoices):
     electrical = ChoiceItem('Электрооборудование', _('Электрооборудование'))
     plumb = ChoiceItem('Сантехника', _('Сантехника'))
+    cleaner = ChoiceItem('Уборщик', _('Уборщик'))
     other = ChoiceItem('Прочее', _('Прочее'))
 
 

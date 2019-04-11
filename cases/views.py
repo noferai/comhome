@@ -7,12 +7,17 @@ from django.shortcuts import get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.views.generic import CreateView, UpdateView, DetailView, ListView, TemplateView, View, DeleteView
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
 from cases.models import Case
 from cases.forms import CaseForm, CaseCommentForm, CaseAttachmentForm
 from common.models import Team, User, Comment, Attachments
 from accounts.models import Account
 from contacts.models import Contact
-from common.utils import RequestTypeChoices, RequestPriorityChoices, RequestStatusChoices
+from common.utils import RequestTypeChoices, RequestPriorityChoices, RequestStatusChoices, CASE_TYPE, PRIORITY_CHOICE, \
+    STATUS_CHOICE
+import json
 
 
 class RequestsListView(LoginRequiredMixin, TemplateView):
@@ -120,7 +125,6 @@ class CreateRequestView(LoginRequiredMixin, CreateView):
             int(i) for i in self.request.POST.getlist('contacts', []) if i]
         return context
 
-
 class RequestDetailView(LoginRequiredMixin, DetailView):
     model = Case
     context_object_name = "request_record"
@@ -150,7 +154,6 @@ class UpdateRequestView(LoginRequiredMixin, UpdateView):
     def get_form_kwargs(self):
         kwargs = super(UpdateRequestView, self).get_form_kwargs()
         kwargs.update({"assigned_to": self.staff})
-        return kwargs
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -185,6 +188,7 @@ class UpdateRequestView(LoginRequiredMixin, UpdateView):
         #             })
         #             email = EmailMessage(mail_subject, message, to=[user.email])
         #             email.send()
+
         if self.request.POST.getlist('teams', []):
             case_obj.teams.add(*self.request.POST.getlist('teams'))
         if self.request.POST.getlist('contacts', []):
@@ -387,3 +391,31 @@ class RemoveRequestView(LoginRequiredMixin, DeleteView):
 #         else:
 #             data = {'error': "You don't have permission to delete this attachment."}
 #             return JsonResponse(data)
+
+
+class SendFormsApi(APIView):
+    def post(self, request):
+        body_unicode = request.body.decode('utf-8')
+        data = json.loads(body_unicode)
+
+        user_id = data['user_id']
+        type = data['type']
+        description = data['description']
+
+        case = Case()
+
+        if type == 'electrician':
+            case.request_type = RequestTypeChoices.electrical
+        elif type == 'plumber':
+            case.request_type = RequestTypeChoices.plumb
+        elif type == 'cleaner':
+            case.request_type = RequestTypeChoices.cleaner
+        else:
+            case.request_type = RequestTypeChoices.other
+
+        case.description = description
+        case.created_by = User.objects.get(id=user_id)
+        case.save()
+
+        return Response({'isSuccess': True})
+
