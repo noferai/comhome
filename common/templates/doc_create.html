@@ -3,8 +3,8 @@
 {% block breadcrumb %}
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{% url 'common:doc_list' %}">Documents</a></li>
-      <li class="breadcrumb-item">{% if doc_obj %}Edit{% else %}Create{% endif %}</li>
+      <li class="breadcrumb-item"><a href="{% url 'common:doc_list' %}">Документы</a></li>
+      <li class="breadcrumb-item">{% if doc_obj %}Изменить{% else %}Загрузить{% endif %}</li>
   </ol>
 </nav>
 
@@ -16,20 +16,20 @@
       <div class="card">
         <div class="card-body">
          <div class="card-title text-center">
-          {% if doc_obj %}EDIT{% else %}CREATE{% endif %} DOCUMENT
+          {% if doc_obj %}Редактировать{% else %}Загрузить{% endif %} документ
         </div>
           <div class="row marl">
             <div class="col-md-12">
               <div class="filter_col col-md-12">
                 <div class="form-group">
-                  <label for="id_firstname">Title {% if doc_form.title.field.required %}<span class="error">*</span>{% endif %}</label>
-                  <input type="text" class="form-control" name="title" value="{% if doc_obj %}{{ doc_obj.title }}{% else %}{{request.POST.title}}{% endif %}" placeholder="Document title">
+                  <label for="id_firstname">Название {% if doc_form.title.field.required %}<span class="error">*</span>{% endif %}</label>
+                  <input type="text" class="form-control" name="title" value="{% if doc_obj %}{{ doc_obj.title }}{% else %}{{request.POST.title}}{% endif %}" placeholder="Название документа">
                 </div>
                 <span class="error" id="id_title">{{ errors.title }}</span>
               </div>
               <div class="filter_col col-md-12">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Upload Document{% if doc_form.document_file.field.required %}<span class="error">*</span>{% endif %}</label>
+                  <label for="exampleInputEmail1">Загрузить документ{% if doc_form.document_file.field.required %}<span class="error">*</span>{% endif %}</label>
                   <input type="file" name="document_file" class="form-control" />
                 </div>
                 {% if doc_obj %}<span>{{doc_obj.document_file }}</span>{% endif %}
@@ -38,8 +38,8 @@
             </div>
           </div>
           <div class="row marl buttons_row form_btn_row text-center">
-            <button class="btn btn-default save" type="submit">Save</button>
-            <a href="{% url 'common:doc_list' %}" class="btn btn-default clear" id="create_doc_cancel">Cancel</a>
+            <button class="btn btn-default save" type="submit">Сохранить</button>
+            <a href="{% url 'common:doc_list' %}" class="btn btn-default clear" id="create_doc_cancel">Отмена</a>
           </div>
         </div>
       </div>

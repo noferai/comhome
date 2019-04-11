@@ -12,7 +12,7 @@
       </div>
       <div class="col-md-6">
         <div class="create_new text-right">
-          <a href="{% url 'leads:add_lead'%}"><i class="fa fa-plus"></i> Add New Lead</a>
+          <a href="{% url 'leads:add_lead'%}"><i class="fa fa-plus"></i> Добавить собственника</a>
         </div>
         </div>
       </div>
@@ -21,58 +21,57 @@
   <!-- heading_create ends here -->
   <!-- filter_row starts here -->
   <div class="filter_row row marl">
-    <div class="col-md-3 col-lg-2">
-      <div class="card">
-
-        <form id="leads_filter" action="" method="POST">
-          <div class="card-body ">
-            <div class="card-title">Filters</div>
-            <div class="row marl">
-              <div class="filter_col col-md-12">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">First Name</label>
-                  <input type="text" class="form-control" placeholder="First Name" name="first_name" value="{{request.POST.first_name}}">
-                </div>
-              </div>
-              <div class="filter_col col-md-12">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Last Name</label>
-                  <input type="text" class="form-control" placeholder="Last Name" name="last_name" value="{{request.POST.last_name}}">
-                </div>
-              </div>
-              <div class="filter_col col-md-12">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Lead Status</label>
-                  <select class="form-control" id="id_status" name="status" >
-                    <option value="">--Status of Lead--</option>
-                    {% for each_status in status %}
-                    <option value="{{each_status.0}}" {% if request.POST.status %} {% ifequal each_status.0 request.POST.status %}selected{% endifequal %}{% endif %} >{{each_status.1}} </option>
-                    {% endfor%}
-                  </select>
-                </div>
-              </div>
-              <div class="filter_col text-center col-12">
-                <div class="form-group buttons_row">
-                  <button class="btn btn-primary save" type="submit">Search</button>
-                  <a href="{% url 'leads:list' %}" class="btn btn-default clear">Clear</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
-        <br clear="all">
-      </div>
-    </div>
-    <div class="col-md-9 col-lg-10">
+{#    <div class="col-md-3 col-lg-2">#}
+{#      <div class="card">#}
+{##}
+{#        <form id="leads_filter" action="" method="POST">#}
+{#          <div class="card-body ">#}
+{#            <div class="card-title">Filters</div>#}
+{#            <div class="row marl">#}
+{#              <div class="filter_col col-md-12">#}
+{#                <div class="form-group">#}
+{#                  <label for="exampleInputEmail1">Имя</label>#}
+{#                  <input type="text" class="form-control" placeholder="First Name" name="first_name" value="{{request.POST.first_name}}">#}
+{#                </div>#}
+{#              </div>#}
+{#              <div class="filter_col col-md-12">#}
+{#                <div class="form-group">#}
+{#                  <label for="exampleInputEmail1">Фамилия</label>#}
+{#                  <input type="text" class="form-control" placeholder="Last Name" name="last_name" value="{{request.POST.last_name}}">#}
+{#                </div>#}
+{#              </div>#}
+{#              <div class="filter_col col-md-12">#}
+{#                <div class="form-group">#}
+{#                  <label for="exampleInputEmail1">Lead Status</label>#}
+{#                  <select class="form-control" id="id_status" name="status" >#}
+{#                    <option value="">--Status of Lead--</option>#}
+{#                    {% for each_status in status %}#}
+{#                    <option value="{{each_status.0}}" {% if request.POST.status %} {% ifequal each_status.0 request.POST.status %}selected{% endifequal %}{% endif %} >{{each_status.1}} </option>#}
+{#                    {% endfor%}#}
+{#                  </select>#}
+{#                </div>#}
+{#              </div>#}
+{#              <div class="filter_col text-center col-12">#}
+{#                <div class="form-group buttons_row">#}
+{#                  <button class="btn btn-primary save" type="submit">Поиск</button>#}
+{#                  <a href="{% url 'leads:list' %}" class="btn btn-default clear">Clear</a>#}
+{#                </div>#}
+{#              </div>#}
+{#            </div>#}
+{#          </div>#}
+{#        </form>#}
+{#        <br clear="all">#}
+{#      </div>#}
+{#    </div>#}
+    <div class="col-md-12">
      <!-- leads list start-->
   <div class="table_container_row row marl no-gutters">
     <div class="col-md-12">
       <div class="card">
-       
         <div class="card-body">
           <div class="card-title">
-            List of Leads
-            <span class="float-right total_count">{% if show_pageitems %} {% show_pageitems %}{% else %}Total Leads {{ lead_obj|length }}{% endif %}</span>
+            Список собственников
+            <span class="float-right total_count">{% if show_pageitems %} {% show_pageitems %}{% else %}Всего: {{ lead_obj|length }}{% endif %}</span>
             </div>
             <div class="table-responsive">
               <table class="table ">
@@ -80,11 +79,11 @@
                 {% if lead_obj|length > 0 %}
                  <tr>
                     <th width="5%">ID</th>
-                    <th width="25%" >Name</th>
+                    <th width="25%" >ФИО</th>
                     <th width="15%" >Status</th>
                     <th width="15%" >Assigned User</th>
-                    <th width="20%" >Created On</th>
-                    <th width="10%" >Actions</th>
+                    <th width="20%" >Добавлен</th>
+                    <th width="10%" >Действия</th>
                   </tr>
                 {% endif %}
                 </thead>
@@ -122,7 +121,7 @@
               </table>
             </div>
             {%ifequal lead_obj|length 0%}
-              <h6 class="text-center">No Lead Records Found</h6>
+              <h6 class="text-center">Ничего не найдено</h6>
             {%endifequal%}
             <div class="marl row text-center">
               {% show_pages %}

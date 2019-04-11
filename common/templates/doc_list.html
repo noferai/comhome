@@ -12,7 +12,7 @@
         </div>
         <div class="col-md-6">
           <div class="create_new text-right">
-            <a href="{% url 'common:create_doc'%}"><i class="fa fa-plus"></i> Add New Document</a>
+            <a href="{% url 'common:create_doc'%}"><i class="fa fa-plus"></i> Добавить документ</a>
           </div>
         </div>
         </div>
@@ -24,13 +24,13 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-body">
-          <div class="card-title">Filters</div>
+          <div class="card-title">Фильтры</div>
           <form id="docs_filter" action="" method="POST">
             <div class="row marl">
               <div class="filter_col col-4">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Document Title</label>
-                  <input type="text" class="form-control" placeholder="Document Title" name="doc_name" value="{{request.POST.doc_name}}">
+                  <label for="exampleInputEmail1">Название документа</label>
+                  <input type="text" class="form-control" placeholder="Название" name="doc_name" value="{{request.POST.doc_name}}">
                 </div>
               </div> 
               <br clear="all">
@@ -46,8 +46,8 @@
         <div class="card">
           <div class="card-body">
             <div class="card-title list">
-              List of Documents
-              <span class="float-right total_count">{% if show_pageitems %} {% show_pageitems %}{% else %}Total Documents {{ documents|length }}{% endif %}</span>
+              Список документов
+              <span class="float-right total_count">{% if show_pageitems %} {% show_pageitems %}{% else %}Всего: {{ documents|length }}{% endif %}</span>
             </div>
             <div class="table-responsive ">
               <table class="table table-bordered table-striped table-condensed">
@@ -55,10 +55,10 @@
                   {% if documents|length > 0 %}
 
                     <tr>
-                      <th width="5%" style="text-align:center;">S.No</th>
-                      <th width="20%" style="text-align:center;">Document Title</th>
-                      <th width="20%" style="text-align:center;">Created_by</th>
-                      <th width="20%" style="text-align:center;">Actions</th>
+                      <th width="5%" style="text-align:center;">№</th>
+                      <th width="20%" style="text-align:center;">Название</th>
+                      <th width="20%" style="text-align:center;">Загрузил</th>
+                      <th width="20%" style="text-align:center;">Действия</th>
                     </tr>
                   {% endif %}
                 </thead>
@@ -74,8 +74,8 @@
                     <td><a href="{% url 'common:view_doc' document.id %}">{{ document.title }}</a></td>
                     <td>{{ document.created_by }}</td>
                     <td class="actions">
-                      <a href="{% url 'common:edit_doc' document.id %}" class="btn btn-success edit"><i class="fas fa-pencil-alt"></i>Edit</a>
-                      <a href="{% url 'common:remove_doc' document.id %}" class="btn btn-danger trash"><i class="fas fa-trash-alt"></i>Delete</a>
+                      <a href="{% url 'common:edit_doc' document.id %}" class="btn btn-success edit"><i class="fas fa-pencil-alt"></i></a>
+                      <a href="{% url 'common:remove_doc' document.id %}" class="btn btn-danger trash"><i class="fas fa-trash-alt"></i></a>
                     </td>
                   </tr>
                   {% endfor %}
@@ -83,7 +83,7 @@
               </table>
             </div>
             {% ifequal documents|length 0 %}
-              <h6 class="text-center">No Documents Found</h6>
+              <h6 class="text-center">Ничего не найдено</h6>
             {% endifequal %}
             <div class="marl row text-center">
               {% show_pages %}

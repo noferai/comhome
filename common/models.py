@@ -15,16 +15,16 @@ def img_url(self, filename):
 
 class User(AbstractBaseUser, PermissionsMixin):
     file_prepend = "users/profile_pics"
-    username = models.CharField(max_length=100, unique=True)
-    first_name = models.CharField(max_length=150, blank=True)
-    last_name = models.CharField(max_length=150, blank=True)
-    email = models.EmailField(max_length=255, unique=True)
+    username = models.CharField('Логин', max_length=100, unique=True)
+    first_name = models.CharField('Имя', max_length=150, blank=True)
+    last_name = models.CharField('Фамилия', max_length=150, blank=True)
+    email = models.EmailField('Email', max_length=255, unique=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(('date joined'), auto_now_add=True)
-    role = models.CharField(max_length=50, choices=ROLES)
-    profile_pic = models.FileField(max_length=1000, upload_to=img_url, null=True, blank=True)
+    role = models.CharField('Роль', max_length=50, choices=ROLES)
+    profile_pic = models.FileField('Аватар', max_length=1000, upload_to=img_url, null=True, blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', ]
@@ -39,12 +39,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Address(models.Model):
-    address_line = models.CharField(_("Address"), max_length=255, blank=True, null=True)
-    street = models.CharField(_("Street"), max_length=55, blank=True, null=True)
-    city = models.CharField(_("City"), max_length=255, blank=True, null=True)
-    state = models.CharField(_("State"), max_length=255, blank=True, null=True)
-    postcode = models.CharField(_("Post/Zip-code"), max_length=64, blank=True, null=True)
-    country = models.CharField(max_length=3, choices=COUNTRIES, blank=True, null=True)
+    address_line = models.CharField('Адрес', max_length=255, blank=True, null=True)
+    street = models.CharField('Улица', max_length=55, blank=True, null=True)
+    city = models.CharField('Город', max_length=255, blank=True, null=True)
+    state = models.CharField('Область', max_length=255, blank=True, null=True)
+    postcode = models.CharField('Индекс', max_length=64, blank=True, null=True)
+    country = models.CharField('Страна', max_length=3, choices=COUNTRIES, blank=True, null=True)
 
     def __str__(self):
         return self.city if self.city else ""
@@ -141,7 +141,7 @@ def document_path(self, filename):
 
 
 class Document(models.Model):
-    title = models.CharField(max_length=1000, blank=True, null=True)
+    title = models.CharField('Название', max_length=1000, blank=True, null=True)
     document_file = models.FileField(upload_to=document_path, max_length=5000)
     created_by = models.ForeignKey(User, related_name='document_uploaded', on_delete=models.CASCADE)
     created_on = models.DateTimeField(auto_now_add=True)
