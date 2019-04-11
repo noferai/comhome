@@ -13,27 +13,6 @@ def news_list(request):
 
 class NewsGetApi(APIView):
     def get(self, request):
-        print('-'*50)
-        entry = Entry()
-        entry.title = 'First title'
-        entry.text = 'First text text text text text '\
-                      'text text text text text text '\
-                      'text text text text text text '\
-                      'text text text text text text '\
-                      'text text text text text text '\
-                      'text text text text text text .'
-        entry.save()
-
-        entry = Entry()
-        entry.title = 'Second title'
-        entry.text = 'Second text text text text text ' \
-                     'text text text text text text ' \
-                     'text text text text text text ' \
-                     'text text text text text text ' \
-                     'text text text text text text ' \
-                     'text text text text text text .'
-        entry.save()
-
         news = Entry.objects.all()
 
         serializer = EntrySerializer(news, many=True)

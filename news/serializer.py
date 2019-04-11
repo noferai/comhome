@@ -5,4 +5,4 @@ from news.models import Entry
 class EntrySerializer(HyperlinkedModelSerializer):
     class Meta:
         model = Entry
-        fields = ('title', 'published_date', 'text', 'id')
+        fields = ('title', 'created_data', 'text', 'id')

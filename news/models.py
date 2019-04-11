@@ -6,7 +6,7 @@ from django.utils import timezone
 
 class Entry(models.Model):
     # TODO: добавить автоматическое добавление автора для записи новостей
-    #author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     #author = models.CharField(max_length=20)
 
     # TODO: уточнить на счёт структуы новости
