@@ -1,4 +1,26 @@
 from django.utils.translation import ugettext_lazy as _
+from djchoices import DjangoChoices, ChoiceItem
+
+
+class RequestTypeChoices(DjangoChoices):
+    electrical = ChoiceItem('Электрооборудование', _('Электрооборудование'))
+    plumb = ChoiceItem('Сантехника', _('Сантехника'))
+    other = ChoiceItem('Прочее', _('Прочее'))
+
+
+class RequestPriorityChoices(DjangoChoices):
+    urgent = ChoiceItem('Срочная', _('Срочная'))
+    normal = ChoiceItem('Обычная', _('Обычная'))
+
+
+class RequestStatusChoices(DjangoChoices):
+    new = ChoiceItem('Новая', _('Новая'))
+    processed = ChoiceItem('Выполняется', _('Выполняется'))
+    closed = ChoiceItem('Закрыта', _('Закрыта'))
+    rejected = ChoiceItem('Отклонена', _('Отклонена'))
+    duplicated = ChoiceItem('Дубликат', _('Дубликат'))
+
+
 
 
 INDCHOICES = (
@@ -63,28 +85,6 @@ LEAD_SOURCE = (
     ('public relations', 'Public Relations'),
     ('compaign', 'Campaign'),
     ('other', 'Other'),
-)
-
-STATUS_CHOICE = (
-    ("New", "New"),
-    ('Assigned', 'Assigned'),
-    ('Pending', 'Pending'),
-    ('Closed', 'Closed'),
-    ('Rejected', 'Rejected'),
-    ('Duplicate', 'Duplicate'),
-)
-
-PRIORITY_CHOICE = (
-    ("Low", "Low"),
-    ('Normal', 'Normal'),
-    ('High', 'High'),
-    ('Urgent', 'Urgent')
-)
-
-CASE_TYPE = (
-    ("Question", "Question"),
-    ('Incident', 'Incident'),
-    ('Problem', 'Problem')
 )
 
 STAGES = (
@@ -537,4 +537,26 @@ CURRENCY_CODES = (
     ('ZAR', _('ZAR, Rand')),
     ('ZMK', _('ZMK, Kwacha')),
     ('ZWL', _('ZWL, Dollar')),
+)
+
+STATUS_CHOICE = (
+    ("New", "New"),
+    ('Assigned', 'Assigned'),
+    ('Pending', 'Pending'),
+    ('Closed', 'Closed'),
+    ('Rejected', 'Rejected'),
+    ('Duplicate', 'Duplicate'),
+)
+
+PRIORITY_CHOICE = (
+    ("Low", "Low"),
+    ('Normal', 'Normal'),
+    ('High', 'High'),
+    ('Urgent', 'Urgent')
+)
+
+CASE_TYPE = (
+    ("Question", "Question"),
+    ('Incident', 'Incident'),
+    ('Problem', 'Problem')
 )

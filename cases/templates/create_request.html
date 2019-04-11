@@ -6,8 +6,8 @@
 {% endblock %}
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{% url 'cases:list' %}">Cases</a></li>
-    <li class="breadcrumb-item active">{% if case_obj %}Edit{% else %}Create{% endif %}</li>
+    <li class="breadcrumb-item"><a href="{% url 'cases:list' %}">Заявки</a></li>
+    <li class="breadcrumb-item active">{% if case_obj %}Изменить{% else %}Создать{% endif %}</li>
   </ol>
 </nav>
 
@@ -19,45 +19,38 @@
         <div class="card">
           <div class="card-body">
              <div class="card-title text-center">
-            {% if case_obj %}EDIT{% else %}CREATE{% endif %} CASE
+            {% if case_obj %}Изменить{% else %}Создать{% endif %} заявку
           </div>
             <div class="row marl no-gutters">
               <div class="col-md-6">
                 <div class="filter_col col-md-12">
                   <div class="form-group">
-                    <label for="id_name" class="required">Name{% if case_form.name.field.required %}<span class="error">*</span>{% endif %}</label>
-                    {{ case_form.name }}
-                    <span class="error">{{ case_form.name.errors }}</span>
-                  </div>
-                </div>
-                <div class="filter_col col-md-12">
-                  <div class="form-group">
-                    <label for="id_status" class="required">Status{% if case_form.status.field.required %}<span class="error">*</span>{% endif %}</label>
+                    <label for="id_status" class="required">Статус{% if case_form.status.field.required %}<span class="error">*</span>{% endif %}</label>
                     {{ case_form.status }}
                     <span class="error">{{ case_form.status.errors }}</span>
                   </div>
                 </div>
                 <div class="filter_col col-md-12">
                   <div class="form-group">
-                    <label for="id_priority" class="required">Priority{% if case_form.priority.field.required %}<span class="error">*</span>{% endif %}</label>
+                    <label for="id_priority" class="required">Приоритет{% if case_form.priority.field.required %}<span class="error">*</span>{% endif %}</label>
                     {{ case_form.priority }}
                     <span class="error">{{ case_form.priority.errors }}</span>
                   </div>
                 </div>
                 <div class="filter_col col-md-12">
                   <div class="form-group">
-                    <label for="id_case_type">Type of Case{% if case_form.case_type.field.required %}<span class="error">*</span>{% endif %}</label>
-                    {{ case_form.case_type }}
-                    <span class="error">{{ case_form.case_type.errors }}</span>
+                    <label for="id_case_type">Что сломалось?{% if case_form.request_type.field.required %}<span class="error">*</span>{% endif %}</label>
+                    {{ case_form.request_type }}
+                    <span class="error">{{ case_form.request_type.errors }}</span>
                   </div>
                 </div>
                 <div class="filter_col col-md-12">
                   <div class="form-group">
-                    <label for="exampleInputEmail1" class="required">Close Date{% if case_form.closed_on.field.required %}<span class="error">*</span>{% endif %}</label>
+                    <label for="exampleInputEmail1" class="required">Дата закрытия{% if case_form.closed_on.field.required %}<span class="error">*</span>{% endif %}</label>
                     <div class='input-group date' id='datepicker1'>
                       {{ case_form.closed_on }}
                       <span class="input-group-addon">
-                      <span class="glyphicon glyphicon-calendar"></span>
+{#                      <span class="glyphicon glyphicon-calendar"></span> TODO: сюда календарик#}
                       </span>
                     </div>
                     <span class="error">{{ case_form.closed_on.errors }}</span>
@@ -67,9 +60,9 @@
               <div class="col-md-6">
                 <div class="filter_col col-md-12">
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Assigned Users</label>
+                    <label for="exampleInputEmail1">Исполнители</label>
                      <select class="assigned_users form-control" name="assigned_to" multiple="multiple">
-                      {% for user in users %}
+                      {% for user in staff %}
                         <option value="{{user.id}}" {% if user in case_obj.assigned_to.all or user.id in assignedto_list %} selected="" {% endif %}>{{user.email}}</option>
                       {% endfor %}
                     </select>
@@ -78,20 +71,7 @@
                 </div>
                 <div class="filter_col col-md-12">
                   <div class="form-group">
-                    <label for="id_account">Account{% if case_form.account.field.required %}<span class="error">*</span>{% endif %}</label>
-                    {{ case_form.account }}
-                    <span class="error">{{case_form.account.errors}}</span>
-                  </div>
-                </div>
-                <div class="filter_col col-md-12">
-                  <div class="form-group">
-                    <label for="id_contacts">Contacts{% if case_form.contacts.field.required %}<span class="error">*</span>{% endif %}</label>
-                    {{ case_form.contacts }}
-                  </div>
-                </div>
-                <div class="filter_col col-md-12">
-                  <div class="form-group">
-                    <label for="id_description">Description{% if case_form.description.field.required %}<span class="error">*</span>{% endif %}</label>
+                    <label for="id_description">Описание проблемы{% if case_form.description.field.required %}<span class="error">*</span>{% endif %}</label>
                     {{ case_form.description }}
                     <span class="error">{{ case_form.description.errors }}</span>
                   </div>
@@ -106,43 +86,40 @@
       <input type="hidden" id="save_new_form" name="savenewform">
     </div>
     <div class="row marl buttons_row text-center form_btn_row">
-      <button class="btn btn-default save" type="submit">Save</button>
-      {% if not case_obj %}
-        <button class="btn btn-success save savenew" type="submit">Save & New</button>
-      {% endif %}
-      <a href="{% url 'cases:list' %}" class="btn btn-default clear">Cancel</a>
+      <button class="btn btn-default save" type="submit">Сохранить</button>
+      <a href="{% url 'cases:list' %}" class="btn btn-default clear">Отмена</a>
     </div>
   </form>
 {% endblock %}
 {% block js_block %}
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-  <script type="text/javascript">
-    $(function () {
-     var date = new Date();
-     var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-      $('#id_closed_on').datetimepicker({
-          'format': 'YYYY-MM-DD',
-          minDate: today
-      })
-    });
-
-    $(".savenew").on('click', function(e){
-      e.preventDefault()
-      $("#save_new_form").val('true')
-      $('#submitForm').submit()
-    });
-    $(document).ready(function() {
-      $('.assigned_users').select2();
-    });
-
-    $('#id_account').change(function(){
-    var account = $("#id_account").val()
-    $.get("{% url 'cases:select_contacts' %}", {"account":account}, function(data){
-      $("#id_contacts").html("")
-      $.each(data, function (index, value) {
-        $("#id_contacts").append("<option value="+index+">"+value+"</option>")
-      });
-    })
-});
-  </script>
+{#  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>#}
+{#  <script type="text/javascript">#}
+{#    $(function () {#}
+{#     var date = new Date();#}
+{#     var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());#}
+{#      $('#id_closed_on').datetimepicker({#}
+{#          'format': 'YYYY-MM-DD',#}
+{#          minDate: today#}
+{#      })#}
+{#    });#}
+{##}
+{#    $(".savenew").on('click', function(e){#}
+{#      e.preventDefault()#}
+{#      $("#save_new_form").val('true')#}
+{#      $('#submitForm').submit()#}
+{#    });#}
+{#    $(document).ready(function() {#}
+{#      $('.assigned_users').select2();#}
+{#    });#}
+{##}
+{#    $('#id_account').change(function(){#}
+{#    var account = $("#id_account").val()#}
+{#    $.get("{% url 'cases:select_contacts' %}", {"account":account}, function(data){#}
+{#      $("#id_contacts").html("")#}
+{#      $.each(data, function (index, value) {#}
+{#        $("#id_contacts").append("<option value="+index+">"+value+"</option>")#}
+{#      });#}
+{#    })#}
+{#});#}
+{#  </script>#}
 {% endblock js_block %}

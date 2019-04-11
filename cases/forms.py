@@ -7,27 +7,20 @@ class CaseForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         assigned_users = kwargs.pop('assigned_to', [])
-        case_accounts = kwargs.pop('account', [])
-        case_contacts = kwargs.pop('contacts', [])
         super(CaseForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs = {"class": "form-control"}
         self.fields['description'].widget.attrs.update({
             'rows': '6'})
         self.fields['assigned_to'].queryset = assigned_users
-        self.fields['account'].queryset = case_accounts
-        self.fields['contacts'].queryset = case_contacts
         self.fields['assigned_to'].required = False
-        self.fields['teams'].required = False
-        self.fields['contacts'].required = False
+        self.fields['closed_on'].required = False
         for key, value in self.fields.items():
             value.widget.attrs['placeholder'] = value.label
 
     class Meta:
         model = Case
-        fields = ('assigned_to', 'teams', 'name', 'status',
-                  'priority', 'case_type', 'account',
-                  'contacts', 'closed_on', 'description')
+        fields = ('assigned_to', 'status', 'priority', 'request_type', 'closed_on', 'description')
 
     def clean_name(self):
         name = self.cleaned_data['name']

@@ -18,4 +18,5 @@ whitenoise
 djangorestframework
 django-bootstrap4
 django-heroku
+django-choices
 gunicorn
