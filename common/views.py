@@ -15,7 +15,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from common.serializers import UserSerializer
-
+from common.utils import ROLES
 
 def handler404(request, exception):
     return render(request, '404.html', status=404)
@@ -374,3 +374,40 @@ class ListUsers(APIView):
             users = User.objects.all()
             serializer = UserSerializer(users, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class AuthorizationView(APIView):
+    """
+    View to autorization user
+    """
+
+    def post(self, request):
+        try:
+            email = request.POST.get('email')
+            password = request.POST.get('password')
+
+            user = User.objects.get(email=email)
+
+            if user.check_password(password):
+                return Response({"isSuccess": True, "id": user.id})
+            else:
+                return Response({"isSuccess": False})
+        except :
+            return Response({"isSuccess": False})
+
+
+class AddUserView(APIView):
+    """
+    View to add User
+    """
+
+    def post(self, request):
+        try:
+            email = request.POST.get('email')
+            password = request.POST.get('password')
+
+            User.objects.create_user(username=email, email=email, password=password)
+
+            return Response({"isSuccess": True})
+        except ValueError:
+            return Response({"isSuccess": False})
