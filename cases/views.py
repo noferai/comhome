@@ -7,6 +7,9 @@ from django.shortcuts import get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.views.generic import CreateView, UpdateView, DetailView, ListView, TemplateView, View
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
 from cases.models import Case
 from cases.forms import CaseForm, CaseCommentForm, CaseAttachmentForm
 from common.models import Team, User, Comment, Attachments
@@ -404,3 +407,22 @@ class DeleteAttachmentsView(LoginRequiredMixin, View):
         else:
             data = {'error': "You don't have permission to delete this attachment."}
             return JsonResponse(data)
+
+
+class SendFormsApi(APIView):
+    def post(self, request):
+        try:
+            user_id = request.POST.get('user_id')
+            type = request.POST.get('type')
+            description = request.POST.get('description')
+
+            case = Case()
+
+            case.description = description
+            case.created_by = User.objects.get(id=id)
+            case.status = 'New'
+            case.case_type = 'Problem'
+            case.
+
+        except:
+            return Response({'isSuccess': False})
