@@ -422,7 +422,6 @@ class SendFormsApi(APIView):
             case.created_by = User.objects.get(id=id)
             case.status = 'New'
             case.case_type = 'Problem'
-            case.
 
         except:
             return Response({'isSuccess': False})
