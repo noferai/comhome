@@ -17,6 +17,7 @@ from accounts.models import Account
 from contacts.models import Contact
 from common.utils import RequestTypeChoices, RequestPriorityChoices, RequestStatusChoices, CASE_TYPE, PRIORITY_CHOICE, \
     STATUS_CHOICE
+import json
 
 
 class RequestsListView(LoginRequiredMixin, TemplateView):
@@ -410,18 +411,27 @@ class DeleteAttachmentsView(LoginRequiredMixin, View):
 
 class SendFormsApi(APIView):
     def post(self, request):
-        try:
-            user_id = request.POST.get('user_id')
-            type = request.POST.get('type')
-            description = request.POST.get('description')
+        body_unicode = request.body.decode('utf-8')
+        data = json.loads(body_unicode)
 
-            case = Case()
+        user_id = data['user_id']
+        type = data['type']
+        description = data['description']
 
-            case.description = description
-            case.created_by = User.objects.get(id=id)
-            case.status = 'New'
-            case.case_type = 'Problem'
+        case = Case()
 
-        except:
-            return Response({'isSuccess': False})
+        if type == 'electrician':
+            case.request_type = RequestTypeChoices.electrical
+        elif type == 'plumber':
+            case.request_type = RequestTypeChoices.plumb
+        elif type == 'cleaner':
+            case.request_type = RequestTypeChoices.cleaner
+        else:
+            case.request_type = RequestTypeChoices.other
+
+        case.description = description
+        case.created_by = User.objects.get(id=user_id)
+        case.save()
+
+        return Response({'isSuccess': True})
 

@@ -17,6 +17,8 @@ from rest_framework import status
 from common.serializers import UserSerializer
 from common.utils import ROLES
 
+import json
+
 def handler404(request, exception):
     return render(request, '404.html', status=404)
 
@@ -383,8 +385,11 @@ class AuthorizationView(APIView):
 
     def post(self, request):
         try:
-            email = request.POST.get('email')
-            password = request.POST.get('password')
+            body_unicode = request.body.decode('utf-8')
+            data = json.loads(body_unicode)
+
+            email = data['email']
+            password = data['password']
 
             user = User.objects.get(email=email)
 
