@@ -15,16 +15,17 @@ from cases.forms import CaseForm, CaseCommentForm, CaseAttachmentForm
 from common.models import Team, User, Comment, Attachments
 from accounts.models import Account
 from contacts.models import Contact
-from common.utils import PRIORITY_CHOICE, STATUS_CHOICE, CASE_TYPE
+from common.utils import RequestTypeChoices, RequestPriorityChoices, RequestStatusChoices, CASE_TYPE, PRIORITY_CHOICE, \
+    STATUS_CHOICE
 
 
-class CasesListView(LoginRequiredMixin, TemplateView):
+class RequestsListView(LoginRequiredMixin, TemplateView):
     model = Case
-    context_object_name = "cases"
-    template_name = "cases.html"
+    context_object_name = "requests"
+    template_name = "requests.html"
 
     def get_queryset(self):
-        queryset = self.model.objects.all().select_related("account")
+        queryset = self.model.objects.all().select_related("created_by")  #Хуйня какая-то блядская
         request_post = self.request.POST
         if request_post:
             if request_post.get('name'):
@@ -38,13 +39,14 @@ class CasesListView(LoginRequiredMixin, TemplateView):
         return queryset
 
     def get_context_data(self, **kwargs):
-        context = super(CasesListView, self).get_context_data(**kwargs)
-        context["cases"] = self.get_queryset()
-        context["accounts"] = Account.objects.all()
+        context = super(RequestsListView, self).get_context_data(**kwargs)
+        context["requests"] = self.get_queryset()
+        context["staff"] = Account.objects.all()
         context["per_page"] = self.request.POST.get('per_page')
         context["acc"] = int(self.request.POST.get("account")) if self.request.POST.get("account") else None
-        context["case_priority"] = PRIORITY_CHOICE
-        context["case_status"] = STATUS_CHOICE
+        context["request_type"] = RequestTypeChoices.choices
+        context["request_priority"] = RequestPriorityChoices.choices
+        context["request_status"] = RequestStatusChoices.choices
         return context
 
     def get(self, request, *args, **kwargs):
@@ -56,21 +58,19 @@ class CasesListView(LoginRequiredMixin, TemplateView):
         return self.render_to_response(context)
 
 
-class CreateCaseView(LoginRequiredMixin, CreateView):
+class CreateRequestView(LoginRequiredMixin, CreateView):
     model = Case
     form_class = CaseForm
-    template_name = "create_cases.html"
+    template_name = "create_request.html"
 
     def dispatch(self, request, *args, **kwargs):
         self.users = User.objects.filter(is_active=True).order_by('email')
-        self.accounts = Account.objects.all()
-        self.contacts = Contact.objects.all()
-        return super(CreateCaseView, self).dispatch(request, *args, **kwargs)
+        self.staff = Account.objects.all()
+        return super(CreateRequestView, self).dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
-        kwargs = super(CreateCaseView, self).get_form_kwargs()
-        kwargs.update({"assigned_to": self.users, "account": self.accounts,
-                       "contacts": self.contacts})
+        kwargs = super(CreateRequestView, self).get_form_kwargs()
+        kwargs.update({"assigned_to": self.staff})
         return kwargs
 
     def post(self, request, *args, **kwargs):
@@ -117,15 +117,14 @@ class CreateCaseView(LoginRequiredMixin, CreateView):
         return self.render_to_response(self.get_context_data(form=form))
 
     def get_context_data(self, **kwargs):
-        context = super(CreateCaseView, self).get_context_data(**kwargs)
+        context = super(CreateRequestView, self).get_context_data(**kwargs)
         context["teams"] = Team.objects.all()
         context["case_form"] = context["form"]
-        context["accounts"] = self.accounts
-        context["contacts"] = self.contacts
+        context["staff"] = self.staff
         context["users"] = self.users
-        context["case_types"] = CASE_TYPE
-        context["case_priority"] = PRIORITY_CHOICE
-        context["case_status"] = STATUS_CHOICE
+        context["request_types"] = RequestTypeChoices.choices
+        context["request_priority"] = RequestPriorityChoices.choices
+        context["request_status"] = RequestStatusChoices.choices
         context["assignedto_list"] = [
             int(i) for i in self.request.POST.getlist('assigned_to', []) if i]
         context["teams_list"] = [
@@ -425,3 +424,4 @@ class SendFormsApi(APIView):
 
         except:
             return Response({'isSuccess': False})
+

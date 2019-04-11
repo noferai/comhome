@@ -123,16 +123,22 @@ class Attachments(models.Model):
     file_name = models.CharField(max_length=60)
     created_on = models.DateTimeField(_("Created on"), auto_now_add=True)
     attachment = models.FileField(max_length=1001, upload_to='attachments/%Y/%m/')
-    lead = models.ForeignKey('leads.Lead', null=True, blank=True, related_name='lead_attachment', on_delete=models.CASCADE)
-    account = models.ForeignKey('accounts.Account', null=True, blank=True, related_name='account_attachment', on_delete=models.CASCADE)
-    contact = models.ForeignKey('contacts.Contact', on_delete=models.CASCADE, related_name='contact_attachment', blank=True, null=True)
-    opportunity = models.ForeignKey('opportunity.Opportunity',blank=True,null=True,on_delete=models.CASCADE,related_name='opportunity_attachment')
-    case = models.ForeignKey('cases.Case',blank=True,null=True,on_delete=models.CASCADE,related_name='case_attachment')
+    lead = models.ForeignKey('leads.Lead', null=True, blank=True, related_name='lead_attachment',
+                             on_delete=models.CASCADE)
+    account = models.ForeignKey('accounts.Account', null=True, blank=True, related_name='account_attachment',
+                                on_delete=models.CASCADE)
+    contact = models.ForeignKey('contacts.Contact', on_delete=models.CASCADE, related_name='contact_attachment',
+                                blank=True, null=True)
+    opportunity = models.ForeignKey('opportunity.Opportunity', blank=True, null=True, on_delete=models.CASCADE,
+                                    related_name='opportunity_attachment')
+    case = models.ForeignKey('cases.Case', blank=True, null=True, on_delete=models.CASCADE,
+                             related_name='case_attachment')
 
 
 def document_path(self, filename):
     hash_ = int(time.time())
     return "%s/%s/%s" % ("docs", hash_, filename)
+
 
 class Document(models.Model):
     title = models.CharField(max_length=1000, blank=True, null=True)
@@ -271,6 +277,5 @@ class Document(models.Model):
             return ("file", "fa fa-file")
         return ("file", "fa fa-file")
 
-    
     def __str__(self):
         return self.title
