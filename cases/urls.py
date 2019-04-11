@@ -6,11 +6,10 @@ app_name = 'cases'
 urlpatterns = [
     path('list/', RequestsListView.as_view(), name='list'),
     path('create/', CreateRequestView.as_view(), name='create_request'),
-    # path('<int:pk>/view/', CaseDetailView.as_view(), name="view_case"),
-    # path('<int:pk>/edit_case/', UpdateCaseView.as_view(), name="edit_case"),
-    # path('<int:case_id>/remove/', RemoveCaseView.as_view(), name="remove_case"),
-    #
-    # path('close_case/', CloseCaseView.as_view(), name="close_case"),
+    path('<int:pk>/view/', RequestDetailView.as_view(), name="view_request"),
+    path('<int:pk>/edit_request/', UpdateRequestView.as_view(), name="edit_request"),
+    path('<int:case_id>/remove/', RemoveRequestView.as_view(), name="remove_request"),
+    # path('close_request/', CloseRequestView.as_view(), name="close_request"),
     # path('select_contacts/', SelectContactsView.as_view(), name="select_contacts"),
     # path('get/list/', GetCasesView.as_view(), name="get_cases"),
     #

@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.template.loader import render_to_string
-from django.views.generic import CreateView, UpdateView, DetailView, ListView, TemplateView, View
+from django.views.generic import CreateView, UpdateView, DetailView, ListView, TemplateView, View, DeleteView
 
 from cases.models import Case
 from cases.forms import CaseForm, CaseCommentForm, CaseAttachmentForm
@@ -21,7 +21,7 @@ class RequestsListView(LoginRequiredMixin, TemplateView):
     template_name = "requests.html"
 
     def get_queryset(self):
-        queryset = self.model.objects.all().select_related("created_by")  #Хуйня какая-то блядская
+        queryset = self.model.objects.all()  # Хуйня какая-то блядская
         request_post = self.request.POST
         if request_post:
             if request_post.get('name'):
@@ -60,7 +60,6 @@ class CreateRequestView(LoginRequiredMixin, CreateView):
     template_name = "create_request.html"
 
     def dispatch(self, request, *args, **kwargs):
-        self.users = User.objects.filter(is_active=True).order_by('email')
         self.staff = Account.objects.all()
         return super(CreateRequestView, self).dispatch(request, *args, **kwargs)
 
@@ -81,31 +80,24 @@ class CreateRequestView(LoginRequiredMixin, CreateView):
         case = form.save(commit=False)
         case.created_by = self.request.user
         case.save()
-        if self.request.POST.getlist('assigned_to', []):
-            case.assigned_to.add(*self.request.POST.getlist('assigned_to'))
-            assigned_to_list = self.request.POST.getlist('assigned_to')
-            current_site = get_current_site(self.request)
-            for assigned_to_user in assigned_to_list:
-                user = get_object_or_404(User, pk=assigned_to_user)
-                mail_subject = 'Assigned to case.'
-                message = render_to_string('assigned_to/cases_assigned.html', {
-                    'user': user,
-                    'domain': current_site.domain,
-                    'protocol': self.request.scheme,
-                    'case': case
-                })
-                email = EmailMessage(mail_subject, message, to=[user.email])
-                email.send()
-        if self.request.POST.getlist('teams', []):
-            case.teams.add(*self.request.POST.getlist('teams'))
-        if self.request.POST.getlist('contacts', []):
-            case.contacts.add(*self.request.POST.getlist('contacts'))
+        # if self.request.POST.getlist('assigned_to', []):
+        #     case.assigned_to.add(*self.request.POST.getlist('assigned_to'))
+        #     assigned_to_list = self.request.POST.getlist('assigned_to')
+        #     current_site = get_current_site(self.request)
+        #     for assigned_to_user in assigned_to_list:
+        #         user = get_object_or_404(User, pk=assigned_to_user)
+        #         mail_subject = 'Assigned to case.'
+        #         message = render_to_string('assigned_to/cases_assigned.html', {
+        #             'user': user,
+        #             'domain': current_site.domain,
+        #             'protocol': self.request.scheme,
+        #             'case': case
+        #         })
+        #         email = EmailMessage(mail_subject, message, to=[user.email])
+        #         email.send()
         if self.request.is_ajax():
             return JsonResponse({'error': False})
-        if self.request.POST.get("savenewform"):
-            return redirect("cases:add_case")
-        else:
-            return redirect('cases:list')
+        return redirect('cases:list')
 
     def form_invalid(self, form):
         if self.request.is_ajax():
@@ -117,7 +109,6 @@ class CreateRequestView(LoginRequiredMixin, CreateView):
         context["teams"] = Team.objects.all()
         context["case_form"] = context["form"]
         context["staff"] = self.staff
-        context["users"] = self.users
         context["request_types"] = RequestTypeChoices.choices
         context["request_priority"] = RequestPriorityChoices.choices
         context["request_status"] = RequestStatusChoices.choices
@@ -130,125 +121,119 @@ class CreateRequestView(LoginRequiredMixin, CreateView):
         return context
 
 
-# class RequestDetailView(LoginRequiredMixin, DetailView):
-#     model = Request
-#     context_object_name = "request_record"
-#     template_name = "view_request.html"
-#
-#     def get_queryset(self):
-#         queryset = super(RequestDetailView, self).get_queryset()
-#         return queryset.prefetch_related("contacts", "account")
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(RequestDetailView, self).get_context_data(**kwargs)
-#         context.update({"comments": context["case_record"].cases.all(),
-#             "attachments": context['case_record'].case_attachment.all()})
-#         return context
+class RequestDetailView(LoginRequiredMixin, DetailView):
+    model = Case
+    context_object_name = "request_record"
+    template_name = "view_request.html"
+
+    def get_queryset(self):
+        queryset = super(RequestDetailView, self).get_queryset()
+        return queryset.prefetch_related("assigned_to")
+
+    # def get_context_data(self, **kwargs):
+    #     context = super(RequestDetailView, self).get_context_data(**kwargs)
+    #     context.update({"comments": context["case_record"].cases.all(),
+    #         "attachments": context['case_record'].case_attachment.all()})
+    #     return context
 
 
-# class UpdateRequestView(LoginRequiredMixin, UpdateView):
-#     model = Request
-#     form_class = CaseForm
-#     template_name = "create_request.html"
-#
-#     def dispatch(self, request, *args, **kwargs):
-#         self.users = User.objects.filter(is_active=True).order_by('email')
-#         self.accounts = Account.objects.all()
-#         self.contacts = Contact.objects.all()
-#         return super(UpdateRequestView, self).dispatch(request, *args, **kwargs)
-#
-#     def get_form_kwargs(self):
-#         kwargs = super(UpdateRequestView, self).get_form_kwargs()
-#         kwargs.update({"assigned_to": self.users, "account": self.accounts,
-#                        "contacts": self.contacts})
-#         return kwargs
-#
-#     def post(self, request, *args, **kwargs):
-#         self.object = self.get_object()
-#         form = self.get_form()
-#         if form.is_valid():
-#             return self.form_valid(form)
-#         else:
-#             return self.form_invalid(form)
-#
-#     def form_valid(self, form):
-#         case_obj = form.save()
-#
-#         assigned_to_ids = case_obj.assigned_to.all().values_list('id', flat=True)
-#         case_obj.assigned_to.clear()
-#         case_obj.teams.clear()
-#         case_obj.contacts.clear()
-#         all_members_list = []
-#         if self.request.POST.getlist('assigned_to', []):
-#             case_obj.assigned_to.add(*self.request.POST.getlist('assigned_to'))
-#             assigned_to_list = self.request.POST.getlist('assigned_to')
-#             current_site = get_current_site(self.request)
-#             assigned_form_users = form.cleaned_data.get('assigned_to').values_list('id', flat=True)
-#             all_members_list = list(set(list(assigned_form_users)) - set(list(assigned_to_ids)))
-#             if len(all_members_list):
-#                 for assigned_to_user in assigned_to_list:
-#                     user = get_object_or_404(User, pk=assigned_to_user)
-#                     mail_subject = 'Assigned to case.'
-#                     message = render_to_string('assigned_to/cases_assigned.html', {
-#                         'user': user,
-#                         'domain': current_site.domain,
-#                         'protocol': self.request.scheme,
-#                         'case': case_obj
-#                     })
-#                     email = EmailMessage(mail_subject, message, to=[user.email])
-#                     email.send()
-#         if self.request.POST.getlist('teams', []):
-#             case_obj.teams.add(*self.request.POST.getlist('teams'))
-#         if self.request.POST.getlist('contacts', []):
-#             case_obj.contacts.add(*self.request.POST.getlist('contacts'))
-#         if self.request.is_ajax():
-#             return JsonResponse({'error': False})
-#         return redirect("cases:list")
-#
-#     def form_invalid(self, form):
-#         if self.request.is_ajax():
-#             return JsonResponse({'error': True, 'case_errors': form.errors})
-#         return self.render_to_response(self.get_context_data(form=form))
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(UpdateRequestView, self).get_context_data(**kwargs)
-#         context["case_obj"] = self.object
-#         context["teams"] = Team.objects.all()
-#         context["case_form"] = context["form"]
-#         context["accounts"] = self.accounts
-#         context["contacts"] = self.contacts
-#         context["users"] = self.users
-#         context["case_types"] = CASE_TYPE
-#         context["case_priority"] = PRIORITY_CHOICE
-#         context["case_status"] = STATUS_CHOICE
-#         context["assignedto_list"] = [
-#             int(i) for i in self.request.POST.getlist('assigned_to', []) if i]
-#         context["teams_list"] = [
-#             int(i) for i in self.request.POST.getlist('teams', []) if i]
-#         context["contacts_list"] = [
-#             int(i) for i in self.request.POST.getlist('contacts', []) if i]
-#         return context
+class UpdateRequestView(LoginRequiredMixin, UpdateView):
+    model = Case
+    form_class = CaseForm
+    template_name = "create_request.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        #self.users = User.objects.filter(is_active=True).order_by('email')
+        self.staff = Account.objects.all()
+        return super(UpdateRequestView, self).dispatch(request, *args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super(UpdateRequestView, self).get_form_kwargs()
+        kwargs.update({"assigned_to": self.staff})
+        return kwargs
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        case_obj = form.save()
+
+        assigned_to_ids = case_obj.assigned_to.all().values_list('id', flat=True)
+        case_obj.assigned_to.clear()
+        #case_obj.teams.clear()
+        #case_obj.contacts.clear()
+        # if self.request.POST.getlist('assigned_to', []):
+        #     case_obj.assigned_to.add(*self.request.POST.getlist('assigned_to'))
+        #     assigned_to_list = self.request.POST.getlist('assigned_to')
+        #     current_site = get_current_site(self.request)
+        #     assigned_form_users = form.cleaned_data.get('assigned_to').values_list('id', flat=True)
+        #     all_members_list = list(set(list(assigned_form_users)) - set(list(assigned_to_ids)))
+        #     if len(all_members_list):
+        #         for assigned_to_user in assigned_to_list:
+        #             user = get_object_or_404(User, pk=assigned_to_user)
+        #             mail_subject = 'Assigned to case.'
+        #             message = render_to_string('assigned_to/cases_assigned.html', {
+        #                 'user': user,
+        #                 'domain': current_site.domain,
+        #                 'protocol': self.request.scheme,
+        #                 'case': case_obj
+        #             })
+        #             email = EmailMessage(mail_subject, message, to=[user.email])
+        #             email.send()
+        if self.request.POST.getlist('teams', []):
+            case_obj.teams.add(*self.request.POST.getlist('teams'))
+        if self.request.POST.getlist('contacts', []):
+            case_obj.contacts.add(*self.request.POST.getlist('contacts'))
+        if self.request.is_ajax():
+            return JsonResponse({'error': False})
+        return redirect("cases:list")
+
+    def form_invalid(self, form):
+        if self.request.is_ajax():
+            return JsonResponse({'error': True, 'case_errors': form.errors})
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdateRequestView, self).get_context_data(**kwargs)
+        #context["teams"] = Team.objects.all()
+        context["case_form"] = context["form"]
+        context["staff"] = self.staff
+        context["request_types"] = RequestTypeChoices.choices
+        context["request_priority"] = RequestPriorityChoices.choices
+        context["request_status"] = RequestStatusChoices.choices
+        context["assignedto_list"] = [
+            int(i) for i in self.request.POST.getlist('assigned_to', []) if i]
+        context["teams_list"] = [
+            int(i) for i in self.request.POST.getlist('teams', []) if i]
+        context["contacts_list"] = [
+            int(i) for i in self.request.POST.getlist('contacts', []) if i]
+        return context
 
 
-# class RemoveCaseView(LoginRequiredMixin, View):
-#
-#     def get(self, request, *args, **kwargs):
-#         case_id = kwargs.get("case_id")
-#         self.object = get_object_or_404(Case, id=case_id)
-#         self.object.delete()
-#         return redirect("cases:list")
-#
-#     def post(self, request, *args, **kwargs):
-#         case_id = kwargs.get("case_id")
-#         self.object = get_object_or_404(Case, id=case_id)
-#         self.object.delete()
-#         if request.is_ajax():
-#             return JsonResponse({'error': False})
-#         count = Case.objects.filter(
-#             Q(assigned_to=request.user) | Q(created_by=request.user)).distinct().count()
-#         data = {"case_id": case_id, "count": count}
-#         return JsonResponse(data)
+class RemoveRequestView(LoginRequiredMixin, DeleteView):
 
+    def get(self, request, *args, **kwargs):
+        request_id = kwargs.get("case_id")
+        print(request_id)
+        self.object = get_object_or_404(Case, id=request_id)
+        self.object.delete()
+        return redirect("cases:list")
+
+    def post(self, request, *args, **kwargs):
+        request_id = kwargs.get("request_id")
+        self.object = get_object_or_404(Case, id=request_id)
+        self.object.delete()
+        if request.is_ajax():
+            return JsonResponse({'error': False})
+        count = Case.objects.filter(
+            Q(assigned_to=request.user) | Q(created_by=request.user)).distinct().count()
+        data = {"request_id": request_id, "count": count}
+        return JsonResponse(data)
 
 # class CloseCaseView(LoginRequiredMixin, View):
 #

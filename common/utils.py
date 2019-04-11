@@ -21,6 +21,11 @@ class RequestStatusChoices(DjangoChoices):
     duplicated = ChoiceItem('Дубликат', _('Дубликат'))
 
 
+class StaffOccupationChoices(DjangoChoices):
+    electrical = ChoiceItem('Электрик', _('Электрик'))
+    plumb = ChoiceItem('Сантехник', _('Сантехник'))
+    locksmith = ChoiceItem('Слесарь', _('Слесарь'))
+    security = ChoiceItem('Охранник', _('Охранник'))
 
 
 INDCHOICES = (

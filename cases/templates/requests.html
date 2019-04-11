@@ -27,12 +27,23 @@
           <div class="card-body">
             <div class="card-title">Фильтры</div>
             <div class="row marl">
+            <div class="filter_col col-md-3">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Тип проблемы</label>
+                  <select class="form-control" id="id_status" name="status" >
+                    <option value="">--Тип проблемы--</option>
+                    {% for each_type in request_type %}
+                    <option value="{{each_type.0}}" {% if request.POST.type %} {% ifequal each_type.0 request.POST.type %}selected{% endifequal %}{% endif %} >{{each_type.1}} </option>
+                    {% endfor%}
+                  </select>
+                </div>
+              </div>
               <div class="filter_col col-md-3">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Статус</label>
                   <select class="form-control" id="id_status" name="status" >
                     <option value="">--Статус--</option>
-                    {% for each_status in case_status %}
+                    {% for each_status in request_status %}
                     <option value="{{each_status.0}}" {% if request.POST.status %} {% ifequal each_status.0 request.POST.status %}selected{% endifequal %}{% endif %} >{{each_status.1}} </option>
                     {% endfor%}
                   </select>
@@ -43,7 +54,7 @@
                   <label for="exampleInputEmail1">Приоритет</label>
                   <select class="form-control" id="id_priority" name="priority" >
                     <option value="">--Приоритет--</option>
-                    {% for each_priority in case_priority %}
+                    {% for each_priority in request_priority %}
                     <option value="{{each_priority.0}}" {% if request.POST.priority %} {% ifequal each_priority.0 request.POST.priority %}selected{% endifequal %}{% endif %}>{{each_priority.1}} </option>
                     {% endfor%}
                   </select>
@@ -54,7 +65,7 @@
                   <label for="exampleInputEmail1">Исполнитель</label>
                   <select class="form-control" id="id_account" name="account">
                     <option value="">--Выберите исполнителя--</option>
-                    {% for ac in accounts %}
+                    {% for ac in staff %}
                     <option value="{{ac.id}}" {% ifequal acc ac.id %} selected {% endifequal %} >{{ac.name}}</option>
                     {% endfor %}
                   </select>
@@ -83,7 +94,7 @@
         <div class="card-body">
         <div class="panel-heading-list card-title">
           Список заявок
-          <span class="float-right total_count">{% if show_pageitems %} {% show_pageitems %}{% else %}Total Cases {{ requests|length }}{% endif %}</span>
+          <span class="float-right total_count">{% if show_pageitems %} {% show_pageitems %}{% else %}Всего: {{ requests|length }}{% endif %}</span>
         </div>
         <div class="table-responsive">
           <table class="table " id="multiselect">
@@ -91,12 +102,12 @@
               {% if requests|length > 0 %}
 
                 <tr>
-                  <th width="5%">S.No</th>
-                  <th width="20%">Name</th>
-                  <th width="20%">Account</th>
-                  <th width="15%">Status</th>
-                  <th width="15%">Priority</th>
-                  <th width="15%">Actions</th>
+                  <th width="15%" style="text-align: center">Отправитель</th>
+                  <th width="20%" style="text-align: center">Проблема</th>
+                  <th width="20%" style="text-align: center">Исполнитель</th>
+                  <th width="15%" style="text-align: center">Статус</th>
+                  <th width="10%" style="text-align: center">Приоритет</th>
+                  <th width="10%" style="text-align: center">Действия</th>
                 </tr>
               {% endif %}
             </thead>
@@ -108,22 +119,23 @@
               {% endif %}
               {% for case in requests %}
               <tr class="case_row{{case.id}}" style="text-align:center;">
-                <td scope="row">{{ forloop.counter }}</td>
-{#                <td><a href="{% url 'cases:view_case' case.id %}">{{ case.name }}</a></td>#}
-                <td>{{case.closed_on}}</td>
+                <td scope="row">{{ case.created_by }}</td>
+                <td><a href="{% url 'cases:view_request' case.id %}">{{case.request_type}}</a></td>
                 <td>
-                  {% if case.account %}
-                    <a href="{% url  'accounts:view_account' case.account.id %}">{{ case.account }}</a>
+                  {% if case.assigned_to %}
+                    {% for executor in case.assigned_to.all %}
+                        <a href="#">{{ executor.name }}</a>
+                    {%  endfor %}
                   {% else %}
-                    No Related Account
+                    Исполнитель не назначен
                   {% endif %}
                 </td>
                 <td id="status_id{{case.id}}" status="{{case.status}}">{{ case.status }}</td>
                 <td>{{ case.priority }}</td>
                 <td class="actions">
-                 {#  <a href="{% url 'cases:view_case' case.id %}" class="btn btn-info view"><i class="fas fa-eye"></i> View</a> #}
-                  <a href="#" class="btn btn-success edit"><i class="fas fa-pencil-alt"></i></a>
-                  <a href="#" class="btn btn-danger delete remove_case"><i class="fas fa-trash-alt"></i></a>
+                   <a href="{% url 'cases:view_request' case.id %}" class="btn btn-info view"><i class="fas fa-eye"></i></a>
+                  <a href="{% url 'cases:edit_request' case.id %}" class="btn btn-success edit"><i class="fas fa-pencil-alt"></i></a>
+                  <a href="{% url 'cases:remove_request' case.id %}" class="btn btn-danger delete remove_case"><i class="fas fa-trash-alt"></i></a>
                   {% if case.status != 'Closed' %}
 {#                  <a onclick="close_case({{case.id}}, '{% url 'cases:close_case' %}')" class="btn btn-warning"><i class="fas fa-times"></i> </a>#}
                   {% endif %}
@@ -168,13 +180,13 @@
     }
   }
 
-  $('.remove_case').click(function(e){
-    e.preventDefault()
-    url = $(this).attr('href')
-    if (!confirm('Are you sure you want to delete?'))
-      return;
-    window.location = $(this).attr('href')
-  });
+  //$('.remove_case').click(function(e){
+  //  e.preventDefault()
+  //  url = $(this).attr('href')
+  //  if (!confirm('Are you sure you want to delete?'))
+   //   return;
+   // window.location = $(this).attr('href')
+ // });
 
   $("a[rel='page']").click(function(e){
     e.preventDefault();
