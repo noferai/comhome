@@ -14,17 +14,12 @@ class BillingAddressForm(forms.ModelForm):
         super(BillingAddressForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs = {"class": "form-control"}
-        self.fields['address_line'].widget.attrs.update({
-            'placeholder': 'Address Line'})
-        self.fields['street'].widget.attrs.update({
-            'placeholder': 'Street'})
-        self.fields['city'].widget.attrs.update({
-            'placeholder': 'City'})
-        self.fields['state'].widget.attrs.update({
-            'placeholder': 'State'})
-        self.fields['postcode'].widget.attrs.update({
-            'placeholder': 'Postcode'})
-        self.fields["country"].choices = [("", "--Country--"), ] + list(self.fields["country"].choices)[1:]
+        for key, value in self.fields.items():
+            if key == 'phone':
+                value.widget.attrs['placeholder'] = 'Введите номер телефона'
+            else:
+                value.widget.attrs['placeholder'] = value.label
+        self.fields["country"].choices = [("", "--Страна--"), ] + list(self.fields["country"].choices)[1:]
 
 
 class ShippingAddressForm(forms.ModelForm):
@@ -36,16 +31,7 @@ class ShippingAddressForm(forms.ModelForm):
         super(ShippingAddressForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs = {"class": "form-control"}
-        self.fields['address_line'].widget.attrs.update({
-            'placeholder': 'Address Line'})
-        self.fields['street'].widget.attrs.update({
-            'placeholder': 'Street'})
-        self.fields['city'].widget.attrs.update({
-            'placeholder': 'City'})
-        self.fields['state'].widget.attrs.update({
-            'placeholder': 'State'})
-        self.fields['postcode'].widget.attrs.update({
-            'placeholder': 'Postcode'})
+
         self.fields["country"].choices = [("", "--Country--"), ] + list(self.fields["country"].choices)[1:]
 
 
@@ -56,7 +42,7 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['email', 'first_name', 'last_name', 'username', 'role', 'profile_pic']
-    #
+
     # def __init__(self, args: object, kwargs: object) -> object:
     #     super(UserForm, self).__init__(*args, **kwargs)
     #

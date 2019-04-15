@@ -11,7 +11,7 @@
                             {% if entry_obj %}Изменить{% else %}Создать{% endif %} Новость
                         </div>
                         <div class="row marl">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="filter_col col-md-12">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="required">Заголовок
@@ -41,11 +41,11 @@
         </div>
         <!-- overview ends here -->
         <div class="row marl buttons_row text-center form_btn_row">
-            <button class="btn btn-default save" type="submit">Save</button>
+            <button class="btn btn-default save" type="submit">Сохранить</button>
             {% if not entry_obj %}
-                <button class="btn btn-default save savenew" type="submit">Save & New</button>
+                <button class="btn btn-default save savenew" type="submit">Сохранить и добавить ещё</button>
             {% endif %}
-            <a href="{% url 'news:list' %}" class="btn btn-default clear">CANCEL</a>
+            <a href="{% url 'news:list' %}" class="btn btn-default clear">Отмена</a>
         </div>
     </form>
 {% endblock %}

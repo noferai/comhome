@@ -49,7 +49,7 @@ urlpatterns = [
     path('documents/<int:pk>/download/', download_document, name='download_document'),
 
     # api
-    #re_path(r'^api/$', ListUsers.as_view()),
+    re_path(r'^api/$', ListUsers.as_view()),
     re_path(r'^api/authentication/login$', AuthorizationView.as_view()),
     re_path(r'^api/test/addUser$', AddUserView.as_view()),
     re_path(r'^api/news/getnews$', NewsGetApi.as_view()),

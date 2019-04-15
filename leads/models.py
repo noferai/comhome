@@ -12,10 +12,10 @@ class Lead(models.Model):
     title = models.CharField(
         pgettext_lazy("Treatment Pronouns for the customer", "Title"),
         max_length=64, blank=True, null=True)
-    first_name = models.CharField(("First name"), max_length=255)
-    last_name = models.CharField(("Last name"), max_length=255)
+    first_name = models.CharField('Имя', max_length=255)
+    last_name = models.CharField('Фамилия', max_length=255)
     email = models.EmailField()
-    phone = PhoneNumberField(null=True, blank=True)
+    phone = PhoneNumberField('Телефон', null=True, blank=True)
     account = models.ForeignKey(Account, related_name='Leads', on_delete=models.CASCADE, blank=True, null=True)
     status = models.CharField(_("Status of Lead"), max_length=255,
                               blank=True, null=True, choices=LEAD_STATUS)
@@ -23,7 +23,7 @@ class Lead(models.Model):
                               blank=True, null=True, choices=LEAD_SOURCE)
     address = models.ForeignKey(Address, related_name='leadaddress', on_delete=models.CASCADE, null=True, blank=True)
     website = models.CharField(_("Website"), max_length=255, blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField('Примечания', blank=True, null=True)
     assigned_to = models.ManyToManyField(User, related_name='lead_assigned_users')
     teams = models.ManyToManyField(Team)
     account_name = models.CharField(max_length=255, null=True, blank=True)
@@ -31,7 +31,7 @@ class Lead(models.Model):
         _("Opportunity Amount"), decimal_places=2, max_digits=12,
         blank=True, null=True)
     created_by = models.ForeignKey(User, related_name='lead_created_by', on_delete=models.CASCADE)
-    created_on = models.DateTimeField(_("Created on"), auto_now_add=True)
+    created_on = models.DateTimeField('Добавлен', auto_now_add=True)
     is_active = models.BooleanField(default=False)
     enquery_type = models.CharField(max_length=255, blank=True, null=True)
 

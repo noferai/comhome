@@ -12,7 +12,7 @@
         </div>
         <div class="col-md-6">
           <div class="create_new text-right">
-            <a href="{% url 'common:create_user'%}"><i class="fa fa-plus"></i> Add New User</a>
+            <a href="{% url 'common:create_user'%}"><i class="fa fa-plus"></i> Добавить пользователя</a>
           </div>
         </div>
         </div>
@@ -24,19 +24,19 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-body">
-          <div class="card-title">Filters</div>
+          <div class="card-title">Фильтры</div>
           <form id="users_filter" action="" method="POST">
             <div class="row marl">
               <div class="filter_col col-4">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">User Name</label>
-                  <input type="text" class="form-control" placeholder="Username" name="username" value="{{request.POST.username}}">
+                  <label for="exampleInputEmail1">Логин</label>
+                  <input type="text" class="form-control" placeholder="Логин" name="username" value="{{request.POST.username}}">
                 </div>
               </div> 
               <div class="filter_col col-4">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">First Name</label>
-                  <input type="text" class="form-control" placeholder="First Name" name="first_name" value="{{request.POST.first_name}}">
+                  <label for="exampleInputEmail1">Имя</label>
+                  <input type="text" class="form-control" placeholder="Имя" name="first_name" value="{{request.POST.first_name}}">
                 </div>
               </div>
               <div class="filter_col col-4">
@@ -47,8 +47,8 @@
               </div>
               <div class="filter_col text-center col-12">
                 <div class="form-group buttons_row">
-                  <button class="btn btn-primary save" type="submit">Search</button>
-                  <a href="{% url 'common:users_list' %}" class="btn btn-default clear">Clear</a>
+                  <button class="btn btn-primary save" type="submit">Поиск</button>
+                  <a href="{% url 'common:users_list' %}" class="btn btn-default clear">Сброс</a>
                 </div>
               </div>
               <br clear="all">
@@ -64,8 +64,8 @@
         <div class="card">
           <div class="card-body">
             <div class="card-title list">
-              List of Users
-              <span class="float-right total_count">{% if show_pageitems %} {% show_pageitems %}{% else %}Total Users {{ users|length }}{% endif %}</span>
+              Список пользователей
+              <span class="float-right total_count">{% if show_pageitems %} {% show_pageitems %}{% else %}Всего: {{ users|length }}{% endif %}</span>
             </div>
             <div class="table-responsive ">
               <table class="table table-bordered table-striped table-condensed">
@@ -73,13 +73,13 @@
                   {% if users|length > 0 %}
 
                     <tr>
-                      <th width="5%" style="text-align:center;">S.No</th>
-                      <th width="20%" style="text-align:center;">First Name</th>
-                      <th width="20%" style="text-align:center;">Username</th>
-                      <th width="20%" style="text-align:center;">Email Address</th>
-                      <th width="8%" style="text-align:center;">User Role</th>
-                      <th width="15%" style="text-align:center;">Status</th>
-                      <th width="20%" style="text-align:center;">Actions</th>
+                      <th width="5%" style="text-align:center;">№</th>
+                      <th width="20%" style="text-align:center;">Имя</th>
+                      <th width="20%" style="text-align:center;">Логин</th>
+                      <th width="20%" style="text-align:center;">Email</th>
+                      <th width="8%" style="text-align:center;">Роль</th>
+                      <th width="15%" style="text-align:center;">Статус</th>
+                      <th width="20%" style="text-align:center;">Действия</th>
                     </tr>
                   {% endif %}
                 </thead>
@@ -106,7 +106,7 @@
                     <td class="actions">
                       <!-- <a href="{% url 'common:view_user' user.id %}" class="btn btn-info view"><i class="fas fa-eye"></i>View</a> -->
                       {% if user.email != admin_email  or request.user.email == admin_email %}
-                      <a href="{% url 'common:edit_user' user.id %}" class="btn btn-success edit"><i class="fas fa-pencil-alt"></i>Edit</a>
+                      <a href="{% url 'common:edit_user' user.id %}" class="btn btn-success edit"><i class="fas fa-pencil-alt"></i></a>
                       {% endif %}
                       <a href="{% url 'common:remove_user' user.id %}" class="btn btn-danger trash" {% if request.user.email == user.email or user.role == "ADMIN"  or user.is_superuser %} style="visibility: hidden;" {% endif %}><i class="fas fa-trash-alt"></i>Delete</a>
                     </td>
@@ -116,7 +116,7 @@
               </table>
             </div>
             {% ifequal users|length 0 %}
-              <h6 class="text-center">No User Records Found</h6>
+              <h6 class="text-center">Ничего не найдено</h6>
             {% endifequal %}
             <div class="marl row text-center">
               {% show_pages %}

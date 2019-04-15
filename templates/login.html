@@ -2,7 +2,7 @@
 {% load compress %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
@@ -25,23 +25,23 @@
         <div class="col-md-6 col-lg-6 col-xl-4">
             <div class="login_block">
                 <div class="login_form_block">
-                    <div class="welcome">Django CRM</div>
+                    <div class="welcome">ComfortableHome CRM</div>
                     <form method="POST" action="">
                         <div class="form-group">
                             <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Email" name="email">
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password">
+                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Пароль" name="password">
                         </div>
-                        <div class="forgot">Forgot Password <a href="{% url "common:password_reset" %}">Click Here?</a></div>
+                        <div class="forgot">Забыли пароль? <a href="{% url "common:password_reset" %}">Нажмите сюда</a></div>
                         {% if error %}
                             <p class="error">{{ message }}</p>
                         {% endif %}
-                        <button type="submit" class="btn btn-danger">Login</button>
+                        <button type="submit" class="btn btn-danger">Войти</button>
                     </form>
                     <div class="credentials">
-                        <span class="heading">Test credentials to Login</span>
-                        <span>Email: <b>admin@micropyramid.com</b></span><br>
+                        <span class="heading">Данные для входа</span>
+                        <span>Email: <b>comhome@test.com</b></span><br>
                         <span>Password:<b> admin</b>
                     </div>
                 </div>

@@ -62,8 +62,8 @@
                   <div class="form-group">
                     <label for="exampleInputEmail1">Исполнители</label>
                      <select class="assigned_users form-control" name="assigned_to" multiple="multiple">
-                      {% for user in staff %}
-                        <option value="{{user.id}}" {% if user in case_obj.assigned_to.all or user.id in assignedto_list %} selected="" {% endif %}>{{user.email}}</option>
+                      {% for staff in staff %}
+                        <option value="{{staff.id}}" {% if staff in case_obj.assigned_to.all or staff.id in assignedto_list %} selected="" {% endif %}>{{staff.name}}</option>
                       {% endfor %}
                     </select>
                     <span class="error">{{ case_form.assigned_to.errors }}</span>
