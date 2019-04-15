@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from news.models import Entry
 from news.serializer import EntrySerializer
 import textwrap
+import json
 
 
 class NewsListView(LoginRequiredMixin, TemplateView):
@@ -159,11 +160,15 @@ class NewsGetApi(APIView):
 
 
 class NewsGetByIdApi(APIView):
-    def get(self, request):
-        id_entry = request.data['id']
+    def post(self, request):
+        body_unicode = request.body.decode('utf-8')
+        data = json.loads(body_unicode)
+
+        id_entry = data['id']
         print(id_entry)
         news = Entry.objects.get(id=id_entry)
         serializer = EntrySerializer(news)
+        res =  serializer.data
+        del res['id']
 
-        return Response(serializer.data)
-
+        return Response(res)
