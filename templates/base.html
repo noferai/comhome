@@ -200,7 +200,7 @@
                                     {% if request.user.role == "ADMIN"  or request.user.is_superuser %}
                                         <li class="nav-item"><a class="nav-link" id="users"
                                                                 href="{% url 'common:users_list' %}">Список</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#">Добавить</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="{% url 'common:create_user' %}">Добавить</a></li>
                                     {% endif %}
                                 </ul>
                             </div>
@@ -212,7 +212,7 @@
                                 <ul class="nav flex-column">
                                     <li class="nav-item"><a class="nav-link" id="accounts"
                                                             href="{% url 'accounts:list' %}">Список</a>
-                                    <li class="nav-item"><a class="nav-link" href="#">Добавить</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'accounts:new_account' %}">Добавить</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -238,7 +238,7 @@
                                     <li class="nav-item"><a class="nav-link" id="contacts"
                                                             href="{% url 'leads:list' %}">Список</a>
                                     </li>
-                                    <li class="nav-item"><a class="nav-link" href="#">Добавить</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'leads:add_lead' %}">Добавить</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -264,7 +264,7 @@
                                     <li class="nav-item"><a class="nav-link" id="contacts"
                                                             href="{% url 'cases:list' %}">Список</a>
                                     </li>
-                                    <li class="nav-item"><a class="nav-link" href="#">Добавить</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'cases:create_request' %}">Добавить</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -277,7 +277,7 @@
                                     <li class="nav-item"><a class="nav-link" id="contacts"
                                                             href="{% url 'news:list' %}">Список</a>
                                     </li>
-                                    <li class="nav-item"><a class="nav-link" href="#">Добавить</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'news:new_entry' %}">Добавить</a></li>
                                 </ul>
                             </div>
                         </li>
