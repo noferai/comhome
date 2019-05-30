@@ -143,32 +143,3 @@ class EntryDeleteView(LoginRequiredMixin, DeleteView):
         self.object.delete()
         return redirect("news:list")
 
-
-class NewsGetApi(APIView):
-    def get(self, request):
-        news = Entry.objects.all()
-
-        serializer = EntrySerializer(news, many=True)
-
-        data_res = serializer.data
-
-        for ind in range(len(data_res)):
-            data_res[ind]['short_description'] = textwrap.wrap(data_res[ind]['text'], 30)[0]
-            del data_res[ind]['text']
-
-        return Response(data_res)
-
-
-class NewsGetByIdApi(APIView):
-    def post(self, request):
-        body_unicode = request.body.decode('utf-8')
-        data = json.loads(body_unicode)
-
-        id_entry = data['id']
-        print(id_entry)
-        news = Entry.objects.get(id=id_entry)
-        serializer = EntrySerializer(news)
-        res =  serializer.data
-        del res['id']
-
-        return Response(res)

@@ -391,31 +391,3 @@ class RemoveRequestView(LoginRequiredMixin, DeleteView):
 #         else:
 #             data = {'error': "You don't have permission to delete this attachment."}
 #             return JsonResponse(data)
-
-
-class SendFormsApi(APIView):
-    def post(self, request):
-        body_unicode = request.body.decode('utf-8')
-        data = json.loads(body_unicode)
-
-        user_id = data['user_id']
-        type = data['type']
-        description = data['description']
-
-        case = Case()
-
-        if type == 'electrician':
-            case.request_type = RequestTypeChoices.electrical
-        elif type == 'plumber':
-            case.request_type = RequestTypeChoices.plumb
-        elif type == 'cleaner':
-            case.request_type = RequestTypeChoices.cleaner
-        else:
-            case.request_type = RequestTypeChoices.other
-
-        case.description = description
-        case.created_by = User.objects.get(id=user_id)
-        case.save()
-
-        return Response({'isSuccess': True})
-

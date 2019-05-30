@@ -32,13 +32,14 @@ INSTALLED_APPS = [
     'accounts',
     'cases',
     'contacts',
-    'emails',
+    # 'emails',
     'leads',
     'opportunity',
     'planner',
     'sorl.thumbnail',
     'phonenumber_field',
     'news',
+    'api',
 ]
 
 MIDDLEWARE = [

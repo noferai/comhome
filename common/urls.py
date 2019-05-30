@@ -1,14 +1,12 @@
 from django.contrib.auth import views as auth_views
 
-from django.urls import path, re_path
+from django.urls import path, include
 
-from cases.views import SendFormsApi
 from common.views import (
     HomeView, LoginView, ForgotPasswordView, LogoutView, ChangePasswordView, ProfileView,
     UsersListView, CreateUserView, UpdateUserView, UserDetailView, UserDeleteView, PasswordResetView,
     DocumentListView, DocumentCreateView, UpdateDocumentView, DocumentDetailView, DocumentDeleteView, 
-    download_document, ListUsers, AuthorizationView, AddUserView)
-from news.views import NewsGetApi, NewsGetByIdApi
+    download_document)
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -49,11 +47,6 @@ urlpatterns = [
     path('documents/<int:pk>/download/', download_document, name='download_document'),
 
     # api
-    re_path(r'^api/$', ListUsers.as_view()),
-    re_path(r'^api/authentication/login$', AuthorizationView.as_view()),
-    re_path(r'^api/test/addUser$', AddUserView.as_view()),
-    re_path(r'^api/news/getnews$', NewsGetApi.as_view()),
-    re_path(r'^api/news/getnewsbyid$', NewsGetByIdApi.as_view()),
-    re_path(r'^api/forms/sendForm$', SendFormsApi.as_view()),
+    path('api/', include('api.urls', namespace='api')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
