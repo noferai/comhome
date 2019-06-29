@@ -28,7 +28,9 @@ class LeadForm(forms.ModelForm):
     class Meta:
         model = Lead
         fields = ('assigned_to', 'teams', 'name', 'account_name',
-                  'phone', 'email', 'status', 'source', 'website', 'address', 'description'
+                  'phone', 'email'
+                  , 'status'
+                  , 'source', 'address', 'description'
                   )
 
     def clean_phone(self):

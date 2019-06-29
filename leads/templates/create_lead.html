@@ -66,6 +66,11 @@
                     <span class="error">{{ lead_form.email.errors }}</span>
                   </div>
                 </div>
+                    <form>
+                        <p>Выберите дату:
+                        <input type="date" name="calendar">
+                        <input type="submit" value="Отправить"></p>
+                    </form>
 {#                <div class="filter_col col-md-12">#}
 {#                  <div class="form-group">#}
 {#                    <label for="exampleInputEmail1">Website{% if lead_form.website.field.required %}<span class="error">*</span>{% endif %}</label>#}
