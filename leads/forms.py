@@ -27,7 +27,7 @@ class LeadForm(forms.ModelForm):
 
     class Meta:
         model = Lead
-        fields = ('assigned_to', 'teams', 'first_name', 'last_name', 'account_name', 'title',
+        fields = ('assigned_to', 'teams', 'name', 'account_name',
                   'phone', 'email', 'status', 'source', 'website', 'address', 'description'
                   )
 
@@ -38,10 +38,9 @@ class LeadForm(forms.ModelForm):
                 ph_length = str(client_phone)
                 if len(ph_length) < 10 or len(ph_length) > 13:
                     raise forms.ValidationError('Phone number must be minimum 10 Digits and maximum of 13 Digits')
-        except (ValueError):
+        except(ValueError):
             raise forms.ValidationError('Phone Number should contain only Numbers')
         return client_phone
-
 
 
 class LeadCommentForm(forms.ModelForm):

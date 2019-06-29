@@ -4,18 +4,22 @@ from django.utils.translation import ugettext_lazy as _
 
 from accounts.models import Account
 from common.models import User, Address, Team
-from common.utils import LEAD_STATUS, LEAD_SOURCE
+from common.utils import LEAD_STATUS, LEAD_SOURCE, RequestPriorityChoices
 from phonenumber_field.modelfields import PhoneNumberField
 
 
+gender = (
+    'male',
+    'female'
+)
+
+
 class Lead(models.Model):
-    title = models.CharField(
-        pgettext_lazy("Treatment Pronouns for the customer", "Title"),
-        max_length=64, blank=True, null=True)
-    first_name = models.CharField('Имя', max_length=255)
-    last_name = models.CharField('Фамилия', max_length=255)
+    name = models.CharField('ФИО', max_length=255)
+    gender = models.CharField('Пол', max_length=10, choices=RequestPriorityChoices.choices, blank=True, null=True)
+    # date_of_birth =
     email = models.EmailField()
-    phone = PhoneNumberField('Телефон', null=True, blank=True)
+    phone = models.CharField('Телефон', max_length=255)
     account = models.ForeignKey(Account, related_name='Leads', on_delete=models.CASCADE, blank=True, null=True)
     status = models.CharField(_("Status of Lead"), max_length=255,
                               blank=True, null=True, choices=LEAD_STATUS)
@@ -39,4 +43,4 @@ class Lead(models.Model):
         ordering =['-created_on']
 
     def __str__(self):
-        return self.first_name + self.last_name
+        return self.name
