@@ -22,7 +22,7 @@
             {% if account_obj %}Редактировать{% else %}Создать{% endif %} Исполнителя
           </div>
             <div class="row marl">
-              <div class="col-md-6">
+              <div class="col-md-12">
                 <div class="filter_col col-md-12">
                   <div class="form-group">
                     <label for="exampleInputEmail1" class="required">ФИО{% if account_form.name.field.required %}<span class="error">*</span>{% endif %}</label>
@@ -66,51 +66,6 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-6">
-                <div class="filter_col col-12">
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Ответственный</label>
-                    {{request.POST.assigned_to}}
-                     <select class="assigned_users form-control" name="assigned_to" multiple="multiple">
-                      {% for user in users %}
-                        <option value="{{user.id}}" {% if user in account_obj.assigned_to.all  or user.id in assignedto_list %} selected="" {% endif %}>{{user.email}}</option>
-                      {% endfor %}
-                    </select>
-                    {{ account_form.assigned_to.errors }}
-                  </div>
-                </div>
-                <br>
-{#                <div class="filter_col billing_block col-md-12">#}
-{#                  <div class="form-group">#}
-{#                    <label for="exampleInputEmail1">Billing Address</label>#}
-{#                    {{ billing_form.address_line }}#}
-{#                    <span class="error">{{ billing_form.address_line.errors }}</span>#}
-{#                  </div>#}
-{#                    {{ billing_form.street }}#}
-{#                    <span class="error">{{ billing_form.street.errors }}</span>#}
-{#                  <div class="row" style="margin-top: 10px;">#}
-{#                    <div class="col-md-4">#}
-{#                      {{ billing_form.city }}#}
-{#                      <span class="error">{{ billing_form.city.errors }}</span>#}
-{#                    </div>#}
-{#                    <div class="col-md-4">#}
-{#                      {{ billing_form.state }}#}
-{#                      <span class="error">{{ billing_form.state.errors }}</span>#}
-{#                    </div>#}
-{#                    <div class="col-md-4">#}
-{#                      {{ billing_form.postcode }}#}
-{#                      <span class="error">{{ billing_form.postcode.errors }}</span>#}
-{#                    </div>#}
-{#                    <div class="col-md-12" style="margin-top: 10px;">#}
-{#                      {{ billing_form.country }}#}
-{#                      <span class="error">{{ billing_form.country.errors }}</span>#}
-{#                    </div>#}
-{#                  </div>#}
-{#                </div>#}
-{#                <div>#}
-{#                  <h6 style="color:white;">Copy Address</h6>#}
-{#                </div>#}
-              </div>
             </div>
             <br clear="all">
           </div>
@@ -132,21 +87,6 @@
 {% block js_block %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
   <script type="text/javascript">
-    $("#copy_billing_btn").click(function(){
-      var address_line = $("#id_address_line").val()
-      var street = $("#id_street").val()
-      var city = $("#id_city").val()
-      var state = $("#id_state").val()
-      var postcode = $("#id_postcode").val()
-      var country = $("#id_country").val()
-      $("#id_ship-address_line").val(address_line)
-      $("#id_ship-street").val(street)
-      $("#id_ship-city").val(city)
-      $("#id_ship-state").val(state)
-      $("#id_ship-postcode").val(postcode)
-      $("#id_ship-country").val(country)
-    });
-
     $(".savenew").on('click', function(e){
       e.preventDefault()
       $("#save_new_form").val('true')

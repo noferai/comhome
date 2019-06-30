@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load paginate %}
+{% block content %}
+<!-- main_container starts here -->
+<div class="main_container">
+  <!-- heading_create starts here -->
+  <div class="row marl heading_create">
+    <div class="heading col-md-12">
+     <div class="no-gutters row">
+      <div class="col-md-6">
+      </div>
+      <div class="col-md-6">
+        <div class="create_new text-right">
+          <a href="{% url 'apartments:add' %}"><i class="fa fa-plus"></i> Добавить</a>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  <!-- heading_create ends here -->
+  <div class="filter_row row marl">
+    <div class="col-md-12">
+       <div class="table_container_row row marl no-gutters">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+         <div class="panel-heading-list card-title">
+          <span class="float-right total_count">{% if show_pageitems %} {% show_pageitems %}{% else %}Всего:{{apartments_list|length}}{% endif %}</span>
+        </div>
+          <div class="table-responsive">
+          <table class="table ">
+            <thead>
+            {% if apartments_list|length > 0 %}
+              <tr>
+                <th width="5%" style="text-align: center">ID</th>
+                <th width="25%" style="text-align: center">Адрес</th>
+                <th width="15%" style="text-align: center">Подъезд</th>
+                <th width="15%" style="text-align: center">Этаж</th>
+                <th width="20%" style="text-align: center">Собственники</th>
+                <th width="10%" style="text-align: center">Действия</th>
+              </tr>
+            {% endif %}
+            </thead>
+            <tbody>
+              {% if per_page %}
+                {% paginate per_page apartments_list %}
+              {% else%}
+                {% paginate 10 apartments_list %}
+              {% endif %}
+              {% for each_apartment in apartments_list %}
+              <tr id="account_details{{each_apartments.id}}" class="text-center">
+                <td scope="row">{{ forloop.counter }}</td>
+                <td>{% if each_apartment.address %}<a href="#">{{ each_apartment.address }}</a>{% endif %}</td>
+                <td>{% if each_apartment.entrance %}{{ each_apartment.entrance }} {% else %} Не указан {% endif %}</td>
+                <td>{% if each_apartment.floor %}{{ each_apartment.floor }} {% else %} Не указан{% endif %}</td>
+                <td>{% if each_apartment.industry %}{{ each_apartment.industry }} {% else %} Не указан {% endif %}</td>
+                <td class="actions">
+                 {#  <a href="{% url 'accounts:view_account' each_account.id %}" class="btn btn-info view"><i class="fas fa-eye"></i> View</a> #}
+                  <a href="{% url 'apartments:edit' each_apartment.id %}" class="btn btn-success edit"><i class="fas fa-pencil-alt"></i></a>
+                  <a href="{% url 'apartments:remove' each_apartment.id %}" class="btn btn-danger delete remove_account"><i class="fas fa-trash-alt"></i></a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          </div>
+          {% ifequal apartments_list|length 0 %}
+            <h6 class="text-center">Ничего не найдено</h6>
+          {% endifequal %}
+          <div class="text-center row marl">
+            {% show_pages %}
+          </div>
+        </div>
+      </div>
+      <br clear="all">
+    </div>
+  </div>
+    </div>
+  </div>
+
+</div>
+<!-- main_container ends here -->
+{% endblock %}
+{% block js_block %}
+{% endblock js_block %}

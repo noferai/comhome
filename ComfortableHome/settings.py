@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     'phonenumber_field',
     'news',
-    'api',
+    'apartments',
+    'catalog'
+    # 'api',
 ]
 
 MIDDLEWARE = [

@@ -47,6 +47,6 @@ urlpatterns = [
     path('documents/<int:pk>/download/', download_document, name='download_document'),
 
     # api
-    path('api/', include('api.urls', namespace='api')),
+    # path('api/', include('api.urls', namespace='api')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -11,13 +11,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from cases.models import Case
-from cases.forms import CaseForm, CaseCommentForm, CaseAttachmentForm
-from common.models import Team, User, Comment, Attachments
+from cases.forms import CaseForm
+from common.models import Team
 from accounts.models import Account
-from contacts.models import Contact
-from common.utils import RequestTypeChoices, RequestPriorityChoices, RequestStatusChoices, CASE_TYPE, PRIORITY_CHOICE, \
-    STATUS_CHOICE
-import json
+
+from common.utils import RequestTypeChoices, RequestPriorityChoices, RequestStatusChoices
+
 
 
 class RequestsListView(LoginRequiredMixin, TemplateView):
@@ -124,6 +123,7 @@ class CreateRequestView(LoginRequiredMixin, CreateView):
         context["contacts_list"] = [
             int(i) for i in self.request.POST.getlist('contacts', []) if i]
         return context
+
 
 class RequestDetailView(LoginRequiredMixin, DetailView):
     model = Case

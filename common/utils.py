@@ -2,6 +2,11 @@ from django.utils.translation import ugettext_lazy as _
 from djchoices import DjangoChoices, ChoiceItem
 
 
+class ApartmentStatusChoices(DjangoChoices):
+    empty = ChoiceItem('Не заселена', _('Не заселена'))
+    populated = ChoiceItem('Заселена', _('Заселена'))
+
+
 class RequestTypeChoices(DjangoChoices):
     electrical = ChoiceItem('Электрооборудование', _('Электрооборудование'))
     plumb = ChoiceItem('Сантехника', _('Сантехника'))
