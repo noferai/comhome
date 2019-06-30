@@ -14,5 +14,5 @@ class Apartment(models.Model):
     business_account = models.CharField('Лицевой счет', max_length=500)
     created_by = models.ForeignKey(User, related_name='apartment_created_by', on_delete=models.CASCADE)
     status = models.CharField('Статус', choices=ApartmentStatusChoices.choices, max_length=64, default=ApartmentStatusChoices.empty)
-    request_history = models.ForeignKey(Case, on_delete=models.PROTECT)
+    #request_history = models.ForeignKey(Case, on_delete=models.PROTECT)
     #owners = models.ManyToManyField()
