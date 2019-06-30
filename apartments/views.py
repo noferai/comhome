@@ -80,17 +80,15 @@ class ApartmentAddView(LoginRequiredMixin, CreateView):
 
 class ApartmentDetailView(LoginRequiredMixin, DetailView):
     model = Apartment
-    context_object_name = "apartment_detail"
+    context_object_name = "apartment"
     template_name = "view_apartment.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        self.addresses = Address.objects.all()
+        return super(ApartmentDetailView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(ApartmentDetailView, self).get_context_data(**kwargs)
-        account_record = context["apartment_detail"]
-        context.update({
-            "comments": account_record.accounts_comments.all(),
-            "attachments": account_record.account_attachment.all(),
-            "users": User.objects.filter(is_active=True).order_by('email')
-        })
         return context
 
 

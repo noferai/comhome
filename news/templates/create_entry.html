@@ -1,15 +1,25 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-
+{% block title %} <title>Добавить новость - Comfortable Home</title>{% endblock %}
+{% block breadcrumb %}
+<div class="page-header">
+        <h2 class="pageheader-title">Добавить новость</h2>
+    <div class="page-breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li  class="breadcrumb-item"><a href="{% url 'news:list' %}">Новости</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Добавить новость</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+{% endblock %}
 {% block content %}
     <form id="formid" action='' method="POST" novalidate>
         <div class="overview_form_block row marl ">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="card-title text-center">
-                            {% if entry_obj %}Изменить{% else %}Создать{% endif %} Новость
-                        </div>
                         <div class="row marl">
                             <div class="col-md-12">
                                 <div class="filter_col col-md-12">

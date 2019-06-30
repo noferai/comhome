@@ -4518,6 +4518,7 @@ Pills vertical
 .table thead th {
     vertical-align: bottom;
     border-bottom: 2px solid #e6e6f2;
+    text-align: center;
 }
 
 .table thead th,
@@ -5324,6 +5325,10 @@ Vertical Timeline - by CodyHouse.co
 
 .card-header+.list-group .list-group-item:first-child {
     border-top: 0;
+}
+
+.card-header>* {
+    margin: 5px 0;
 }
 
 .list-group-bordered .list-group-item {
@@ -6981,7 +6986,16 @@ Media Query
     padding: 17px 29px;}
 }
 
+td.actions .btn{
+    display: block;
+    width: 50%;
+    font-size: 12px;
+    margin: 2px auto;
+}
 
+div.footer {
+    display: none;
+}
 
 
 /* Custom, iPhone Retina */

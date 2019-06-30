@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import (
-    CreateView, UpdateView, DetailView, TemplateView, DeleteView)
+    CreateView, UpdateView,  TemplateView, DeleteView)
 from catalog.models import Address
 from catalog.forms import AddressForm
 
@@ -64,16 +64,6 @@ class AddressAddView(LoginRequiredMixin, CreateView):
         return context
 
 
-class AddressDetailView(LoginRequiredMixin, DetailView):
-    model = Address
-    context_object_name = "address_detail"
-    template_name = "view_address.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(AddressDetailView, self).get_context_data(**kwargs)
-        return context
-
-
 class AddressEditView(LoginRequiredMixin, UpdateView):
     model = Address
     form_class = AddressForm
@@ -111,7 +101,7 @@ class AddressEditView(LoginRequiredMixin, UpdateView):
 
 class AddressDeleteView(LoginRequiredMixin, DeleteView):
     model = Address
-    template_name = 'view_address.html'
+    template_name = 'addresses.html'
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()

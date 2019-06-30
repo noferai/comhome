@@ -93,27 +93,12 @@ class CreateAccountView(LoginRequiredMixin, CreateView):
 
 class AccountDetailView(LoginRequiredMixin, DetailView):
     model = Account
-    context_object_name = "account_record"
+    context_object_name = "account"
     template_name = "view_account.html"
 
     def get_context_data(self, **kwargs):
         context = super(AccountDetailView, self).get_context_data(**kwargs)
-        account_record = context["account_record"]
-        context.update({
-            "comments": account_record.accounts_comments.all(),
-            "attachments": account_record.account_attachment.all(),
-            "opportunity_list": Opportunity.objects.filter(account=account_record),
-            "contacts": Contact.objects.filter(account=account_record),
-            "users": User.objects.filter(is_active=True).order_by('email'),
-            "cases": Case.objects.filter(account=account_record),
-            "stages": STAGES,
-            "sources": SOURCES,
-            "countries": COUNTRIES,
-            "currencies": CURRENCY_CODES,
-            "case_types": CASE_TYPE,
-            "case_priority": PRIORITY_CHOICE,
-            "case_status": STATUS_CHOICE
-        })
+        #account_record = context["account_record"]
         return context
 
 

@@ -17,7 +17,7 @@ class ApartmentForm(forms.ModelForm):
 
     class Meta:
         model = Apartment
-        fields = ('address', 'entrance', 'floor', 'number_of_rooms', 'area', 'status', 'business_account')
+        fields = ('address', 'entrance', 'floor', 'number_of_rooms', 'area', 'status', 'business_account', 'apartment_number')
 
 
 class ApartmentCommentForm(forms.ModelForm):

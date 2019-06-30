@@ -1,16 +1,21 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% block title %} <title>Добавить адрес - Comfortable Home</title>{% endblock %}
 {% block breadcrumb %}
+<div class="page-header">
+        <h2 class="pageheader-title">Добавить адрес</h2>
+    <div class="page-breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li  class="breadcrumb-item"><a href="{% url 'catalog:addresses_list' %}">Адреса</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Добавить адрес</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+{% endblock %}
 {% block extralinks %}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-{% endblock %}
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{% url 'catalog:addresses_list' %}">Адреса</a></li>
-    <li class="breadcrumb-item active">{% if account_obj %}Редактировать{% else %}Создать{% endif %}</li>
-  </ol>
-</nav>
-
 {% endblock %}
 {% block content %}
   <form id="formid" action='' method="POST" novalidate>
@@ -18,9 +23,6 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-body">
-          <div class="card-title text-center">
-            {% if account_obj %}Редактировать{% else %}Добавить{% endif %} Адрес
-          </div>
             <div class="row marl">
               <div class="col-md-12">
                 <div class="filter_col col-md-12">

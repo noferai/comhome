@@ -20,7 +20,7 @@
           href="{% static 'vendor/fonts/material-design-iconic-font/css/materialdesignicons.min.css' %}">
     <link rel="stylesheet" href="{% static 'vendor/charts/c3charts/c3.css' %}">
     {% block extralinks %} {% endblock %}
-    <title>Comfortable Home</title>
+    {% block title %} <title>Comfortable Home </title>{% endblock %}
 </head>
 
 <body>
@@ -219,7 +219,7 @@
 
                         <li class="nav-item">
                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false"
-                               data-target="#submenu-3" aria-controls="submenu-3"><i class="fas fa-building"></i>Помещения</a>
+                               data-target="#submenu-3" aria-controls="submenu-3"><i class="fas fa-building"></i>Квартиры</a>
                             <div id="submenu-3" class="collapse submenu" style="">
                                 <ul class="nav flex-column">
                                     <li class="nav-item"><a class="nav-link" id="contacts"
@@ -306,8 +306,10 @@
     <div class="dashboard-wrapper">
         <div class="dashboard-ecommerce">
             <div class="container-fluid dashboard-content">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 {% block breadcrumb %}
                 {% endblock %}
+            </div>
 
                 {% block content %}
                 {% endblock %}

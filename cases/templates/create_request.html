@@ -1,16 +1,20 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-{% block breadcrumb %}
 {% block extralinks %}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 {% endblock %}
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{% url 'cases:list' %}">Заявки</a></li>
-    <li class="breadcrumb-item active">{% if case_obj %}Изменить{% else %}Создать{% endif %}</li>
-  </ol>
-</nav>
-
+{% block breadcrumb %}
+<div class="page-header">
+        <h2 class="pageheader-title">Добавить заявку</h2>
+    <div class="page-breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li  class="breadcrumb-item"><a href="{% url 'cases:list' %}">Заявки</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Добавить заявку</li>
+            </ol>
+        </nav>
+    </div>
+</div>
 {% endblock %}
 {% block content %}
   <form id="submitForm" method="POST" action="" novalidate>
@@ -18,9 +22,6 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-body">
-             <div class="card-title text-center">
-            {% if case_obj %}Изменить{% else %}Создать{% endif %} заявку
-          </div>
             <div class="row marl no-gutters">
               <div class="col-md-6">
                 <div class="filter_col col-md-12">

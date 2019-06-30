@@ -1,24 +1,16 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% load paginate %}
+{% block title %} <title>Заявки - Comfortable Home</title>{% endblock %}
+{% block breadcrumb %}
+<div class="page-header">
+    <h2 class="pageheader-title">Заявки</h2>
+</div>
+{% endblock %}
 {% block content %}
 <!-- main_container starts here -->
 <div class="main_container">
-  <!-- heading_create starts here -->
-  <div class="row marl heading_create">
-    <div class="heading col-md-12">
-    <div class="no-gutters row">
-      <div class="col-md-6">
-      </div>
-      <div class="col-md-6">
-        <div class="create_new text-right">
-          <a href="{% url 'cases:create_request' %}"><i class="fa fa-plus"></i> Добавить(тест)</a>
-        </div>
-      </div>
-      </div>
-    </div>
-  </div>
-  <!-- heading_create ends here -->
+
   <!-- filter_row starts here -->
   <div class="filter_row row marl">
     <div class="col-md-12">
