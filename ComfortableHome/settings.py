@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     'phonenumber_field',
     'news',
+    'apartments',
+    'catalog'
     # 'api',
 ]
 

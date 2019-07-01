@@ -1,11 +1,46 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-
+{% block title %} <title>{{ entry_record.title }} - Comfortable Home</title>{% endblock %}
+{% block breadcrumb %}
+<div class="page-header">
+        <h2 class="pageheader-title">{{entry_record.title}}</h2>
+    <div class="page-breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li  class="breadcrumb-item"><a href="{% url 'news:list' %}">Новости</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{entry_record.title}}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+{% endblock breadcrumb %}
 {% block content %}
-
-    <p>Автор: {{ entry_record.author.username }}</p>
-    <p>Заголовок: {{ entry_record.title }}</p>
-    <p>Текст: {{ entry_record.text }}</p>
-    <p>Дата: {{ entry_record.created_date }}</p>
-
+<div class="col-md-12">
+        <div class="card">
+            <div class="card-header d-flex">
+                <h3 class="card-header-title">{{ entry_record.title }}</h3>
+                <div class="toolbar ml-auto">
+                    <a href="{% url 'news:edit_entry' entry_record.id %}" title="Редактировать" class="btn btn-light btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                    <a href="{% url 'news:remove_entry' entry_record.id %}" title="Удалить" class="btn btn-light btn-sm"><i class="fas fa-trash-alt"></i></a>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{ entry_record.text }}</p>
+            </div>
+            <div class="card-footer  p-0 text-left d-flex justify-content-center">
+                <div class="card-footer-item card-footer-item-bordered">
+                    Дата: {{ entry_record.created_date }}
+                </div>
+                <div class="card-footer-item card-footer-item-bordered">
+                    Опубликована:
+                    {% if entry_record.is_published %} Да
+                    {% else %} Нет
+                    {% endif %}
+                </div>
+            <div class="card-footer-item card-footer-item-bordered">
+                Автор: {{ entry_record.author.username }}
+            </div>
+            </div>
+        </div>
+</div>
 {% endblock %}

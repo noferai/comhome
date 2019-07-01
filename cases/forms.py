@@ -26,7 +26,7 @@ class CaseForm(forms.ModelForm):
         name = self.cleaned_data['name']
         case = Case.objects.filter(name__iexact=name).exclude(id=self.instance.id)
         if case:
-            raise forms.ValidationError("Case Already Exists with this Name")
+            raise forms.ValidationError("Такая заявка уже есть")
         return name
 
 

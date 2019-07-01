@@ -128,6 +128,7 @@ class EntryUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         custom_context = {
+            'enrty_obj': self.object,
             'entry_form': context["form"],
             'news_list': self.news,
         }

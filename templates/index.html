@@ -1,2 +1,372 @@
 {% extends 'base.html' %}
-      <a href="{% url "common:logout" %}"><button class="btn btn-primary" type="button">Выйти</button></a>
+{% load staticfiles %}
+{% block content %}
+<div class="row">
+                            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="text-muted">Заявки</h5>
+                                        <div class="metric-value d-inline-block">
+                                            <h1 class="mb-1">29</h1>
+                                        </div>
+                                        <div class="metric-label d-inline-block float-right text-success font-weight-bold">
+                                            <span><i class="fa fa-fw fa-arrow-up"></i></span><span>5.86%</span>
+                                        </div>
+                                    </div>
+                                    <div id="sparkline-revenue"></div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="text-muted">Собственники</h5>
+                                        <div class="metric-value d-inline-block">
+                                            <h1 class="mb-1">120</h1>
+                                        </div>
+                                        <div class="metric-label d-inline-block float-right text-success font-weight-bold">
+                                            <span><i class="fa fa-fw fa-arrow-up"></i></span><span>5.86%</span>
+                                        </div>
+                                    </div>
+                                    <div id="sparkline-revenue2"></div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="text-muted">-</h5>
+                                        <div class="metric-value d-inline-block">
+                                            <h1 class="mb-1">0.00</h1>
+                                        </div>
+                                        <div class="metric-label d-inline-block float-right text-primary font-weight-bold">
+                                            <span>N/A</span>
+                                        </div>
+                                    </div>
+                                    <div id="sparkline-revenue3"></div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="text-muted">-</h5>
+                                        <div class="metric-value d-inline-block">
+                                            <h1 class="mb-1">28000</h1>
+                                        </div>
+                                        <div class="metric-label d-inline-block float-right text-secondary font-weight-bold">
+                                            <span>-2.00%</span>
+                                        </div>
+                                    </div>
+                                    <div id="sparkline-revenue4"></div>
+                                </div>
+                            </div>
+                        </div>
+<div class="row">
+    <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
+        <div class="card">
+            <h5 class="card-header">Штат</h5>
+            <div class="card-body">
+                <div id="c3chart_category" style="height: 420px; max-height: 420px; position: relative;" class="c3">
+                    <svg style="overflow: hidden;" width="369.16668701171875" height="420">
+                        <defs>
+                            <clipPath id="c3-1562016366474-clip">
+                                <rect width="369.16668701171875" height="376"></rect>
+                            </clipPath>
+                            <clipPath id="c3-1562016366474-clip-xaxis">
+                                <rect x="-31" y="-20" width="431.16668701171875" height="60"></rect>
+                            </clipPath>
+                            <clipPath id="c3-1562016366474-clip-yaxis">
+                                <rect x="-29" y="-4" width="20" height="400"></rect>
+                            </clipPath>
+                            <clipPath id="c3-1562016366474-clip-grid">
+                                <rect width="369.16668701171875" height="376"></rect>
+                            </clipPath>
+                            <clipPath id="c3-1562016366474-clip-subchart">
+                                <rect width="369.16668701171875" height="0"></rect>
+                            </clipPath>
+                        </defs>
+                        <g transform="translate(0.5,4.5)">
+                            <text class="c3-text c3-empty" text-anchor="middle" dominant-baseline="middle" x="184.58334350585938" y="188" style="opacity: 0;"></text>
+                            <g clip-path="url(file:///C:/Users/angar/Downloads/concept-master/index.html#c3-1562016366474-clip)" class="c3-regions" style="visibility: hidden;"></g>
+                            <g clip-path="url(file:///C:/Users/angar/Downloads/concept-master/index.html#c3-1562016366474-clip-grid)" class="c3-grid" style="visibility: hidden;">
+                                <g class="c3-xgrid-focus">
+                                    <line class="c3-xgrid-focus" x1="-10" x2="-10" y1="0" y2="376" style="visibility: hidden;"></line>
+                                </g>
+                            </g>
+                            <g clip-path="url(file:///C:/Users/angar/Downloads/concept-master/index.html#c3-1562016366474-clip)" class="c3-chart">
+                                <g class="c3-chart-bars">
+                                    <g class="c3-chart-bar c3-target c3-target-Men" style="pointer-events: none;">
+                                        <g class=" c3-shapes c3-shapes-Men c3-bars c3-bars-Men" style="cursor: pointer;"></g>
+                                    </g>
+                                    <g class="c3-chart-bar c3-target c3-target-Women" style="pointer-events: none;">
+                                        <g class=" c3-shapes c3-shapes-Women c3-bars c3-bars-Women" style="cursor: pointer;"></g>
+                                    </g>
+                                    <g class="c3-chart-bar c3-target c3-target-Accessories" style="pointer-events: none;">
+                                        <g class=" c3-shapes c3-shapes-Accessories c3-bars c3-bars-Accessories" style="cursor: pointer;"></g>
+                                    </g>
+                                    <g class="c3-chart-bar c3-target c3-target-Children" style="pointer-events: none;">
+                                        <g class=" c3-shapes c3-shapes-Children c3-bars c3-bars-Children" style="cursor: pointer;"></g>
+                                    </g>
+                                    <g class="c3-chart-bar c3-target c3-target-Apperal" style="pointer-events: none;">
+                                        <g class=" c3-shapes c3-shapes-Apperal c3-bars c3-bars-Apperal" style="cursor: pointer;"></g>
+                                    </g>
+                                </g>
+                                <g class="c3-chart-lines">
+                                    <g class="c3-chart-line c3-target c3-target-Men" style="opacity: 1; pointer-events: none;">
+                                        <g class=" c3-shapes c3-shapes-Men c3-lines c3-lines-Men"></g>
+                                        <g class=" c3-shapes c3-shapes-Men c3-areas c3-areas-Men"></g>
+                                        <g class=" c3-selected-circles c3-selected-circles-Men"></g>
+                                        <g class=" c3-shapes c3-shapes-Men c3-circles c3-circles-Men" style="cursor: pointer;"></g>
+                                    </g>
+                                    <g class="c3-chart-line c3-target c3-target-Women" style="opacity: 1; pointer-events: none;">
+                                        <g class=" c3-shapes c3-shapes-Women c3-lines c3-lines-Women"></g>
+                                        <g class=" c3-shapes c3-shapes-Women c3-areas c3-areas-Women"></g>
+                                        <g class=" c3-selected-circles c3-selected-circles-Women"></g>
+                                        <g class=" c3-shapes c3-shapes-Women c3-circles c3-circles-Women" style="cursor: pointer;"></g>
+                                    </g>
+                                    <g class="c3-chart-line c3-target c3-target-Accessories" style="opacity: 1; pointer-events: none;">
+                                        <g class=" c3-shapes c3-shapes-Accessories c3-lines c3-lines-Accessories"></g>
+                                        <g class=" c3-shapes c3-shapes-Accessories c3-areas c3-areas-Accessories"></g>
+                                        <g class=" c3-selected-circles c3-selected-circles-Accessories"></g>
+                                        <g class=" c3-shapes c3-shapes-Accessories c3-circles c3-circles-Accessories" style="cursor: pointer;"></g>
+                                    </g>
+                                    <g class="c3-chart-line c3-target c3-target-Children" style="opacity: 1; pointer-events: none;">
+                                        <g class=" c3-shapes c3-shapes-Children c3-lines c3-lines-Children"></g>
+                                        <g class=" c3-shapes c3-shapes-Children c3-areas c3-areas-Children"></g>
+                                        <g class=" c3-selected-circles c3-selected-circles-Children"></g>
+                                        <g class=" c3-shapes c3-shapes-Children c3-circles c3-circles-Children" style="cursor: pointer;"></g>
+                                    </g>
+                                    <g class="c3-chart-line c3-target c3-target-Apperal" style="opacity: 1; pointer-events: none;">
+                                        <g class=" c3-shapes c3-shapes-Apperal c3-lines c3-lines-Apperal"></g>
+                                        <g class=" c3-shapes c3-shapes-Apperal c3-areas c3-areas-Apperal"></g>
+                                        <g class=" c3-selected-circles c3-selected-circles-Apperal"></g>
+                                        <g class=" c3-shapes c3-shapes-Apperal c3-circles c3-circles-Apperal" style="cursor: pointer;"></g>
+                                    </g>
+                                </g>
+                                <g class="c3-chart-arcs" transform="translate(184.58334350585938,183)">
+                                    <text class="c3-chart-arcs-title" style="text-anchor: middle; opacity: 1;"></text>
+                                    <g class="c3-chart-arc c3-target c3-target-Men">
+                                        <g class=" c3-shapes c3-shapes-Men c3-arcs c3-arcs-Men">
+                                            <path class=" c3-shape c3-shape c3-arc c3-arc-Men" style="fill: rgb(89, 105, 255); cursor: pointer;" transform="" d="M1.0645242301588367e-14,-173.85A173.85,173.85,0,0,1,143.8937323295754,97.56237131325017L86.33623939774525,58.5374227879501A104.30999999999999,104.30999999999999,0,0,0,6.38714538095302e-15,-104.30999999999999Z"></path>
+                                        </g>
+                                        <text dy=".35em" style="opacity: 1; text-anchor: middle; pointer-events: none;" class="" transform="translate(122.87885514155289,-65.14624593252681)"></text>
+                                    </g>
+                                    <g class="c3-chart-arc c3-target c3-target-Women">
+                                        <g class=" c3-shapes c3-shapes-Women c3-arcs c3-arcs-Women">
+                                            <path class=" c3-shape c3-shape c3-arc c3-arc-Women" style="fill: rgb(255, 64, 123); cursor: pointer;" transform="" d="M143.8937323295754,97.56237131325017A173.85,173.85,0,0,1,-119.55655092166761,126.2143162708363L-71.73393055300056,75.72858976250178A104.30999999999999,104.30999999999999,0,0,0,86.33623939774525,58.5374227879501Z"></path>
+                                        </g>
+                                        <text dy=".35em" style="opacity: 1; text-anchor: middle; pointer-events: none;" class="" transform="translate(15.037193082401837,138.26470708102835)"></text>
+                                    </g>
+                                    <g class="c3-chart-arc c3-target c3-target-Accessories">
+                                        <g class=" c3-shapes c3-shapes-Accessories c3-arcs c3-arcs-Accessories">
+                                            <path class=" c3-shape c3-shape c3-arc c3-arc-Accessories" style="fill: rgb(37, 213, 242); cursor: pointer;" transform="" d="M-119.55655092166761,126.2143162708363A173.85,173.85,0,0,1,-167.51316619946692,-46.50980165330492L-100.50789971968015,-27.90588099198295A104.30999999999999,104.30999999999999,0,0,0,-71.73393055300056,75.72858976250178Z"></path>
+                                        </g>
+                                        <text dy=".35em" style="opacity: 1; text-anchor: middle; pointer-events: none;" class="" transform="translate(-134.0105329595735,37.20784132264409)"></text>
+                                    </g>
+                                    <g class="c3-chart-arc c3-target c3-target-Children">
+                                        <g class=" c3-shapes c3-shapes-Children c3-arcs c3-arcs-Children">
+                                            <path class=" c3-shape c3-shape c3-arc c3-arc-Children" style="fill: rgb(255, 199, 80); cursor: pointer;" transform="" d="M-167.51316619946692,-46.50980165330492A173.85,173.85,0,0,1,-72.99772030625205,-157.78198670979586L-43.798632183751224,-94.6691920258775A104.30999999999999,104.30999999999999,0,0,0,-100.50789971968015,-27.90588099198295Z"></path>
+                                        </g>
+                                        <text dy=".35em" style="opacity: 1; text-anchor: middle; pointer-events: none;" class="" transform="translate(-106.00149862715175,-90.03848448745654)"></text>
+                                    </g>
+                                    <g class="c3-chart-arc c3-target c3-target-Apperal">
+                                        <g class=" c3-shapes c3-shapes-Apperal c3-arcs c3-arcs-Apperal">
+                                            <path class=" c3-shape c3-shape c3-arc c3-arc-Apperal" style="fill: rgb(46, 197, 81); cursor: pointer;" transform="" d="M-72.99772030625205,-157.78198670979586A173.85,173.85,0,0,1,-3.19357269047651e-14,-173.85L-1.916143614285906e-14,-104.30999999999999A104.30999999999999,104.30999999999999,0,0,0,-43.798632183751224,-94.6691920258775Z"></path>
+                                        </g>
+                                        <text dy=".35em" style="opacity: 1; text-anchor: middle; pointer-events: none;" class="" transform="translate(-29.898088824549266,-135.82838688815886)"></text>
+                                    </g>
+                                </g>
+                                <g class="c3-chart-texts">
+                                    <g class="c3-chart-text c3-target c3-target-Men  " style="opacity: 1; pointer-events: none;">
+                                        <g class=" c3-texts c3-texts-Men"></g>
+                                    </g>
+                                    <g class="c3-chart-text c3-target c3-target-Women  " style="opacity: 1; pointer-events: none;">
+                                        <g class=" c3-texts c3-texts-Women"></g>
+                                    </g>
+                                    <g class="c3-chart-text c3-target c3-target-Accessories  " style="opacity: 1; pointer-events: none;">
+                                        <g class=" c3-texts c3-texts-Accessories"></g>
+                                    </g>
+                                    <g class="c3-chart-text c3-target c3-target-Children  " style="opacity: 1; pointer-events: none;">
+                                        <g class=" c3-texts c3-texts-Children"></g>
+                                    </g>
+                                    <g class="c3-chart-text c3-target c3-target-Apperal  " style="opacity: 1; pointer-events: none;">
+                                        <g class=" c3-texts c3-texts-Apperal"></g>
+                                    </g>
+                                </g>
+                                <g class="c3-event-rects" style="fill-opacity: 0;">
+                                    <rect class="c3-event-rect" x="0" y="0" width="369.16668701171875" height="376"></rect>
+                                </g>
+                            </g>
+                            <g clip-path="url(file:///C:/Users/angar/Downloads/concept-master/index.html#c3-1562016366474-clip-grid)" class="c3-grid c3-grid-lines">
+                                <g class="c3-xgrid-lines"></g>
+                                <g class="c3-ygrid-lines"></g>
+                            </g>
+                            <g class="c3-axis c3-axis-x" clip-path="url(file:///C:/Users/angar/Downloads/concept-master/index.html#c3-1562016366474-clip-xaxis)" transform="translate(0,376)" style="visibility: visible; opacity: 0;">
+                                <text class="c3-axis-x-label" transform="" style="text-anchor: end;" x="369.16668701171875" dx="-0.5em" dy="-0.5em"></text>
+                                <g class="tick" style="opacity: 1;" transform="translate(185, 0)">
+                                    <line x1="0" x2="0" y2="6"></line>
+                                    <text x="0" y="9" transform="" style="text-anchor: middle; display: block;">
+                                        <tspan x="0" dy=".71em" dx="0">0</tspan>
+                                    </text>
+                                </g>
+                                <path class="domain" d="M0,6V0H369.16668701171875V6"></path>
+                            </g>
+                            <g class="c3-axis c3-axis-y" clip-path="url(file:///C:/Users/angar/Downloads/concept-master/index.html#c3-1562016366474-clip-yaxis)" transform="translate(0,0)" style="visibility: visible; opacity: 0;">
+                                <text class="c3-axis-y-label" transform="rotate(-90)" style="text-anchor: end;" x="0" dx="-0.5em" dy="1.2em"></text>
+                                <g class="tick" style="opacity: 1;" transform="translate(0,345)">
+                                    <line x2="-6"></line>
+                                    <text x="-9" y="0" style="text-anchor: end;">
+                                        <tspan x="-9" dy="3">20</tspan>
+                                    </text>
+                                </g>
+                                <g class="tick" style="opacity: 1;" transform="translate(0,306)">
+                                    <line x2="-6"></line>
+                                    <text x="-9" y="0" style="text-anchor: end;">
+                                        <tspan x="-9" dy="3">30</tspan>
+                                    </text>
+                                </g>
+                                <g class="tick" style="opacity: 1;" transform="translate(0,267)">
+                                    <line x2="-6"></line>
+                                    <text x="-9" y="0" style="text-anchor: end;">
+                                        <tspan x="-9" dy="3">40</tspan>
+                                    </text>
+                                </g>
+                                <g class="tick" style="opacity: 1;" transform="translate(0,228)">
+                                    <line x2="-6"></line>
+                                    <text x="-9" y="0" style="text-anchor: end;">
+                                        <tspan x="-9" dy="3">50</tspan>
+                                    </text>
+                                </g>
+                                <g class="tick" style="opacity: 1;" transform="translate(0,189)">
+                                    <line x2="-6"></line>
+                                    <text x="-9" y="0" style="text-anchor: end;">
+                                        <tspan x="-9" dy="3">60</tspan>
+                                    </text>
+                                </g>
+                                <g class="tick" style="opacity: 1;" transform="translate(0,150)">
+                                    <line x2="-6"></line>
+                                    <text x="-9" y="0" style="text-anchor: end;">
+                                        <tspan x="-9" dy="3">70</tspan>
+                                    </text>
+                                </g>
+                                <g class="tick" style="opacity: 1;" transform="translate(0,111)">
+                                    <line x2="-6"></line>
+                                    <text x="-9" y="0" style="text-anchor: end;">
+                                        <tspan x="-9" dy="3">80</tspan>
+                                    </text>
+                                </g>
+                                <g class="tick" style="opacity: 1;" transform="translate(0,72)">
+                                    <line x2="-6"></line>
+                                    <text x="-9" y="0" style="text-anchor: end;">
+                                        <tspan x="-9" dy="3">90</tspan>
+                                    </text>
+                                </g>
+                                <g class="tick" style="opacity: 1;" transform="translate(0,33)">
+                                    <line x2="-6"></line>
+                                    <text x="-9" y="0" style="text-anchor: end;">
+                                        <tspan x="-9" dy="3">100</tspan>
+                                    </text>
+                                </g>
+                                <path class="domain" d="M-6,1H0V376H-6"></path>
+                            </g>
+                            <g class="c3-axis c3-axis-y2" transform="translate(369.16668701171875,0)" style="visibility: hidden; opacity: 0;">
+                                <text class="c3-axis-y2-label" transform="rotate(-90)" style="text-anchor: end;" x="0" dx="-0.5em" dy="-0.5em"></text>
+                                <g class="tick" style="opacity: 1;" transform="translate(0,376)">
+                                    <line x2="6"></line>
+                                    <text x="9" y="0" style="text-anchor: start;">
+                                        <tspan x="9" dy="3">0</tspan>
+                                    </text>
+                                </g>
+                                <g class="tick" style="opacity: 1;" transform="translate(0,339)">
+                                    <line x2="6"></line>
+                                    <text x="9" y="0" style="text-anchor: start;">
+                                        <tspan x="9" dy="3">0.1</tspan>
+                                    </text>
+                                </g>
+                                <g class="tick" style="opacity: 1;" transform="translate(0,301)">
+                                    <line x2="6"></line>
+                                    <text x="9" y="0" style="text-anchor: start;">
+                                        <tspan x="9" dy="3">0.2</tspan>
+                                    </text>
+                                </g>
+                                <g class="tick" style="opacity: 1;" transform="translate(0,264)">
+                                    <line x2="6"></line>
+                                    <text x="9" y="0" style="text-anchor: start;">
+                                        <tspan x="9" dy="3">0.3</tspan>
+                                    </text>
+                                </g>
+                                <g class="tick" style="opacity: 1;" transform="translate(0,226)">
+                                    <line x2="6"></line>
+                                    <text x="9" y="0" style="text-anchor: start;">
+                                        <tspan x="9" dy="3">0.4</tspan>
+                                    </text>
+                                </g>
+                                <g class="tick" style="opacity: 1;" transform="translate(0,189)">
+                                    <line x2="6"></line>
+                                    <text x="9" y="0" style="text-anchor: start;">
+                                        <tspan x="9" dy="3">0.5</tspan>
+                                    </text>
+                                </g>
+                                <g class="tick" style="opacity: 1;" transform="translate(0,151)">
+                                    <line x2="6"></line>
+                                    <text x="9" y="0" style="text-anchor: start;">
+                                        <tspan x="9" dy="3">0.6</tspan>
+                                    </text>
+                                </g>
+                                <g class="tick" style="opacity: 1;" transform="translate(0,114)">
+                                    <line x2="6"></line>
+                                    <text x="9" y="0" style="text-anchor: start;">
+                                        <tspan x="9" dy="3">0.7</tspan>
+                                    </text>
+                                </g>
+                                <g class="tick" style="opacity: 1;" transform="translate(0,76)">
+                                    <line x2="6"></line>
+                                    <text x="9" y="0" style="text-anchor: start;">
+                                        <tspan x="9" dy="3">0.8</tspan>
+                                    </text>
+                                </g>
+                                <g class="tick" style="opacity: 1;" transform="translate(0,39)">
+                                    <line x2="6"></line>
+                                    <text x="9" y="0" style="text-anchor: start;">
+                                        <tspan x="9" dy="3">0.9</tspan>
+                                    </text>
+                                </g>
+                                <g class="tick" style="opacity: 1;" transform="translate(0,1)">
+                                    <line x2="6"></line>
+                                    <text x="9" y="0" style="text-anchor: start;">
+                                        <tspan x="9" dy="3">1</tspan>
+                                    </text>
+                                </g>
+                                <path class="domain" d="M6,1H0V376H6"></path>
+                            </g>
+                        </g>
+                        <g transform="translate(0.5,420.5)" style="visibility: hidden;">
+                            <g clip-path="url(file:///C:/Users/angar/Downloads/concept-master/index.html#c3-1562016366474-clip-subchart)" class="c3-chart">
+                                <g class="c3-chart-bars"></g>
+                                <g class="c3-chart-lines"></g>
+                            </g>
+                            <g clip-path="url(file:///C:/Users/angar/Downloads/concept-master/index.html#c3-1562016366474-clip)" class="c3-brush" fill="none" pointer-events="all">
+                                <rect class="overlay" pointer-events="all" cursor="crosshair" x="0" y="0" width="369.16668701171875" height="0"></rect>
+                                <rect class="selection" cursor="move" fill="#777" fill-opacity="0.3" stroke="#fff" shape-rendering="crispEdges" style="display: none;"></rect>
+                                <rect class="handle handle--e" cursor="ew-resize" style="display: none;"></rect>
+                                <rect class="handle handle--w" cursor="ew-resize" style="display: none;"></rect>
+                            </g>
+                            <g class="c3-axis-x" transform="translate(0,0)" clip-path="url(file:///C:/Users/angar/Downloads/concept-master/index.html#c3-1562016366474-clip-xaxis)" style="opacity: 0;">
+                                <g class="tick" style="opacity: 1;" transform="translate(185, 0)">
+                                    <line x1="0" x2="0" y2="6"></line>
+                                    <text x="0" y="9" transform="" style="text-anchor: middle; display: block;">
+                                        <tspan x="0" dy=".71em" dx="0">0</tspan>
+                                    </text>
+                                </g>
+                                <path class="domain" d="M0,6V0H369.16668701171875V6"></path>
+                            </g>
+                        </g>
+
+                        <text class="c3-title" x="184.58334350585938" y="0"></text>
+                    </svg>
+                    <div class="c3-tooltip-container" style="position: absolute; pointer-events: none; display: none;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

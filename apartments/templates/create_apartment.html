@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %} <title>{% if apartment_obj %}Редактировать {% else %}Добавить {% endif %}квартиру - Comfortable Home</title>{% endblock %}
+{% block extralinks %}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+{% block breadcrumb %}
+<div class="page-header">
+        <h2 class="pageheader-title">{% if apartment_obj %}Редактировать {% else %}Добавить {% endif %}квартиру</h2>
+    <div class="page-breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li  class="breadcrumb-item"><a href="{% url 'apartments:list' %}">Квартиры</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Добавить квартиру</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+{% endblock %}
+{% block content %}
+  <form id="formid" action='' method="POST" novalidate>
+    <div class="overview_form_block row marl ">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row marl">
+              <div class="col-md-12">
+                <div class="filter_col col-md-12">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1" class="required">Адрес{% if apartments_form.address.field.required %}<span class="error">*</span>{% endif %}</label>
+                    {{ apartment_form.address }}
+                    <span class="error">{{ apartment_form.address.errors }}</span>
+                  </div>
+                </div>
+              <div class="filter_col col-md-12">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1" class="required">Номер квартиры{% if apartments_form.apartment_number.field.required %}<span class="error">*</span>{% endif %}</label>
+                    {{ apartment_form.apartment_number }}
+                    <span class="error">{{ apartment_form.apartment_number.errors }}</span>
+                  </div>
+                </div>
+                <div class="filter_col col-md-12">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1" class="required">Подъезд{% if apartment_form.entrance.field.required %}<span class="error">*</span>{% endif %}</label>
+                    {{ apartment_form.entrance }}
+                    <span class="error">{{ apartment_form.entrance.errors }}</span>
+                  </div>
+                </div>
+                <div class="filter_col col-md-12">
+                  <div class="form-group ">
+                    <label for="exampleInputEmail1" class="required">Этаж{% if apartment_form.floor.field.required %}<span class="error">*</span>{% endif %}</label>
+                    {{ apartment_form.floor }}
+                    <span class="error">{{ apartment_form.floor.errors }}</span>
+                  </div>
+                </div>
+                <div class="filter_col col-md-12">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Количество комнат{% if apartment_form.number_of_rooms.field.required %}<span class="error">*</span>{% endif %}</label>
+                    {{ apartment_form.number_of_rooms }}
+                    <span class="error">{{ apartment_form.number_of_rooms.errors }}</span>
+                  </div>
+                </div>
+                <div class="filter_col col-md-12">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Площадь{% if apartment_form.area.field.required %}<span class="error">*</span>{% endif %}</label>
+                    {{ apartment_form.area }}
+                    <span class="error">{{ apartment_form.area.errors }}</span>
+                  </div>
+                </div>
+                <div class="filter_col col-md-12">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Статус{% if apartment_form.status.field.required %}<span class="error">*</span>{% endif %}</label>
+                    {{ apartment_form.status }}
+                    <span class="error">{{ apartment_form.status.errors }}</span>
+                  </div>
+                </div>
+{#                <div class="filter_col col-md-12">#}
+{#                  <div class="form-group">#}
+{#                    <label for="exampleInputEmail1">Собственники{% if apartments_form.owners.field.required %}<span class="error">*</span>{% endif %}</label>#}
+{#                    {{ apartments_form.owners }}#}
+{#                    <span class="error">{{ apartments_form.owners.errors }}</span>#}
+{#                  </div>#}
+{#                </div>#}
+                <div class="filter_col col-md-12">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Лицевой счет{% if apartment_form.business_account.field.required %}<span class="error">*</span>{% endif %}</label>
+                    {{ apartment_form.business_account }}
+                    <span class="error">{{ apartment_form.business_account.errors }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br clear="all">
+          </div>
+        <div class="card-footer  p-0 text-left d-flex justify-content-center">
+            <div class="card-footer-item card-footer-item-bordered">
+                <button class="btn btn-default save" type="submit">Сохранить</button>
+            </div>
+            {% if not account_obj %}
+            <div class="card-footer-item card-footer-item-bordered">
+                <button class="btn btn-default save savenew" type="submit">Сохранить и добавить ещё</button>
+            </div>
+            {% endif %}
+            <div class="card-footer-item card-footer-item-bordered">
+                <a href="{% url 'apartments:list' %}" class="btn btn-default clear">Отмена</a>
+            </div>
+        </div>
+        </div>
+      </div>
+      <br clear="all">
+      <input type="hidden" id="save_new_form" name="savenewform">
+    </div>
+  </form>
+{% endblock %}
+{% block js_block %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+  <script type="text/javascript">
+    $(".savenew").on('click', function(e){
+      e.preventDefault()
+      $("#save_new_form").val('true')
+      $('#formid').submit()
+    });
+    $(document).ready(function() {
+      $('.assigned_users').select2();
+    });
+  </script>
+{% endblock js_block %}

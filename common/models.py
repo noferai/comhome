@@ -137,7 +137,7 @@ class Attachments(models.Model):
 
 def document_path(self, filename):
     hash_ = int(time.time())
-    return "%s/%s/%s" % ("docs", hash_, filename)
+    return "%s/%s/%s" % ("files", hash_, filename)
 
 
 class Document(models.Model):

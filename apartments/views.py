@@ -1,39 +1,27 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.sites.shortcuts import get_current_site
-from django.core.mail import EmailMessage
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
-from django.template.loader import render_to_string
 from django.views.generic import (
     CreateView, UpdateView, DetailView, TemplateView, View, DeleteView)
-from accounts.forms import AccountForm, AccountCommentForm, AccountAttachmentForm
-from accounts.models import Account
-from common.models import User, Address, Team, Comment, Attachments
-from common.utils import INDCHOICES, COUNTRIES, CURRENCY_CODES, CASE_TYPE, PRIORITY_CHOICE, STATUS_CHOICE
-from contacts.models import Contact
-from opportunity.models import Opportunity, STAGES, SOURCES
-from cases.models import Case
+from apartments.forms import ApartmentForm, ApartmentCommentForm, ApartmentAttachmentForm
+from apartments.models import Apartment
+from catalog.models import Address
+from common.models import User, Comment, Attachments
+from common.utils import ApartmentStatusChoices
 
 
-class AccountsListView(LoginRequiredMixin, TemplateView):
-    model = Account
-    context_object_name = "accounts_list"
-    template_name = "accounts.html"
+class ApartmentListView(LoginRequiredMixin, TemplateView):
+    model = Apartment
+    context_object_name = "apartments_list"
+    template_name = "apartments.html"
 
     def get_queryset(self):
         queryset = self.model.objects.all()
-        request_post = self.request.POST
-        if request_post:
-            if request_post.get('name'):
-                queryset = queryset.filter(name__icontains=request_post.get('name'))
-            if request_post.get('industry'):
-                queryset = queryset.filter(industry__icontains=request_post.get('industry'))
         return queryset
 
     def get_context_data(self, **kwargs):
-        context = super(AccountsListView, self).get_context_data(**kwargs)
-        context["accounts_list"] = self.get_queryset()
-        context["industries"] = INDCHOICES
+        context = super(ApartmentListView, self).get_context_data(**kwargs)
+        context["apartments_list"] = self.get_queryset()
         context["per_page"] = self.request.POST.get('per_page')
         return context
 
@@ -46,17 +34,18 @@ class AccountsListView(LoginRequiredMixin, TemplateView):
         return self.render_to_response(context)
 
 
-class CreateAccountView(LoginRequiredMixin, CreateView):
-    model = Account
-    form_class = AccountForm
-    template_name = "create_account.html"
+class ApartmentAddView(LoginRequiredMixin, CreateView):
+    model = Apartment
+    form_class = ApartmentForm
+    template_name = "create_apartment.html"
 
     def dispatch(self, request, *args, **kwargs):
-        self.users = User.objects.filter(is_active=True).order_by('email')
-        return super(CreateAccountView, self).dispatch(request, *args, **kwargs)
+        self.addresses = Address.objects.all()
+        return super(ApartmentAddView, self).dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
-        kwargs = super(CreateAccountView, self).get_form_kwargs()
+        kwargs = super(ApartmentAddView, self).get_form_kwargs()
+        kwargs.update({"addresses": self.addresses})
         return kwargs
 
     def post(self, request, *args, **kwargs):
@@ -68,14 +57,13 @@ class CreateAccountView(LoginRequiredMixin, CreateView):
             return self.form_invalid(form)
 
     def form_valid(self, form):
-        # Save Account
         account_object = form.save(commit=False)
         account_object.created_by = self.request.user
         account_object.save()
         if self.request.POST.get("savenewform"):
-            return redirect("accounts:new_account")
+            return redirect("apartments:add")
         else:
-            return redirect("accounts:list")
+            return redirect("apartments:list")
 
     def form_invalid(self, form):
         return self.render_to_response(
@@ -84,35 +72,38 @@ class CreateAccountView(LoginRequiredMixin, CreateView):
         )
 
     def get_context_data(self, **kwargs):
-        context = super(CreateAccountView, self).get_context_data(**kwargs)
-        context["account_form"] = context["form"]
-        context["users"] = self.users
-        context["industries"] = INDCHOICES
+        context = super(ApartmentAddView, self).get_context_data(**kwargs)
+        context["apartment_form"] = context["form"]
+        context["apartment_status"] = ApartmentStatusChoices.choices
         return context
 
 
-class AccountDetailView(LoginRequiredMixin, DetailView):
-    model = Account
-    context_object_name = "account"
-    template_name = "view_account.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(AccountDetailView, self).get_context_data(**kwargs)
-        #account_record = context["account_record"]
-        return context
-
-
-class AccountUpdateView(LoginRequiredMixin, UpdateView):
-    model = Account
-    form_class = AccountForm
-    template_name = "create_account.html"
+class ApartmentDetailView(LoginRequiredMixin, DetailView):
+    model = Apartment
+    context_object_name = "apartment"
+    template_name = "view_apartment.html"
 
     def dispatch(self, request, *args, **kwargs):
-        self.users = User.objects.filter(is_active=True).order_by('email')
-        return super(AccountUpdateView, self).dispatch(request, *args, **kwargs)
+        self.addresses = Address.objects.all()
+        return super(ApartmentDetailView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(ApartmentDetailView, self).get_context_data(**kwargs)
+        return context
+
+
+class ApartmentEditView(LoginRequiredMixin, UpdateView):
+    model = Apartment
+    form_class = ApartmentForm
+    template_name = "create_apartment.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        self.addresses = Address.objects.all()
+        return super(ApartmentEditView, self).dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
-        kwargs = super(AccountUpdateView, self).get_form_kwargs()
+        kwargs = super(ApartmentEditView, self).get_form_kwargs()
+        kwargs.update({"addresses": self.addresses})
         return kwargs
 
     def post(self, request, *args, **kwargs):
@@ -124,13 +115,9 @@ class AccountUpdateView(LoginRequiredMixin, UpdateView):
             return self.form_invalid(form)
 
     def form_valid(self, form):
-        # Save Account
-        account_object = form.save(commit=False)
-        account_object.save()
-
-        all_members_list = []
-
-        return redirect("accounts:list")
+        apartment_object = form.save(commit=False)
+        apartment_object.save()
+        return redirect("apartments:list")
 
     def form_invalid(self, form):
         return self.render_to_response(
@@ -139,34 +126,30 @@ class AccountUpdateView(LoginRequiredMixin, UpdateView):
         )
 
     def get_context_data(self, **kwargs):
-        context = super(AccountUpdateView, self).get_context_data(**kwargs)
-        context["account_obj"] = self.object
-        context["account_form"] = context["form"]
-        context["users"] = self.users
-        context["industries"] = INDCHOICES
-        context["countries"] = COUNTRIES
-        context["teams"] = Team.objects.all()
+        context = super(ApartmentEditView, self).get_context_data(**kwargs)
+        context["apartment_obj"] = self.object
+        context["apartment_form"] = context["form"]
         return context
 
 
-class AccountDeleteView(LoginRequiredMixin, DeleteView):
-    model = Account
-    template_name = 'view_account.html'
+class ApartmentDeleteView(LoginRequiredMixin, DeleteView):
+    model = Apartment
+    template_name = 'view_apartment.html'
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         self.object.delete()
-        return redirect("accounts:list")
+        return redirect("apartments:list")
 
 
 class AddCommentView(LoginRequiredMixin, CreateView):
     model = Comment
-    form_class = AccountCommentForm
+    form_class = ApartmentCommentForm
     http_method_names = ["post"]
 
     def post(self, request, *args, **kwargs):
         self.object = None
-        self.account = get_object_or_404(Account, id=request.POST.get('accountid'))
+        self.account = get_object_or_404(Apartment, id=request.POST.get('accountid'))
         data = {'error': "You don't have permission to comment for this account."}
         return JsonResponse(data)
 
@@ -185,13 +168,13 @@ class AddCommentView(LoginRequiredMixin, CreateView):
         return JsonResponse({"error": form['comment'].errors})
 
 
-class UpdateCommentView(LoginRequiredMixin, View):
+class EditCommentView(LoginRequiredMixin, View):
     http_method_names = ["post"]
 
     def post(self, request, *args, **kwargs):
         self.comment_obj = get_object_or_404(Comment, id=request.POST.get("commentid"))
         if request.user == self.comment_obj.commented_by:
-            form = AccountCommentForm(request.POST, instance=self.comment_obj)
+            form = ApartmentCommentForm(request.POST, instance=self.comment_obj)
             if form.is_valid():
                 return self.form_valid(form)
             else:
@@ -227,12 +210,12 @@ class DeleteCommentView(LoginRequiredMixin, View):
 
 class AddAttachmentView(LoginRequiredMixin, CreateView):
     model = Attachments
-    form_class = AccountAttachmentForm
+    form_class = ApartmentAttachmentForm
     http_method_names = ["post"]
 
     def post(self, request, *args, **kwargs):
         self.object = None
-        self.account = get_object_or_404(Account, id=request.POST.get('accountid'))
+        self.account = get_object_or_404(Apartment, id=request.POST.get('accountid'))
         data = {'error': "You don't have permission to add attachment for this account."}
         return JsonResponse(data)
 
