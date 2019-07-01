@@ -8,21 +8,25 @@
 </div>
 {% endblock breadcrumb %}
 {% block content %}
-<!-- main_container starts here -->
 <div class="main_container">
   <div class="filter_row row marl">
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
       <div class="card">
-        <div class="card-body">
-         <div class="panel-heading-list card-title">
-          <span class="float-right total_count">{% if show_pageitems %} {% show_pageitems %}{% else %}Всего: {{apartments_list|length}}{% endif %}</span>
+      <div class="card-header d-flex">
+          <h3 class="card-header-title">{% if show_pageitems %} {% show_pageitems %}{% else %}Всего: {{apartments_list|length}}{% endif %}</h3>
+                <div class="toolbar ml-auto">
+                    <a href="#" title="Конвертировать" class="btn btn-light btn-sm to-xls">XLS</a>
+                    <a href="#" title="Конвертировать" class="btn btn-light btn-sm to-cvs">CSV</a>
+                    <a href="{% url 'apartments:add' %}" title="Добавить" class="btn btn-light btn-sm add-btn"><i class="fas fa-plus"></i></a>
+                </div>
         </div>
+        <div class="card-body list-cat ">
           <div class="table-responsive">
           <table class="table table-striped table-bordered first">
             <thead>
             {% if apartments_list|length > 0 %}
               <tr>
-                <th>ID</th>
+                <th>Дата</th>
                 <th>Адрес</th>
                 <th>Подъезд</th>
                 <th>Этаж</th>
@@ -39,7 +43,7 @@
               {% endif %}
               {% for each_apartment in apartments_list %}
               <tr id="account_details{{each_apartments.id}}" class="text-center">
-                <td scope="row">{{ forloop.counter }}</td>
+                <td>{{ each_apartment.created_date|date:'d.m.Y' }}</td>
                 <td>{% if each_apartment.address %}{{ each_apartment.address }}{% endif %}</td>
                 <td>{% if each_apartment.entrance %}{{ each_apartment.entrance }} {% else %} Не указан {% endif %}</td>
                 <td>{% if each_apartment.floor %}{{ each_apartment.floor }} {% else %} Не указан{% endif %}</td>

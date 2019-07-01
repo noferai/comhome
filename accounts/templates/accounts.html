@@ -5,25 +5,28 @@
 {% block breadcrumb %}
 <div class="page-header">
     <h2 class="pageheader-title">Исполнители</h2>
+</div>
 {% endblock breadcrumb %}
 {% block content %}
 <div class="main_container">
-  <!-- filter_row starts here -->
   <div class="filter_row row marl">
-    <div class="col-md-12">
-       <div class="table_container_row row marl no-gutters">
-    <div class="col-md-12">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
       <div class="card">
-        <div class="card-body">
-         <div class="panel-heading-list card-title">
-          <span class="float-right total_count">{% if show_pageitems %} {% show_pageitems %}{% else %}Всего: {{accounts_list|length}}{% endif %}</span>
+        <div class="card-header d-flex">
+            <h3 class="card-header-title">{% if show_pageitems %} {% show_pageitems %}{% else %}Всего: {{accounts_list|length}}{% endif %}</h3>
+                <div class="toolbar ml-auto">
+                    <a href="#" title="Конвертировать" class="btn btn-light btn-sm to-xls">XLS</a>
+                    <a href="#" title="Конвертировать" class="btn btn-light btn-sm to-cvs">CSV</a>
+                    <a href="{% url 'accounts:new_account' %}" title="Добавить" class="btn btn-light btn-sm add-btn"><i class="fas fa-plus"></i></a>
+                </div>
         </div>
+        <div class="card-body list-cat">
           <div class="table-responsive">
           <table class="table table-striped table-bordered first">
             <thead>
             {% if accounts_list|length > 0 %}
               <tr>
-                <th>ID</th>
+                <th>Дата</th>
                 <th>ФИО</th>
                 <th>Телефон</th>
                 <th>Email</th>
@@ -40,7 +43,7 @@
               {% endif %}
               {% for each_account in accounts_list %}
               <tr id="account_details{{each_account.id}}" class="text-center">
-                <td scope="row">{{ forloop.counter }}</td>
+                <td> {{ each_account.created_on|date:'d.m.Y' }}</td>
                 <td>{% if each_account.name %}<a href="#">{{ each_account.name }}</a>{% endif %}</td>
                 <td>{% if each_account.phone %}{{ each_account.phone }} {% else %} Не указан {% endif %}</td>
                 <td>{% if each_account.email %}{{ each_account.email }} {% else %} Не указан{% endif %}</td>
@@ -64,8 +67,6 @@
         </div>
       </div>
       <br clear="all">
-    </div>
-  </div>
     </div>
   </div>
 

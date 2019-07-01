@@ -132,8 +132,6 @@ class UpdateRequestView(LoginRequiredMixin, UpdateView):
         case_obj = form.save(commit=False)
         case_obj.save()
         form.save_m2m()
-        # assigned_to_ids = case_obj.assigned_to.all().values_list('id', flat=True)
-        # case_obj.assigned_to.clear()
         return redirect("cases:list")
 
     def form_invalid(self, form):
@@ -143,6 +141,7 @@ class UpdateRequestView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(UpdateRequestView, self).get_context_data(**kwargs)
+        context["request_obj"] = self.object
         context["case_form"] = context["form"]
         context["request_types"] = RequestTypeChoices.choices
         context["request_priority"] = RequestPriorityChoices.choices
