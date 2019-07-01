@@ -50,9 +50,6 @@
                     <label for="exampleInputEmail1" class="required">Дата закрытия{% if case_form.closed_on.field.required %}<span class="error">*</span>{% endif %}</label>
                     <div class='input-group date' id='datepicker1'>
                       {{ case_form.closed_on }}
-                      <span class="input-group-addon">
-{#                      <span class="glyphicon glyphicon-calendar"></span> TODO: сюда календарик#}
-                      </span>
                     </div>
                     <span class="error">{{ case_form.closed_on.errors }}</span>
                   </div>
@@ -60,15 +57,20 @@
               </div>
               <div class="col-md-6">
                 <div class="filter_col col-md-12">
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Исполнители</label>
-                     <select class="assigned_users form-control" name="assigned_to" multiple="multiple">
-                      {% for staff in staff %}
-                        <option value="{{staff.id}}" {% if staff in case_obj.assigned_to.all or staff.id in assignedto_list %} selected="" {% endif %}>{{staff.name}}</option>
-                      {% endfor %}
-                    </select>
+{#                  <div class="form-group">#}
+{#                    <label for="exampleInputEmail1">Исполнители</label>#}
+{#                     <select class="assigned_users form-control" name="assigned_to" multiple="multiple">#}
+{#                      {% for staff in staff %}#}
+{#                        <option value="{{staff.id}}" {% if staff in case_obj.assigned_to.all or staff.id in assignedto_list %} selected="" {% endif %}>{{staff.name}}</option>#}
+{#                      {% endfor %}#}
+{#                    </select>#}
+{#                    <span class="error">{{ case_form.assigned_to.errors }}</span>#}
+{#                  </div>#}
+                    <div class="form-group">
+                    <label for="exampleInputEmail1" class="required">Исполнители{% if case_form.assigned_to.field.required %}<span class="error">*</span>{% endif %}</label>
+                    {{ case_form.assigned_to }}
                     <span class="error">{{ case_form.assigned_to.errors }}</span>
-                  </div>
+                    </div>
                 </div>
                 <div class="filter_col col-md-12">
                   <div class="form-group">
@@ -93,34 +95,9 @@
   </form>
 {% endblock %}
 {% block js_block %}
-{#  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>#}
-{#  <script type="text/javascript">#}
-{#    $(function () {#}
-{#     var date = new Date();#}
-{#     var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());#}
-{#      $('#id_closed_on').datetimepicker({#}
-{#          'format': 'YYYY-MM-DD',#}
-{#          minDate: today#}
-{#      })#}
-{#    });#}
-{##}
-{#    $(".savenew").on('click', function(e){#}
-{#      e.preventDefault()#}
-{#      $("#save_new_form").val('true')#}
-{#      $('#submitForm').submit()#}
-{#    });#}
-{#    $(document).ready(function() {#}
-{#      $('.assigned_users').select2();#}
-{#    });#}
-{##}
-{#    $('#id_account').change(function(){#}
-{#    var account = $("#id_account").val()#}
-{#    $.get("{% url 'cases:select_contacts' %}", {"account":account}, function(data){#}
-{#      $("#id_contacts").html("")#}
-{#      $.each(data, function (index, value) {#}
-{#        $("#id_contacts").append("<option value="+index+">"+value+"</option>")#}
-{#      });#}
-{#    })#}
-{#});#}
-{#  </script>#}
+<script>
+    $( document ).ready(function() {
+    $(".date input").attr("type", "date");
+    });
+</script>
 {% endblock js_block %}

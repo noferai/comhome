@@ -4,7 +4,6 @@ from accounts.models import Account
 from contacts.models import Contact
 from common.models import User
 from common.utils import RequestTypeChoices, RequestPriorityChoices, RequestStatusChoices
-#from planner.models import Event
 
 
 class Case(models.Model):
@@ -23,34 +22,6 @@ class Case(models.Model):
 
     def __str__(self):
         return self.priority + ': ' + self.request_type + ' - ' + self.created_by.username  # TODO: created_by.username -> что-то нормальное
-
-    # def get_meetings(self):
-    #     content_type = ContentType.objects.get(app_label="cases", model="case")
-    #     return Event.objects.filter(
-    #         content_type=content_type, object_id=self.id, event_type="Meeting", status="Planned")
-
-    # def get_completed_meetings(self):
-    #     content_type = ContentType.objects.get(app_label="cases", model="case")
-    #     return Event.objects.filter(
-    #         content_type=content_type, object_id=self.id, event_type="Meeting").exclude(status="Planned")
-
-    # def get_tasks(self):
-    #     content_type = ContentType.objects.get(app_label="cases", model="case")
-    #     return Event.objects.filter(content_type=content_type, object_id=self.id, event_type="Task", status="Planned")
-
-    # def get_completed_tasks(self):
-    #     content_type = ContentType.objects.get(app_label="cases", model="case")
-    #     return Event.objects.filter(
-    #         content_type=content_type, object_id=self.id, event_type="Task").exclude(status="Planned")
-
-    # def get_calls(self):
-    #     content_type = ContentType.objects.get(app_label="cases", model="case")
-    #     return Event.objects.filter(content_type=content_type, object_id=self.id, event_type="Call", status="Planned")
-
-    # def get_completed_calls(self):
-    #     content_type = ContentType.objects.get(app_label="cases", model="case")
-    #     return Event.objects.filter(
-    #         content_type=content_type, object_id=self.id, event_type="Call").exclude(status="Planned")
 
     def get_assigned_staff(self):
         return Account.objects.get(id=self.assigned_to.id)
