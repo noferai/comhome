@@ -20,6 +20,16 @@ from planner.models import Event, Reminder
 from planner.forms import ReminderForm
 
 
+# class CreatePassportView(LoginRequiredMixin, CreateView):
+#     model = Passport
+#     form_class = PassportForm
+#     template_name = "create_lead.html"
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(CreatePassportView, self).get_context_data(**kwargs)
+#         context[]
+
+
 class LeadListView(LoginRequiredMixin, TemplateView):
     model = Lead
     context_object_name = "lead_obj"
@@ -29,16 +39,16 @@ class LeadListView(LoginRequiredMixin, TemplateView):
         queryset = self.model.objects.all().exclude(status='converted')
         request_post = self.request.POST
         if request_post:
-            if request_post.get('first_name'):
-                queryset = queryset.filter(first_name__icontains=request_post.get('first_name'))
-            if request_post.get('last_name'):
-                queryset = queryset.filter(last_name__icontains=request_post.get('last_name'))
+            if request_post.get('name'):
+                queryset = queryset.filter(name__icontains=request_post.get('name'))
             if request_post.get('city'):
                 queryset = queryset.filter(address__city__icontains=request_post.get('city'))
             if request_post.get('email'):
                 queryset = queryset.filter(email__icontains=request_post.get('email'))
             if request_post.get('status'):
                 queryset = queryset.filter(status=request_post.get('status'))
+            if request_post.get('day_of_birth'):
+                queryset = queryset.filter(day_of_birth__icontains=request_post.get('day_of_birth'))
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -71,6 +81,7 @@ class CreateLeadView(LoginRequiredMixin, CreateView):
         self.object = None
         form = self.get_form()
         address_form = BillingAddressForm(request.POST)
+
         if form.is_valid() and address_form.is_valid():
             return self.form_valid(form, address_form)
         else:
@@ -244,7 +255,7 @@ class UpdateLeadView(LoginRequiredMixin, UpdateView):
 
                 assigned_form_users = form.cleaned_data.get('assigned_to').values_list('id', flat=True)
                 all_members_list = list(set(list(assigned_form_users)) - set(list(assigned_to_ids)))
-                
+
                 if len(all_members_list):
                     for assigned_to_user in assigned_to_list:
                         user = get_object_or_404(User, pk=assigned_to_user)

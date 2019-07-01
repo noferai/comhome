@@ -14,7 +14,7 @@
   <div class="overview_form_block row marl justify-content-center">
     <div class="col-md-8">
       <div class="card">
-       
+
         <div class="card-body" id="datashow">
          <div class="card-title">
           <h5>
@@ -32,50 +32,196 @@
         </div>
           <div class="row marl">
             <div class="col-md-6">
+
               <div class="filter_col col-md-12" id="iname">
                 <div class="form-group" >
                   <label class="lead_field_label" for="id_name" data-name="name">ФИО</label>
                   <div class="lead_field" id="lead_name" data-name="name">{{ lead_record.name }}</div>
                 </div>
               </div>
+
+              <div class="filter_col col-md-12" id="iname">
+                <div class="form-group" >
+                  <label class="lead_field_label" for="gender" data-name="gender">Пол</label>
+                  <div class="lead_field" id="gender" data-name="gender">{{ lead_record.gender }}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="birthday" data-name="name">Дата Рождения</label>
+                    <div class="lead_field" id="id_birthday" data-name="name">{{ lead_record.birthday }}</div>
+                </div>
+              </div>
+
               <div class="filter_col col-md-12">
                 <div class="form-group">
                   <label class="lead_field_label" for="id_phone" data-name="name">Номер</label>
                   <div class="lead_field" id="lead_phone" data-name="name">{{ lead_record.phone }}</div>
                 </div>
               </div>
+
               <div class="filter_col col-md-12">
                 <div class="form-group">
                   <label class="lead_field_label" for="id_email" data-name="name">Email</label>
                   <div class="lead_field" id="lead_email" data-name="name">{{ lead_record.email }}</div>
                 </div>
               </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="debt" data-name="debt">Задолженность</label>
+                  <div class="lead_field" id="debt" data-name="debt">{% if lead_record.debt %} Да {% else %} Нет {% endif %} </div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="debt_status" data-name="debt_status">Статус взыскания задолженности</label>
+                  <div class="lead_field" id="debt_status" data-name="debt_status">{{ lead_record.status_of_work_with_debt }}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Оплата мусора</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{% if lead_record.garbage_payment %} Оплачено {% else %} Нет {% endif %}</div>
+                </div>
+              </div>
+
+
+
+            <h2>Паспортные данные</h2>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Дата выдачи</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{{ lead_record.passport_date }}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Серия</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{{ lead_record.passport_series }}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Номер</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{{ lead_record.passport_id }}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Кем выдан</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{{ lead_record.issued_by }}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Код подразделения</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{{ lead_record.unit_code }}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Тип паспорта</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{{ lead_record.type_of_passport }}</div>
+                </div>
+              </div>
+
+
+
+            <h2>Информация</h2>
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Напоминание о Дне Рождения</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{% if lead_record.birthday_reminder %} Да {% else %} Нет {% endif %}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Проблемный клиент</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{% if lead_record.hard_case %} Да {% else %} Нет {% endif %}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Лояльный</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{% if lead_record.loyal %} Да {% else %} Нет {% endif %}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">VIP-клиент</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{% if lead_record.vip %} Да {% else %} Нет {% endif %}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Звонки</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{% if lead_record.calls %} Да {% else %} Нет {% endif %}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">SMS</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{% if lead_record.sms %} Да {% else %} Нет {% endif %}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Email</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{% if lead_record.mail %} Да {% else %} Нет {% endif %}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Комментарий</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{{ lead_record.comments }}</div>
+                </div>
+              </div>
+
             </div>
+
+
             <div class="col-md-12">
-{#              <div class="filter_col col-md-12">#}
-{#                {% if lead_record.status %}#}
-{#                <div class="form-group">#}
-{#                  <label class="lead_field_label" for="id_status" data-name="name">Status</label>#}
-{#                  <div class="lead_field" id="lead_status" data-name="name">{{ lead_record.status }}</div>#}
-{#                </div>#}
-{#                {% endif %}#}
-{#              </div>#}
-{#              <div class="filter_col col-md-12">#}
-{#                {% if lead_record.source %}#}
-{#                <div class="form-group">#}
-{#                  <label class="lead_field_label" for="id_source" data-name="name">Source</label>#}
-{#                  <div class="lead_field" id="lead_source" data-name="name">{{ lead_record.source }}</div>#}
-{#                </div>#}
-{#                {% endif %}#}
-{#              </div>#}
-{#              <div class="filter_col col-md-12">#}
-{#                {% if lead_record.website %}#}
-{#                <div class="form-group">#}
-{#                  <label class="lead_field_label" for="id_website" data-name="name">Website</label>#}
-{#                  <div class="lead_field" id="lead_website" data-name="name">{{ lead_record.website }}</div>#}
-{#                </div>#}
-{#                {% endif %}#}
-{#              </div>#}
+              <div class="filter_col col-md-12">
+                {% if lead_record.status %}
+                <div class="form-group">
+                  <label class="lead_field_label" for="id_status" data-name="name">Status</label>
+                  <div class="lead_field" id="lead_status" data-name="name">{{ lead_record.status }}</div>
+                </div>
+                {% endif %}
+              </div>
+              <div class="filter_col col-md-12">
+                {% if lead_record.source %}
+                <div class="form-group">
+                  <label class="lead_field_label" for="id_source" data-name="name">Source</label>
+                  <div class="lead_field" id="lead_source" data-name="name">{{ lead_record.source }}</div>
+                </div>
+                {% endif %}
+              </div>
+              <div class="filter_col col-md-12">
+                {% if lead_record.website %}
+                <div class="form-group">
+                  <label class="lead_field_label" for="id_website" data-name="name">Website</label>
+                  <div class="lead_field" id="lead_website" data-name="name">{{ lead_record.website }}</div>
+                </div>
+                {% endif %}
+              </div>
               <div class="filter_col col-md-12">
                 <div class="form-group">
                   {% if lead_record.address.address_line or lead_record.address.street or lead_record.address.city or lead_record.address.state or lead_record.address.postcode or lead_record.address.country %}
@@ -99,7 +245,7 @@
                 <div class="created_information">
                   Создано <b>{{ lead_record.created_by }}</b> <i><b>{{ lead_record.created_on }}</b></i>
                 </div>
-              </div>
+            </div>
           </div>
         </div>
 

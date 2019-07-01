@@ -1,9 +1,13 @@
 from django.urls import path
 from leads.views import (
-    LeadListView, CreateLeadView, LeadDetailView, UpdateLeadView, DeleteLeadView, ConvertLeadView,
+    LeadListView,
+    CreateLeadView, LeadDetailView, UpdateLeadView, DeleteLeadView, ConvertLeadView,
     GetLeadsView, AddCommentView, UpdateCommentView, DeleteCommentView,
     AddAttachmentsView,DeleteAttachmentsView
 )
+
+from django.conf.urls import include, url
+from django.contrib import admin
 
 
 app_name = 'leads'
