@@ -11,99 +11,213 @@
   </ol>
 </nav>
 
+
 {% endblock %}
 {%block content%}
   <form id="add_form" method="POST" action="" novalidate>
     <div class="overview_form_block row marl">
       <div class="col-md-12">
         <div class="card">
-        
+
           <div class="card-body">
             <div class="card-title text-center">
             {% if lead_obj %}Изменить{% else %}Добавить{% endif %} Собственника
           </div>
-            <div class="row marl no-gutters">
-              <div class="col-md-6">
-                <div class="filter_col col-md-12">
+            <div>
+              <div>
+
+{#                 ФИО собственника#}
+                <div>
                   <div class="form-group">
-                    <label for="exampleInputEmail1" class="name" >Имя Фамилия {% if lead_form.first_name.field.required %}<span class="error">*</span>{% endif %}</label>
+                    <label for="exampleInputEmail1" class="name" >Фамилия Имя Отчество {% if lead_form.name.field.required %}<span class="error">*</span>{% endif %}</label>
                     <div class="row">
                       <div class="filter_col col-md-6">
-                        {{ lead_form.first_name }}
-                        <span class="error">{{ lead_form.first_name.errors }}</span>
-                      </div>
-                      <div class="filter_col col-md-6">
-                        {{ lead_form.last_name }}
-                        <span class="error">{{ lead_form.last_name.errors }}</span>
+                        {{ lead_form.name }}
+                        <span class="error">{{ lead_form.name.errors }}</span>
                       </div>
                     </div>
                   </div>
                 </div>
-{#                <div class="filter_col col-md-12">#}
-{#                  <div class="form-group">#}
-{#                    <label for="exampleInputEmail1" {% if request.POST.status == "converted" %} class="required" {% endif %}>Account Name{% if lead_form.account_name.field.required %}<span class="error">*</span>{% endif %}</label>#}
-{#                    {{ lead_form.account_name }}#}
-{#                    <span class="error">{{ lead_form.account_name.errors }}</span>#}
-{#                    {% if error %}#}
-{#                      <span class="error">{{ error }}</span>#}
-{#                    {% endif %}#}
-{#                  </div>#}
-{#                </div>#}
-{#                <div class="filter_col col-md-12">#}
-{#                  <div class="form-group">#}
-{#                    <label for="exampleInputEmail1">Title{% if lead_form.title.field.required %}<span class="error">*</span>{% endif %}</label>#}
-{#                    {{ lead_form.title }}#}
-{#                    <span class="error">{{ lead_form.title.errors }}</span>#}
-{#                  </div>#}
-{#                </div>#}
-                <div class="filter_col col-md-12">
+
+{#              Пол#}
+                <div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1" class="name" >Пол {% if lead_form.name.field.required %}<span class="error">*</span>{% endif %}</label>
+                    <div class="row">
+                      <div class="filter_col col-md-6">
+                        {{ lead_form.gender }}
+                        <span class="error">{{ lead_form.gender.errors }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+{#              Дата рождения#}
+                <div class="date">
+                        <p>Выберите дату рождения:
+                        {{ lead_form.birthday }}
+                </div>
+
+{#              Номер телефона#}
+                <div>
                   <div class="form-group ">
-                    <label for="exampleInputEmail1">Телефон{% if lead_form.phone.field.required %}<span class="error">*</span>{% endif %}</label>
+                    <label for="exampleInputEmail1">Телефон{% if lead_form.phone.field.required %}<span class="error"> *</span>{% endif %}</label>
                     {{ lead_form.phone }}
                     <span class="error">{{ lead_form.phone.errors }}</span>
                   </div>
                 </div>
-                <div class="filter_col col-md-12">
+
+{#              Мыло#}
+                <div>
                   <div class="form-group ">
                     <label for="exampleInputEmail1" class="required">Email{% if lead_form.email.field.required %}<span class="error">*</span>{% endif %}</label>
                     {{ lead_form.email }}
                     <span class="error">{{ lead_form.email.errors }}</span>
                   </div>
                 </div>
-{#                <div class="filter_col col-md-12">#}
-{#                  <div class="form-group">#}
-{#                    <label for="exampleInputEmail1">Website{% if lead_form.website.field.required %}<span class="error">*</span>{% endif %}</label>#}
-{#                    {{ lead_form.website }}#}
-{#                    <span class="error">{{ lead_form.website.errors }}</span>#}
-{#                  </div>#}
-{#                </div>#}
+
+{#                Наличие задолжености#}
+                <div>
+                  <div class="form-group ">
+                    <label for="exampleInputEmail1" class="required">Задолженность{% if lead_form.debt.field.required %}<span class="error">*</span>{% endif %}</label>
+                    {{ lead_form.debt }}
+                    <span class="error">{{ lead_form.debt.errors }}</span>
+                  </div>
+                </div>
+
+{#              Статус взыскания задолженности#}
+                <div>
+                  <div class="form-group ">
+                    <label for="exampleInputEmail1" class="required">Статус взыскания задолженности{% if lead_form.status_of_work_with_debt.field.required %}<span class="error">*</span>{% endif %}</label>
+                    {{ lead_form.status_of_work_with_debt }}
+                    <span class="error">{{ lead_form.status_of_work_with_debt.errors }}</span>
+                  </div>
+                </div>
+
+              {#  Оплата мусора#}
+                <div>
+                  <div class="form-group ">
+                    <label for="exampleInputEmail1" class="required">Оплата мусора{% if lead_form.garbage_payment.field.required %}<span class="error">*</span>{% endif %}</label>
+                    {{ lead_form.garbage_payment }}
+                    <span class="error">{{ lead_form.garbage_payment.errors }}</span>
+                  </div>
+                </div>
+
+
+            <!-- Passport form start -->
+              <div>
+                <h2>Паспортные данные</h2>
+                    Дата выдачи
+                    <div class="date">
+                       {{ lead_form.passport_date }}
+                    </div>
               </div>
+
+              <div>
+                    Серия
+                    <div>
+                       {{ lead_form.passport_series }}
+                    </div>
+              </div>
+
+              <div>
+                    Номер
+                    <div>
+                       {{ lead_form.passport_id }}
+                    </div>
+              </div>
+
+              <div>
+                    Кем выдан
+                    <div>
+                       {{ lead_form.issued_by }}
+                    </div>
+              </div>
+
+              <div>
+                    Код подразделения
+                    <div>
+                       {{ lead_form.unit_code }}
+                    </div>
+              </div>
+
+              <div>
+                    Тип
+                    <div>
+                       {{ lead_form.type_of_passport }}
+                    </div>
+              </div>
+            <!-- Passport form end -->
+
+
+
+            <!-- Information start -->
+
+              <div>
+                  <h2>Информация</h2>
+                    Напоминание о Дне Рождения
+                    <div>
+                       {{ lead_form.birthday_reminder }}
+                    </div>
+              </div>
+
+              <div>
+                    Проблемный клиент
+                    <div>
+                       {{ lead_form.hard_case }}
+                    </div>
+              </div>
+
+              <div>
+                    Лояльность
+                    <div>
+                       {{ lead_form.loyal }}
+                    </div>
+              </div>
+
+              <div>
+                    VIP-клиент
+                    <div>
+                       {{ lead_form.vip }}
+                    </div>
+              </div>
+
+              <div>
+                    Звонки
+                    <div>
+                       {{ lead_form.calls }}
+                    </div>
+              </div>
+
+              <div>
+                    SMS
+                    <div>
+                       {{ lead_form.sms }}
+                    </div>
+              </div>
+
+              <div>
+                    Email
+                    <div>
+                       {{ lead_form.mail }}
+                    </div>
+              </div>
+
+              <div>
+                    Комментарий
+                    <div>
+                       {{ lead_form.comments }}
+                    </div>
+              </div>
+
+            <!-- Information end -->
+
+
+
+              </div>
+
+{#             Квартира собственника, вероятно заменяется на выбор из базы#}
               <div class="col-md-6">
-{#                <div class="filter_col col-md-12">#}
-{#                  <div class="form-group">#}
-{#                    <label for="exampleInputEmail1">Assigned Users</label>#}
-{#                     <select class="assigned_users form-control" name="assigned_to" multiple="multiple">#}
-{#                      {% for user in users %}#}
-{#                        <option value="{{user.id}}" {% if user in lead_obj.assigned_to.all or user.id in assignedto_list %} selected="" {% endif %}>{{user.email}}</option>#}
-{#                      {% endfor %}#}
-{#                    </select>#}
-{#                    <span class="error">{{ lead_form.assigned_to.errors }}</span>#}
-{#                  </div>#}
-{#                </div>#}
-{#                <div class="filter_col col-md-12">#}
-{#                  <div class="form-group">#}
-{#                    <label for="exampleInputEmail1"/>Status{% if lead_form.status.field.required %}<span class="error">*</span>{% endif %}</label>#}
-{#                    {{ lead_form.status }}#}
-{#                    <span class="error">{{ lead_form.status.errors }}</span>#}
-{#                  </div>#}
-{#                </div>#}
-{#                <div class="filter_col col-md-12">#}
-{#                  <div class="form-group">#}
-{#                    <label for="exampleInputEmail1"/>Source{% if lead_form.source.field.required %}<span class="error">*</span>{% endif %}</label>#}
-{#                    {{ lead_form.source }}#}
-{#                    <span class="error">{{ lead_form.source.errors }}</span>#}
-{#                  </div>#}
-{#                </div>#}
                 <div class="filter_col col-md-12">
                   <div class="form-group">
                     <label for="exampleInputEmail1" >Адрес</label>
@@ -131,10 +245,10 @@
                     </div>
                   </div>
                 </div>
-                
+
               </div>
-              <div class="filter_col col-md-12">
-                <div class="form-group col-md-12">
+              <div>
+                <div>
                   <label for="exampleInputEmail1" >Описание{% if lead_form.description.field.required %}<span class="error">*</span>{% endif %}</label>
                   {{ lead_form.description }}
                   <span class="error">{{ lead_form.description.errors }}</span>
@@ -165,7 +279,7 @@
       $('#add_form').submit()
     });
     $(document).ready(function() {
-      $('.assigned_users').select2();
+      $(".date input").attr("type", "date")
     });
   </script>
 {% endblock js_block %}

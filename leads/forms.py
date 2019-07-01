@@ -16,6 +16,9 @@ class LeadForm(forms.ModelForm):
         self.fields['assigned_to'].required = False
         self.fields['teams'].required = False
         self.fields['phone'].required = True
+        self.fields['birthday'] = forms.CharField(widget=forms.TextInput(attrs={'autocomplete': 'off'}))
+        self.fields['birthday'].required = True
+        self.fields['gender'].required = True
         for key, value in self.fields.items():
             if key == 'phone':
                 value.widget.attrs['placeholder'] = 'Введите номер телефона'
@@ -27,9 +30,37 @@ class LeadForm(forms.ModelForm):
 
     class Meta:
         model = Lead
-        fields = ('assigned_to', 'teams', 'first_name', 'last_name', 'account_name', 'title',
-                  'phone', 'email', 'status', 'source', 'website', 'address', 'description'
-                  )
+        fields = (
+            'assigned_to',
+            'teams',
+            'name',
+            'gender',
+            'account_name',
+            'phone',
+            'email'
+            , 'status'
+            , 'source',
+            'birthday',
+            'address',
+            'description',
+            'debt',
+            'status_of_work_with_debt',
+            'garbage_payment',
+            'passport_date',
+            'passport_series',
+            'passport_id',
+            'issued_by',
+            'unit_code',
+            'type_of_passport',
+            'birthday_reminder',
+            'hard_case',
+            'loyal',
+            'vip',
+            'calls',
+            'sms',
+            'mail',
+            'comments',
+        )
 
     def clean_phone(self):
         client_phone = self.cleaned_data.get('phone', None)
@@ -38,10 +69,17 @@ class LeadForm(forms.ModelForm):
                 ph_length = str(client_phone)
                 if len(ph_length) < 10 or len(ph_length) > 13:
                     raise forms.ValidationError('Phone number must be minimum 10 Digits and maximum of 13 Digits')
-        except (ValueError):
+        except(ValueError):
             raise forms.ValidationError('Phone Number should contain only Numbers')
         return client_phone
 
+
+# class PassportForm(forms.ModelForm):
+#     class Meta:
+#         model = Passport
+#         fields = (
+#             'date_of_issue',
+#         )
 
 
 class LeadCommentForm(forms.ModelForm):

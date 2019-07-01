@@ -3,8 +3,8 @@
 {% block breadcrumb %}
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{% url 'leads:list' %}">Leads</a></li>
-    <li class="breadcrumb-item active">View</li>
+    <li class="breadcrumb-item"><a href="{% url 'leads:list' %}">Собственники</a></li>
+    <li class="breadcrumb-item active">Представление</li>
   </ol>
 </nav>
 
@@ -14,18 +14,17 @@
   <div class="overview_form_block row marl justify-content-center">
     <div class="col-md-8">
       <div class="card">
-       
+
         <div class="card-body" id="datashow">
          <div class="card-title">
           <h5>
-            Overview
+            Обзор
             <span class="float-right" style="margin-top: 0px">
               <div class="dropdown buttons_row">
-                <button class="btn btn-primary dropdown-toggle save" type="button" data-toggle="dropdown">Actions
+                <button class="btn btn-primary dropdown-toggle save" type="button" data-toggle="dropdown">Действия
                 <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><a href="{% url 'leads:edit_lead' lead_record.id %}" >Edit</a></li>
-                  <li><a href="{% url 'leads:leads_convert' lead_record.id %}" class="btn btn-info" role="button">Convert</a></li>
+                  <li><a href="{% url 'leads:edit_lead' lead_record.id %}" class="btn btn-info" role="button">Редактировать</a></li>
                 </ul>
               </div>
             </span>
@@ -33,41 +32,171 @@
         </div>
           <div class="row marl">
             <div class="col-md-6">
+
               <div class="filter_col col-md-12" id="iname">
                 <div class="form-group" >
-                  <label class="lead_field_label" for="id_name" data-name="name">Name</label>
-                  <div class="lead_field" id="lead_name" data-name="name">{{ lead_record.first_name }} {{ lead_record.last_name }}</div>
+                  <label class="lead_field_label" for="id_name" data-name="name">ФИО</label>
+                  <div class="lead_field" id="lead_name" data-name="name">{{ lead_record.name }}</div>
                 </div>
               </div>
-              <div class="filter_col col-md-12">
-                {% if lead_record.account_name %}
-                <div class="form-group">
-                  <label class="lead_field_label" for="id_contact_account" data-name="name">Account Name</label>
-                  <div class="lead_field" id ="contact_account" data-name="name">{{ lead_record.account_name }}</div>
+
+              <div class="filter_col col-md-12" id="iname">
+                <div class="form-group" >
+                  <label class="lead_field_label" for="gender" data-name="gender">Пол</label>
+                  <div class="lead_field" id="gender" data-name="gender">{{ lead_record.gender }}</div>
                 </div>
-                {% endif %}
               </div>
+
               <div class="filter_col col-md-12">
-                {% if lead_record.title %}
                 <div class="form-group">
-                  <label class="lead_field_label" for="id_title" data-name="name">Title</label>
-                  <div class="lead_field" id="lead_title" data-name="name">{{ lead_record.title }}</div>
+                  <label class="lead_field_label" for="birthday" data-name="name">Дата Рождения</label>
+                    <div class="lead_field" id="id_birthday" data-name="name">{{ lead_record.birthday }}</div>
                 </div>
-                {% endif %}
               </div>
+
               <div class="filter_col col-md-12">
                 <div class="form-group">
-                  <label class="lead_field_label" for="id_phone" data-name="name">Phone</label>
+                  <label class="lead_field_label" for="id_phone" data-name="name">Номер</label>
                   <div class="lead_field" id="lead_phone" data-name="name">{{ lead_record.phone }}</div>
                 </div>
               </div>
+
               <div class="filter_col col-md-12">
                 <div class="form-group">
                   <label class="lead_field_label" for="id_email" data-name="name">Email</label>
                   <div class="lead_field" id="lead_email" data-name="name">{{ lead_record.email }}</div>
                 </div>
               </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="debt" data-name="debt">Задолженность</label>
+                  <div class="lead_field" id="debt" data-name="debt">{% if lead_record.debt %} Да {% else %} Нет {% endif %} </div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="debt_status" data-name="debt_status">Статус взыскания задолженности</label>
+                  <div class="lead_field" id="debt_status" data-name="debt_status">{{ lead_record.status_of_work_with_debt }}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Оплата мусора</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{% if lead_record.garbage_payment %} Оплачено {% else %} Нет {% endif %}</div>
+                </div>
+              </div>
+
+
+
+            <h2>Паспортные данные</h2>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Дата выдачи</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{{ lead_record.passport_date }}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Серия</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{{ lead_record.passport_series }}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Номер</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{{ lead_record.passport_id }}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Кем выдан</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{{ lead_record.issued_by }}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Код подразделения</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{{ lead_record.unit_code }}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Тип паспорта</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{{ lead_record.type_of_passport }}</div>
+                </div>
+              </div>
+
+
+
+            <h2>Информация</h2>
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Напоминание о Дне Рождения</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{% if lead_record.birthday_reminder %} Да {% else %} Нет {% endif %}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Проблемный клиент</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{% if lead_record.hard_case %} Да {% else %} Нет {% endif %}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Лояльный</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{% if lead_record.loyal %} Да {% else %} Нет {% endif %}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">VIP-клиент</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{% if lead_record.vip %} Да {% else %} Нет {% endif %}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Звонки</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{% if lead_record.calls %} Да {% else %} Нет {% endif %}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">SMS</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{% if lead_record.sms %} Да {% else %} Нет {% endif %}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Email</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{% if lead_record.mail %} Да {% else %} Нет {% endif %}</div>
+                </div>
+              </div>
+
+              <div class="filter_col col-md-12">
+                <div class="form-group">
+                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Комментарий</label>
+                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{{ lead_record.comments }}</div>
+                </div>
+              </div>
+
             </div>
+
+
             <div class="col-md-12">
               <div class="filter_col col-md-12">
                 {% if lead_record.status %}
@@ -96,7 +225,7 @@
               <div class="filter_col col-md-12">
                 <div class="form-group">
                   {% if lead_record.address.address_line or lead_record.address.street or lead_record.address.city or lead_record.address.state or lead_record.address.postcode or lead_record.address.country %}
-                  <label class="lead_field_label" for="id_address" data-name="name" >Billing Address</label>
+                  <label class="lead_field_label" for="id_address" data-name="name" >Расчётный адрес</label>
                   <div class="lead_field" id="lead_address" data-name="name">
                     {{lead_record.address.get_complete_address}}
                   </div>
@@ -106,7 +235,7 @@
               <div class="filter_col col-md-12">
                 {% if lead_record.description %}
                 <div class="form-group">
-                  <label class="lead_field_label" for="id_description" data-name="name" >Description</label>
+                  <label class="lead_field_label" for="id_description" data-name="name" >Описание</label>
                   <div class="lead_field" id="lead_description" data-name="name">{{ lead_record.description }}</div>
                 </div>
                 {% endif %}
@@ -114,9 +243,9 @@
             </div>
             <div class="col-md-12">
                 <div class="created_information">
-                  Created by <b>{{ lead_record.created_by }}</b> created on <i><b>{{ lead_record.created_on }}</b></i> 
+                  Создано <b>{{ lead_record.created_by }}</b> <i><b>{{ lead_record.created_on }}</b></i>
                 </div>
-              </div>
+            </div>
           </div>
         </div>
 
@@ -124,7 +253,7 @@
       <div>
       <div class="card-body mar-top" id="datashow">
           <div class="card-title view-pad">
-              <h5>Attachments</h5>
+              <h5>Прикрепления</h5>
          </div>
           <div class="row marl">
               <div class="col-md-12">
@@ -134,7 +263,7 @@
                           <div><i id="AttachmentError" style="display:none; color:red"></i></div>
                           <br>
                           <div class="buttons_row">
-                              <button class="btn btn-default save" style="text-align: center;" id="attachment_submit">Save</button>
+                              <button class="btn btn-default save" style="text-align: center;" id="attachment_submit">Сохранить</button>
                           </div>
                       </div>
                       <input type="hidden" value="{{lead_record.id}}" name="leadid">
@@ -144,7 +273,7 @@
                           <li class="list-group-item list-row" id="attachment{{attachemnt.id}}">
                               <div class="float-right right-container">
                                 <div class="list-row-buttons btn-group float-right">
-                                  <button  class="action btn btn-danger" onclick="remove_attachment({{attachemnt.id}})">Remove</button>
+                                  <button  class="action btn btn-danger" onclick="remove_attachment({{attachemnt.id}})">Удалить</button>
                                 </div>
                               </div>
                                 <div class="stream-post-container" id="attachment_name{{attachemnt.id}}"><pre><a href="{{ attachemnt.attachment.url }}">{{ attachemnt.file_name }}</a></pre></div>
@@ -164,13 +293,13 @@
       <div>
         <div class="card-body mar-top" id="datashow">
          <div class="card-title view-pad">
-          <h5>Comments </h5>
+          <h5>Комментарий</h5>
         </div>
           <div class="row marl">
             <div class="col-md-12">
               <form id="comment_form" method="POST" enctype="multipart/form-data">
                 <div class="form-group ">
-                  <textarea class="form-control" textarea cols="40" rows="3" id="id_comments" name="comment" placeholder="Submit Your Comments Here"></textarea><div><i id="CommentError" style="display:none; color:red"></i></div>
+                  <textarea class="form-control" textarea cols="40" rows="3" id="id_comments" name="comment" placeholder="Напишите свой комментарий тут"></textarea><div><i id="CommentError" style="display:none; color:red"></i></div>
                   </br>
                   <div class="buttons_row">
                   <button class="btn btn-default save" style="text-align: center;" id="comment_submit">Submit</button>
@@ -186,10 +315,10 @@
                       <button class="btn btn-link btn-sm dropdown-toggle" data-toggle="dropdown" type="button"><span class="caret"></span></button>
                       <ul class="dropdown-menu text-center">
                         <li>
-                          <a class="action" onclick="edit_comment({{comment.id}})">Edit</a>
+                          <a class="action" onclick="edit_comment({{comment.id}})">Редактировать</a>
                         </li>
                         <li>
-                          <a class="action" onclick="remove_comment({{comment.id}})">Remove</a>
+                          <a class="action" onclick="remove_comment({{comment.id}})">Удалить</a>
                         </li>
                       </ul>
                     </div>
@@ -208,7 +337,7 @@
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h4 class="modal-title">Update Your Comment</h4>
+                  <h4 class="modal-title">Обновить комментарий</h4>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
 
                 </div>
