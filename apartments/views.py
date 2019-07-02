@@ -5,6 +5,7 @@ from django.views.generic import (
     CreateView, UpdateView, DetailView, TemplateView, View, DeleteView)
 from apartments.forms import ApartmentForm, ApartmentCommentForm, ApartmentAttachmentForm
 from apartments.models import Apartment
+from leads.models import Lead
 from catalog.models import Address
 from common.models import User, Comment, Attachments
 from common.utils import ApartmentStatusChoices
@@ -15,12 +16,17 @@ class ApartmentListView(LoginRequiredMixin, TemplateView):
     context_object_name = "apartments_list"
     template_name = "apartments.html"
 
+    def dispatch(self, request, *args, **kwargs):
+        self.owners = Lead.objects.all()
+        return super(ApartmentListView, self).dispatch(request, *args, **kwargs)
+
     def get_queryset(self):
         queryset = self.model.objects.all()
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super(ApartmentListView, self).get_context_data(**kwargs)
+        context["owners"] = self.owners
         context["apartments_list"] = self.get_queryset()
         context["per_page"] = self.request.POST.get('per_page')
         return context

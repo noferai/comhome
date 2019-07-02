@@ -11,8 +11,8 @@ from django.views.generic import (
     CreateView, UpdateView, DetailView, ListView, TemplateView, View)
 
 from accounts.models import Account
-from common.forms import BillingAddressForm
-from common.models import User, Comment, Team, Attachments
+from apartments.models import Apartment
+from common.models import User, Comment, Attachments
 from common.utils import LEAD_STATUS, LEAD_SOURCE, COUNTRIES
 from leads.models import Lead
 from leads.forms import LeadCommentForm, LeadForm, LeadAttachmentForm
@@ -36,19 +36,7 @@ class LeadListView(LoginRequiredMixin, TemplateView):
     template_name = "leads.html"
 
     def get_queryset(self):
-        queryset = self.model.objects.all().exclude(status='converted')
-        request_post = self.request.POST
-        if request_post:
-            if request_post.get('name'):
-                queryset = queryset.filter(name__icontains=request_post.get('name'))
-            if request_post.get('city'):
-                queryset = queryset.filter(address__city__icontains=request_post.get('city'))
-            if request_post.get('email'):
-                queryset = queryset.filter(email__icontains=request_post.get('email'))
-            if request_post.get('status'):
-                queryset = queryset.filter(status=request_post.get('status'))
-            if request_post.get('day_of_birth'):
-                queryset = queryset.filter(day_of_birth__icontains=request_post.get('day_of_birth'))
+        queryset = self.model.objects.all()
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -69,102 +57,42 @@ class CreateLeadView(LoginRequiredMixin, CreateView):
     template_name = "create_lead.html"
 
     def dispatch(self, request, *args, **kwargs):
-        self.users = User.objects.filter(is_active=True).order_by('email')
+        self.apartments = Apartment.objects.all()
         return super(CreateLeadView, self).dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
         kwargs = super(CreateLeadView, self).get_form_kwargs()
-        kwargs.update({"assigned_to": self.users})
+        kwargs.update({"apartments": self.apartments})
         return kwargs
 
     def post(self, request, *args, **kwargs):
         self.object = None
         form = self.get_form()
-        address_form = BillingAddressForm(request.POST)
-
-        if form.is_valid() and address_form.is_valid():
-            return self.form_valid(form, address_form)
+        if form.is_valid():
+            return self.form_valid(form)
         else:
-            return self.form_invalid(form, address_form)
+            return self.form_invalid(form)
 
-    def form_valid(self, form, address_form):
-        address_object = address_form.save()
+    def form_valid(self, form):
         lead_obj = form.save(commit=False)
-        lead_obj.address = address_object
         lead_obj.created_by = self.request.user
         lead_obj.save()
-        if self.request.POST.getlist('assigned_to', []):
-            lead_obj.assigned_to.add(*self.request.POST.getlist('assigned_to'))
-            assigned_to_list = self.request.POST.getlist('assigned_to')
-            current_site = get_current_site(self.request)
-            for assigned_to_user in assigned_to_list:
-                user = get_object_or_404(User, pk=assigned_to_user)
-                mail_subject = 'Assigned to lead.'
-                message = render_to_string('assigned_to/leads_assigned.html', {
-                    'user': user,
-                    'domain': current_site.domain,
-                    'protocol': self.request.scheme,
-                    'lead': lead_obj
-                })
-                email = EmailMessage(mail_subject, message, to=[user.email])
-                email.send()
-        if self.request.POST.getlist('teams', []):
-            lead_obj.teams.add(*self.request.POST.getlist('teams'))
-        if self.request.POST.get('status') == "converted":
-            account_object = Account.objects.create(
-                created_by=self.request.user, name=lead_obj.account_name,
-                email=lead_obj.email, phone=lead_obj.phone,
-                description=self.request.POST.get('description'),
-                website=self.request.POST.get('website')
-            )
-            account_object.billing_address = address_object
-            if self.request.POST.getlist('assigned_to', []):
-                account_object.assigned_to.add(*self.request.POST.getlist('assigned_to'))
-                assigned_to_list = self.request.POST.getlist('assigned_to')
-                current_site = get_current_site(self.request)
-                for assigned_to_user in assigned_to_list:
-                    user = get_object_or_404(User, pk=assigned_to_user)
-                    mail_subject = 'Assigned to account.'
-                    message = render_to_string('assigned_to/account_assigned.html', {
-                        'user': user,
-                        'domain': current_site.domain,
-                        'protocol': self.request.scheme,
-                        'account': account_object
-                    })
-                    email = EmailMessage(mail_subject, message, to=[user.email])
-                    email.send()
-            if self.request.POST.getlist('teams', []):
-                account_object.teams.add(*self.request.POST.getlist('teams'))
-            account_object.save()
+        form.save_m2m()
         if self.request.POST.get("savenewform"):
             return redirect("leads:add_lead")
         else:
             return redirect('leads:list')
 
-    def form_invalid(self, form, address_form):
+    def form_invalid(self, form):
         return self.render_to_response(
-            self.get_context_data(form=form, address_form=address_form))
+            self.get_context_data(form=form))
 
     def get_context_data(self, **kwargs):
         context = super(CreateLeadView, self).get_context_data(**kwargs)
         context["lead_form"] = context["form"]
-        context["teams"] = Team.objects.all()
-        context["accounts"] = Account.objects.all()
-        context["users"] = self.users
         context["countries"] = COUNTRIES
         context["status"] = LEAD_STATUS
         context["source"] = LEAD_SOURCE
-        context["assignedto_list"] = [
-            int(i) for i in self.request.POST.getlist('assigned_to', []) if i]
-        context["teams_list"] = [
-            int(i) for i in self.request.POST.getlist('teams', []) if i]
-        if "address_form" in kwargs:
-            context["address_form"] = kwargs["address_form"]
-        else:
-            if self.request.POST:
-                context["address_form"] = BillingAddressForm(self.request.POST)
-            else:
-                context["address_form"] = BillingAddressForm()
         return context
 
 
@@ -177,20 +105,8 @@ class LeadDetailView(LoginRequiredMixin, DetailView):
         context = super(LeadDetailView, self).get_context_data(**kwargs)
         comments = Comment.objects.filter(lead__id=self.object.id).order_by('-id')
         attachments = Attachments.objects.filter(lead__id=self.object.id).order_by('-id')
-        events = Event.objects.filter(
-            Q(created_by=self.request.user) | Q(updated_by=self.request.user)
-        ).filter(attendees_leads=context["lead_record"])
-        meetings = events.filter(event_type='Meeting').order_by('-id')
-        calls = events.filter(event_type='Call').order_by('-id')
-        RemindersFormSet = modelformset_factory(Reminder, form=ReminderForm, can_delete=True)
-        reminder_form_set = RemindersFormSet({
-            'form-TOTAL_FORMS': '1',
-            'form-INITIAL_FORMS': '0',
-            'form-MAX_NUM_FORMS': '10',
-        })
         context.update({
-            "attachments": attachments, "comments": comments, "status": LEAD_STATUS, "countries": COUNTRIES,
-            "reminder_form_set": reminder_form_set, "meetings": meetings, "calls": calls})
+            "attachments": attachments, "comments": comments, "status": LEAD_STATUS, "countries": COUNTRIES})
         return context
 
 
@@ -201,7 +117,7 @@ class UpdateLeadView(LoginRequiredMixin, UpdateView):
 
     def dispatch(self, request, *args, **kwargs):
         self.error = ""
-        self.users = User.objects.filter(is_active=True).order_by('email')
+        self.apartments = Apartment.objects.all()
         return super(UpdateLeadView, self).dispatch(request, *args, **kwargs)
 
     def get_initial(self):
@@ -213,7 +129,7 @@ class UpdateLeadView(LoginRequiredMixin, UpdateView):
 
     def get_form_kwargs(self):
         kwargs = super(UpdateLeadView, self).get_form_kwargs()
-        kwargs.update({"assigned_to": self.users})
+        kwargs.update({"apartments": self.apartments})
         return kwargs
 
     def get(self, request, *args, **kwargs):
@@ -226,111 +142,32 @@ class UpdateLeadView(LoginRequiredMixin, UpdateView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        address_obj = self.object.address
         form = self.get_form()
-        address_form = BillingAddressForm(request.POST, instance=address_obj)
-        if request.POST.get('status') == "converted":
-            form.fields['account_name'].required = True
+        if form.is_valid():
+            return self.form_valid(form)
         else:
-            form.fields['account_name'].required = False
-        if form.is_valid() and address_form.is_valid():
-            return self.form_valid(form, address_form)
-        else:
-            return self.form_invalid(form, address_form)
+            return self.form_invalid(form)
 
-    def form_valid(self, form, address_form):
-        address_obj = address_form.save()
+    def form_valid(self, form):
         lead_obj = form.save(commit=False)
-        assigned_to_ids = lead_obj.assigned_to.all().values_list('id', flat=True)
-        lead_obj.address = address_obj
         lead_obj.save()
+        form.save_m2m()
         lead_obj.assigned_to.clear()
         lead_obj.teams.clear()
-        all_members_list = []
-        if self.request.POST.getlist('assigned_to', []):
-            lead_obj.assigned_to.add(*self.request.POST.getlist('assigned_to'))
-            if self.request.POST.get('status') != "converted":
-                assigned_to_list = self.request.POST.getlist('assigned_to')
-                current_site = get_current_site(self.request)
+        return redirect('leads:list')
 
-                assigned_form_users = form.cleaned_data.get('assigned_to').values_list('id', flat=True)
-                all_members_list = list(set(list(assigned_form_users)) - set(list(assigned_to_ids)))
-
-                if len(all_members_list):
-                    for assigned_to_user in assigned_to_list:
-                        user = get_object_or_404(User, pk=assigned_to_user)
-                        mail_subject = 'Assigned to lead.'
-                        message = render_to_string('assigned_to/leads_assigned.html', {
-                            'user': user,
-                            'domain': current_site.domain,
-                            'protocol': self.request.scheme,
-                            'lead': lead_obj
-                        })
-                        email = EmailMessage(mail_subject, message, to=[user.email])
-                        email.send()
-        if self.request.POST.getlist('teams', []):
-            lead_obj.teams.add(*self.request.POST.getlist('teams'))
-        if self.request.POST.get('status') == "converted":
-            account_object = Account.objects.create(
-                created_by=self.request.user, name=lead_obj.account_name,
-                email=lead_obj.email, phone=lead_obj.phone,
-                description=self.request.POST.get('description'),
-                website=self.request.POST.get('website')
-            )
-            account_object.billing_address = address_obj
-            if self.request.POST.getlist('assigned_to', []):
-                account_object.assigned_to.add(*self.request.POST.getlist('assigned_to'))
-                assigned_to_list = self.request.POST.getlist('assigned_to')
-                current_site = get_current_site(self.request)
-                for assigned_to_user in assigned_to_list:
-                    user = get_object_or_404(User, pk=assigned_to_user)
-                    mail_subject = 'Assigned to account.'
-                    message = render_to_string('assigned_to/account_assigned.html', {
-                        'user': user,
-                        'domain': current_site.domain,
-                        'protocol': self.request.scheme,
-                        'account': account_object
-                    })
-                    email = EmailMessage(mail_subject, message, to=[user.email])
-                    email.send()
-            if self.request.POST.getlist('teams', []):
-                account_object.teams.add(*self.request.POST.getlist('teams'))
-            account_object.save()
-        status = self.request.GET.get('status', None)
-        if status:
-            return redirect('accounts:list')
-        else:
-            return redirect('leads:list')
-
-    def form_invalid(self, form, address_form):
+    def form_invalid(self, form):
         return self.render_to_response(
-            self.get_context_data(form=form, address_form=address_form))
+            self.get_context_data(form=form))
 
     def get_context_data(self, **kwargs):
         context = super(UpdateLeadView, self).get_context_data(**kwargs)
         context["lead_obj"] = self.object
-        context["address_obj"] = self.object.address
         context["lead_form"] = context["form"]
-        context["teams"] = Team.objects.all()
-        context["accounts"] = Account.objects.all()
-        context["users"] = self.users
         context["countries"] = COUNTRIES
         context["status"] = LEAD_STATUS
         context["source"] = LEAD_SOURCE
         context["error"] = self.error
-        context["assignedto_list"] = [
-            int(i) for i in self.request.POST.getlist('assigned_to', []) if i]
-        context["teams_list"] = [
-            int(i) for i in self.request.POST.getlist('teams', []) if i]
-        if "address_form" in kwargs:
-            context["address_form"] = kwargs["address_form"]
-        else:
-            if self.request.POST:
-                context["address_form"] = BillingAddressForm(
-                    self.request.POST, instance=context["address_obj"])
-            else:
-                context["address_form"] = BillingAddressForm(
-                    instance=context["address_obj"])
         return context
 
 

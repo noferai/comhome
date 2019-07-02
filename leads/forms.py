@@ -1,20 +1,16 @@
 from django import forms
 from leads.models import Lead
-from common.models import Address, Comment, Attachments
+from common.models import Comment, Attachments
 
 
 class LeadForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
-        assigned_users = kwargs.pop('assigned_to', [])
+        apartments = kwargs.pop('apartments', [])
         super(LeadForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs = {"class": "form-control"}
-        if self.data.get('status') == 'converted':
-            self.fields['account_name'].required = True
-        self.fields['assigned_to'].queryset = assigned_users
-        self.fields['assigned_to'].required = False
-        self.fields['teams'].required = False
+        self.fields['apartments'].queryset = apartments
         self.fields['phone'].required = True
         self.fields['birthday'] = forms.CharField(widget=forms.TextInput(attrs={'autocomplete': 'off'}))
         self.fields['birthday'].required = True
@@ -31,8 +27,6 @@ class LeadForm(forms.ModelForm):
     class Meta:
         model = Lead
         fields = (
-            'assigned_to',
-            'teams',
             'name',
             'gender',
             'account_name',
@@ -60,6 +54,7 @@ class LeadForm(forms.ModelForm):
             'sms',
             'mail',
             'comments',
+            'apartments'
         )
 
     def clean_phone(self):

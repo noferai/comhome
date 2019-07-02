@@ -81,8 +81,7 @@
   <div class="table_container_row row marl no-gutters">
     <div class="col-md-12">
       <div class="card">
-        <div class="card-body list-cat ">
-        <div class="card-header d-flex">
+      <div class="card-header d-flex">
             <h3 class="card-header-title">{% if show_pageitems %} {% show_pageitems %}{% else %}Всего: {{requests|length}}{% endif %}</h3>
                 <div class="toolbar ml-auto">
                     <a href="#" title="Конвертировать" class="btn btn-light btn-sm to-xls">XLS</a>
@@ -90,6 +89,7 @@
                     <a href="{% url 'cases:create_request' %}" title="Добавить" class="btn btn-light btn-sm add-btn"><i class="fas fa-plus"></i></a>
                 </div>
         </div>
+        <div class="card-body list-cat ">
         <div class="table-responsive">
           <table class="table table-striped table-bordered first" id="multiselect">
             <thead>

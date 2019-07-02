@@ -1,24 +1,15 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% block title %} <title>Собственники - Comfortable Home</title>{% endblock %}
 {% load paginate %}
+{% block breadcrumb %}
+<div class="page-header">
+    <h2 class="pageheader-title">Собственники</h2>
+</div>
+{% endblock %}
 {% block content %}
 <!-- main_container starts here -->
 <div class="main_container">
-  <!-- heading_create starts here -->
-  <div class="row marl heading_create">
-    <div class="heading col-md-12">
-     <div class="no-gutters row">
-      <div class="col-md-6">
-      </div>
-      <div class="col-md-6">
-        <div class="create_new text-right">
-          <a href="{% url 'leads:add_lead'%}"><i class="fa fa-plus"></i> Добавить собственника</a>
-        </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- heading_create ends here -->
   <!-- filter_row starts here -->
   <div class="filter_row row marl">
     <div class="col-md-12">
@@ -26,22 +17,25 @@
   <div class="table_container_row row marl no-gutters">
     <div class="col-md-12">
       <div class="card">
-        <div class="card-body">
-          <div class="card-title">
-            Список собственников
-            <span class="float-right total_count">{% if show_pageitems %} {% show_pageitems %}{% else %}Всего: {{ lead_obj|length }}{% endif %}</span>
-            </div>
+      <div class="card-header d-flex">
+            <h3 class="card-header-title">{% if show_pageitems %} {% show_pageitems %}{% else %}Всего: {{lead_obj|length}}{% endif %}</h3>
+                <div class="toolbar ml-auto">
+                    <a href="#" title="Конвертировать" class="btn btn-light btn-sm to-xls">XLS</a>
+                    <a href="#" title="Конвертировать" class="btn btn-light btn-sm to-cvs">CSV</a>
+                    <a href="{% url 'leads:add_lead' %}" title="Добавить" class="btn btn-light btn-sm add-btn"><i class="fas fa-plus"></i></a>
+                </div>
+        </div>
+        <div class="card-body list-cat ">
             <div class="table-responsive">
-              <table class="table ">
+              <table class="table table-striped table-bordered first">
                 <thead>
                 {% if lead_obj|length > 0 %}
                  <tr>
-                    <th width="5%">ID</th>
-                    <th width="25%" >ФИО</th>
-                    <th width="15%" >Status</th>
-                    <th width="15%" >Assigned User</th>
-                    <th width="20%" >Добавлен</th>
-                    <th width="10%" >Действия</th>
+                    <th>Дата</th>
+                    <th>ФИО</th>
+                    <th>Квартира</th>
+                    <th>Задолж.</th>
+                    <th>Действия</th>
                   </tr>
                 {% endif %}
                 </thead>
@@ -53,25 +47,24 @@
                   {% endif %}
                   {% for lead in lead_obj %}
                   <tr class="text-center">
-                    <td scope="row">{{ forloop.counter }}</td>
+                    <td>{{ lead.created_on|date:'d.m.Y'}}</td>
                     <td><a href="{% url 'leads:view_lead' lead.id %}">{{ lead.name }}</a></td>
-                    <td>{{ lead.status }}</td>
                     <td>
-                      {% with lead_users=lead.assigned_to.all %}
-                        {% if lead_users %}
-                          {% for user in lead_users %}
-                            <span class="text-left">{{ user.email }}</span><br>
+                      {% with apartments=lead.apartments.all %}
+                        {% if apartments %}
+                          {% for apartment in apartments %}
+                            <span class="text-left">{{ apartment.address }}</span><br>
                           {% endfor %}
                         {% else %}
-                          Not Assigned to Any
+                          Нет
                         {% endif %}
                       {% endwith %}
                     </td>
-                    <td>{{ lead.created_on }}</td>
+                    <td> {% if lead.debt %}Да{% else %}Нет{% endif %}</td>
                     <td class="actions">
-                       <a href="{% url 'leads:view_lead' lead.id %}" class="btn btn-info view"><i class="fas fa-eye"></i> </a>
-                      <a href="{% url 'leads:edit_lead' lead.id %}" class="btn btn-success edit"><i class="fas fa-pencil-alt"></i></a>
-                      <a href="{% url 'leads:remove_lead' lead.id %}" class="btn btn-danger delete remove_account"><i class="fas fa-trash-alt"></i></a>
+                       <a href="{% url 'leads:view_lead' lead.id %}" title="Подробнее"><i class="fas fa-eye"></i> </a>
+                      <a href="{% url 'leads:edit_lead' lead.id %}" title="Редактировать"><i class="fas fa-pencil-alt"></i></a>
+                      <a href="{% url 'leads:remove_lead' lead.id %}" title="Удалить"><i class="fas fa-trash-alt"></i></a>
                     </td>
                   </tr>
                   {% endfor %}

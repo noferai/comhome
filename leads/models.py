@@ -4,10 +4,10 @@ from django.utils.translation import ugettext_lazy as _
 
 from accounts.models import Account
 from common.models import User, Address, Team
+from apartments.models import Apartment
 from common.utils import LEAD_STATUS, LEAD_SOURCE
 from leads.utils import RequestChoicesGender, RequestChoicesDebtStatus,\
     RequestChoicesDebt, RequestChoicesGarbagePayment, RequestChoicesTypePassport
-from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Lead(models.Model):
@@ -24,6 +24,7 @@ class Lead(models.Model):
     garbage_payment = models.BooleanField('Задолженность по мусору', null=True,
                                           choices=RequestChoicesGarbagePayment.choices)
     date_of_issue = models.DateField('Дата выдачи паспорта', null=True)
+    apartments = models.ManyToManyField(Apartment, related_name='owners')
 
     # Поля паспорта
     passport_date = models.DateField('Дата выдачи', null=True)

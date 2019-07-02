@@ -18,4 +18,3 @@ class Apartment(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
     status = models.CharField('Статус', choices=ApartmentStatusChoices.choices, max_length=64, default=ApartmentStatusChoices.empty)
     #request_history = models.ForeignKey(Case, on_delete=models.PROTECT)
-    #owners = models.ManyToManyField()
