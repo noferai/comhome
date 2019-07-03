@@ -19,8 +19,6 @@ from common.utils import ROLES
 
 import json
 
-def index(request):
-    return render(request, 'index.html')
 
 def handler404(request, exception):
     return render(request, '404.html', status=404)

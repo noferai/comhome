@@ -1,11 +1,10 @@
 from django.contrib.auth import views
 from django.urls import include, path
-from common.views import handler404, handler500, index
+from common.views import handler404, handler500
 
 app_name = 'ComfortableHome'
 
 urlpatterns = [
-    path('', index, name='index'),
     path('', include('common.urls', namespace="common")),
     path('', include('django.contrib.auth.urls')),
     path('staff/', include('accounts.urls', namespace="accounts")),

@@ -1,53 +1,72 @@
 {% load staticfiles %}
-{% load compress %}
+<!doctype html>
+<html lang="en">
 
-<!DOCTYPE html>
-<html lang="ru">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <!-- Meta, title, CSS, favicons, etc. -->
+    <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Django CRM</title>
-    <!-- Bootstrap core CSS -->
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.0/css/bootstrap.min.css" />
-    <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" />
-    <!-- Custom styling plus plugins -->
-      <link href="{% static 'css/main.css' %}" type="text/css" rel="stylesheet">
-    {% block extralinks %}{% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Вход</title>
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    {% bootstrap_messages %}
+    <link rel="stylesheet" href="{% static 'libs/css/style.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <style>
+    html,
+    body {
+        height: 100%;
+    }
+
+    body {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: center;
+        align-items: center;
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+        .navbar-brand {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 </head>
+
 <body class="login_register_body">
-<div class="container">
-    <div class="row marl justify-content-center login_row">
-        <div class="col-md-6 col-lg-6 col-xl-4">
-            <div class="login_block">
-                <div class="login_form_block">
-                    <div class="welcome">ComfortableHome CRM</div>
-                    <form method="POST" action="">
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Email" name="email">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Пароль" name="password">
-                        </div>
-                        <div class="forgot">Забыли пароль? <a href="{% url "common:password_reset" %}">Нажмите сюда</a></div>
-                        {% if error %}
+    <div class="splash-container">
+        <div class="card ">
+            <div class="card-header text-center"><a class="navbar-brand" href="/"><i class="fas fa-home"></i> Com<span>Home</span></a></div>
+            <div class="card-body login_form_block">
+                <form method="POST" action="">
+                    <div class="form-group">
+                        <input class="form-control form-control-lg" id="username" name="email" type="text" placeholder="Email" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control form-control-lg" id="password" name="password" type="password" placeholder="Пароль">
+                    </div>
+                    {% if error %}
                             <p class="error">{{ message }}</p>
                         {% endif %}
-                        <button type="submit" class="btn btn-danger">Войти</button>
-                    </form>
-                    <div class="credentials">
-                        <span class="heading">Данные для входа</span>
-                        <span>Email: <b>comhome@test.com</b></span><br>
-                        <span>Password:<b> admin</b>
+                    <div class="form-group">
+                        <label class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox"><span class="custom-control-label">Запомнить</span>
+                        </label>
                     </div>
-                </div>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Войти</button>
+                </form>
+            </div>
+            <div class="card-footer bg-white p-0  ">
+{#                <div class="card-footer-item card-footer-item-bordered">#}
+{#                    <a href="{% url "common:password_reset" %}" class="footer-link">Забыл пароль</a>#}
+{#                </div>#}
+                <div class="card-footer-item card-footer-item-bordered">Email: comhome@test.com</div>
+                <div class="card-footer-item card-footer-item-bordered">Пароль: admin</div>
             </div>
         </div>
     </div>
-</div>
+    {% bootstrap_javascript jquery='full' %}
 </body>
+
 </html>

@@ -18,236 +18,73 @@
 <div class="main_container" id="maincontainer">
   <div class="overview_form_block row marl justify-content-center">
     <div class="col-md-12">
-      <div class="card">
-      <div class="card-header d-flex">
-                <h3 class="card-header-title">Подробная информация</h3>
+    <div class="simple-card">
+        <div class="card-header d-flex">
                 <div class="toolbar ml-auto">
                     <a href="{% url 'leads:edit_lead' lead_record.id %}" class="btn btn-light btn-sm"><i class="fas fa-pencil-alt"></i></a>
                     <a href="{% url 'leads:remove_lead' lead_record.id %}" class="btn btn-light btn-sm"><i class="fas fa-trash-alt"></i></a>
                 </div>
-            </div>
-        <div class="card-body" id="datashow">
-          <div class="row marl">
-            <div class="col-md-12">
-
-              <div class="filter_col col-md-12" id="iname">
-                <div class="form-group" >
-                  <label class="lead_field_label" for="id_name" data-name="name">ФИО</label>
-                  <div class="lead_field" id="lead_name" data-name="name">{{ lead_record.name }}</div>
-                </div>
-              </div>
-
-              <div class="filter_col col-md-12" id="iname">
-                <div class="form-group" >
-                  <label class="lead_field_label" for="gender" data-name="gender">Пол</label>
-                  <div class="lead_field" id="gender" data-name="gender">{{ lead_record.gender }}</div>
-                </div>
-              </div>
-
-              <div class="filter_col col-md-12">
-                <div class="form-group">
-                  <label class="lead_field_label" for="birthday" data-name="name">Дата Рождения</label>
-                    <div class="lead_field" id="id_birthday" data-name="name">{{ lead_record.birthday }}</div>
-                </div>
-              </div>
-
-              <div class="filter_col col-md-12">
-                <div class="form-group">
-                  <label class="lead_field_label" for="id_phone" data-name="name">Номер</label>
-                  <div class="lead_field" id="lead_phone" data-name="name">{{ lead_record.phone }}</div>
-                </div>
-              </div>
-
-              <div class="filter_col col-md-12">
-                <div class="form-group">
-                  <label class="lead_field_label" for="id_email" data-name="name">Email</label>
-                  <div class="lead_field" id="lead_email" data-name="name">{{ lead_record.email }}</div>
-                </div>
-              </div>
-
-              <div class="filter_col col-md-12">
-                <div class="form-group">
-                  <label class="lead_field_label" for="debt" data-name="debt">Задолженность</label>
-                  <div class="lead_field" id="debt" data-name="debt">{% if lead_record.debt %} Да {% else %} Нет {% endif %} </div>
-                </div>
-              </div>
-
-              <div class="filter_col col-md-12">
-                <div class="form-group">
-                  <label class="lead_field_label" for="debt_status" data-name="debt_status">Статус взыскания задолженности</label>
-                  <div class="lead_field" id="debt_status" data-name="debt_status">{{ lead_record.status_of_work_with_debt }}</div>
-                </div>
-              </div>
-
-              <div class="filter_col col-md-12">
-                <div class="form-group">
-                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Оплата мусора</label>
-                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{% if lead_record.garbage_payment %} Оплачено {% else %} Нет {% endif %}</div>
-                </div>
-              </div>
-
-
-
-            <h2>Паспортные данные</h2>
-
-              <div class="filter_col col-md-12">
-                <div class="form-group">
-                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Дата выдачи</label>
-                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{{ lead_record.passport_date }}</div>
-                </div>
-              </div>
-
-              <div class="filter_col col-md-12">
-                <div class="form-group">
-                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Серия</label>
-                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{{ lead_record.passport_series }}</div>
-                </div>
-              </div>
-
-              <div class="filter_col col-md-12">
-                <div class="form-group">
-                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Номер</label>
-                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{{ lead_record.passport_id }}</div>
-                </div>
-              </div>
-
-              <div class="filter_col col-md-12">
-                <div class="form-group">
-                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Кем выдан</label>
-                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{{ lead_record.issued_by }}</div>
-                </div>
-              </div>
-
-              <div class="filter_col col-md-12">
-                <div class="form-group">
-                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Код подразделения</label>
-                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{{ lead_record.unit_code }}</div>
-                </div>
-              </div>
-
-              <div class="filter_col col-md-12">
-                <div class="form-group">
-                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Тип паспорта</label>
-                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{{ lead_record.type_of_passport }}</div>
-                </div>
-              </div>
-
-
-
-            <h2>Информация</h2>
-              <div class="filter_col col-md-12">
-                <div class="form-group">
-                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Напоминание о Дне Рождения</label>
-                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{% if lead_record.birthday_reminder %} Да {% else %} Нет {% endif %}</div>
-                </div>
-              </div>
-
-              <div class="filter_col col-md-12">
-                <div class="form-group">
-                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Проблемный клиент</label>
-                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{% if lead_record.hard_case %} Да {% else %} Нет {% endif %}</div>
-                </div>
-              </div>
-
-              <div class="filter_col col-md-12">
-                <div class="form-group">
-                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Лояльный</label>
-                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{% if lead_record.loyal %} Да {% else %} Нет {% endif %}</div>
-                </div>
-              </div>
-
-              <div class="filter_col col-md-12">
-                <div class="form-group">
-                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">VIP-клиент</label>
-                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{% if lead_record.vip %} Да {% else %} Нет {% endif %}</div>
-                </div>
-              </div>
-
-              <div class="filter_col col-md-12">
-                <div class="form-group">
-                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Звонки</label>
-                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{% if lead_record.calls %} Да {% else %} Нет {% endif %}</div>
-                </div>
-              </div>
-
-              <div class="filter_col col-md-12">
-                <div class="form-group">
-                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">SMS</label>
-                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{% if lead_record.sms %} Да {% else %} Нет {% endif %}</div>
-                </div>
-              </div>
-
-              <div class="filter_col col-md-12">
-                <div class="form-group">
-                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Email</label>
-                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{% if lead_record.mail %} Да {% else %} Нет {% endif %}</div>
-                </div>
-              </div>
-
-              <div class="filter_col col-md-12">
-                <div class="form-group">
-                  <label class="lead_field_label" for="garbage_payment" data-name="garbage_payment">Комментарий</label>
-                  <div class="lead_field" id="garbage_payment" data-name="garbage_payment">{{ lead_record.comments }}</div>
-                </div>
-              </div>
+        </div>
+        <ul class="nav nav-tabs" id="myTab5" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link border-left-0 active show" id="main-information-tab" data-toggle="tab" href="#main-information" role="tab" aria-controls="home" aria-selected="true">Подробная информация</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="passport-information-tab" data-toggle="tab" href="#passport-information" role="tab" aria-controls="profile" aria-selected="false">Паспортные данные</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="additional-information-tab" data-toggle="tab" href="#additional-information" role="tab" aria-controls="contact" aria-selected="false">Дополнительная информация</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent5">
+            <div class="tab-pane fade active show" id="main-information" role="tabpanel" aria-labelledby="home-tab-simple">
+                <p>ФИО: {{ lead_record.name }} </p>
+                <p>Пол: {{ lead_record.gender }}</p>
+                <p>Дата рождения: {{ lead_record.birthday }}</p>
+                <p>Номер телефона: {{ lead_record.phone }}</p>
+                <p>Email: {{ lead_record.email }}</p>
+                <p>Задолженность: {% if lead_record.debt %} Да {% else %} Нет {% endif %}</p>
+                <p>Статус взыскания задолженности: {{ lead_record.status_of_work_with_debt }}</p>
+                <p>Оплата мусора: {% if lead_record.garbage_payment %} Оплачено {% else %} Нет {% endif %}</p>
 
             </div>
-
-
-            <div class="col-md-12">
-              <div class="filter_col col-md-12">
-                {% if lead_record.status %}
-                <div class="form-group">
-                  <label class="lead_field_label" for="id_status" data-name="name">Status</label>
-                  <div class="lead_field" id="lead_status" data-name="name">{{ lead_record.status }}</div>
-                </div>
-                {% endif %}
-              </div>
-              <div class="filter_col col-md-12">
-                {% if lead_record.source %}
-                <div class="form-group">
-                  <label class="lead_field_label" for="id_source" data-name="name">Source</label>
-                  <div class="lead_field" id="lead_source" data-name="name">{{ lead_record.source }}</div>
-                </div>
-                {% endif %}
-              </div>
-              <div class="filter_col col-md-12">
-                {% if lead_record.website %}
-                <div class="form-group">
-                  <label class="lead_field_label" for="id_website" data-name="name">Website</label>
-                  <div class="lead_field" id="lead_website" data-name="name">{{ lead_record.website }}</div>
-                </div>
-                {% endif %}
-              </div>
-              <div class="filter_col col-md-12">
-                <div class="form-group">
-                  {% if lead_record.address.address_line or lead_record.address.street or lead_record.address.city or lead_record.address.state or lead_record.address.postcode or lead_record.address.country %}
-                  <label class="lead_field_label" for="id_address" data-name="name" >Расчётный адрес</label>
-                  <div class="lead_field" id="lead_address" data-name="name">
-                    {{lead_record.address.get_complete_address}}
-                  </div>
-                  {% endif %}
-                </div>
-              </div>
-              <div class="filter_col col-md-12">
-                {% if lead_record.description %}
-                <div class="form-group">
-                  <label class="lead_field_label" for="id_description" data-name="name" >Описание</label>
-                  <div class="lead_field" id="lead_description" data-name="name">{{ lead_record.description }}</div>
-                </div>
-                {% endif %}
-              </div>
+            <div class="tab-pane fade" id="passport-information" role="tabpanel" aria-labelledby="profile-tab-simple">
+                <p>Дата выдачи: {{ lead_record.passport_date }}</p>
+                <p>Серия: {{ lead_record.passport_series }}</p>
+                <p>Номер: {{ lead_record.passport_id }}</p>
+                <p>Кем выдан: {{ lead_record.issued_by }}</p>
+                <p>Код подразделения: {{ lead_record.unit_code }}</p>
+                <p>Тип паспорта: {{ lead_record.type_of_passport }}</p>
+                <p></p>
+                <p></p>
             </div>
-            <div class="col-md-12">
-                <div class="created_information">
-                  Создано <b>{{ lead_record.created_by }}</b> <i><b>{{ lead_record.created_on }}</b></i>
-                </div>
+            <div class="tab-pane fade" id="additional-information" role="tabpanel" aria-labelledby="contact-tab-simple">
+                <p>Напоминание о Дне Рождения: {% if lead_record.birthday_reminder %} Да {% else %} Нет {% endif %}</p>
+                <p>Проблемный клиент: {% if lead_record.hard_case %} Да {% else %} Нет {% endif %}</p>
+                <p>Лояльный: {% if lead_record.loyal %} Да {% else %} Нет {% endif %}</p>
+                <p>VIP-клиент: {% if lead_record.vip %} Да {% else %} Нет {% endif %}</p>
+                <p>Звонки: {% if lead_record.calls %} Да {% else %} Нет {% endif %}</p>
+                <p>SMS: {% if lead_record.sms %} Да {% else %} Нет {% endif %}</p>
+                <p>Email: {% if lead_record.mail %} Да {% else %} Нет {% endif %}</p>
+                <p>Комментарий: {{ lead_record.comments }}</p>
             </div>
+        </div>
+        <div class="card-footer  p-0 text-left d-flex justify-content-center">
+                <div class="card-footer-item card-footer-item-bordered">
+                Дата: {{ lead_record.created_on }}
+                </div>
+                <div class="card-footer-item card-footer-item-bordered">
+                Добавил: {{ lead_record.created_by }}
+                </div>
+        </div>
+    </div>
+
           </div>
         </div>
 
         <!-- Attachment Section start -->
       <div>
+      <div class="card">
       <div class="card-body mar-top" id="datashow">
           <div class="card-title view-pad">
               <h5>Прикрепления</h5>
@@ -284,83 +121,80 @@
               </div>
           </div>
       </div>
+      </div>
         <!-- Attachment Section end -->
 
-        <!-- Comments Section starts-->
-      <div>
-        <div class="card-body mar-top" id="datashow">
-         <div class="card-title view-pad">
-          <h5>Комментарий</h5>
+{#        <!-- Comments Section starts-->#}
+{#      <div>#}
+{#        <div class="card-body mar-top" id="datashow">#}
+{#         <div class="card-title view-pad">#}
+{#          <h5>Комментарий</h5>#}
+{#        </div>#}
+{#          <div class="row marl">#}
+{#            <div class="col-md-12">#}
+{#              <form id="comment_form" method="POST" enctype="multipart/form-data">#}
+{#                <div class="form-group ">#}
+{#                  <textarea class="form-control" textarea cols="40" rows="3" id="id_comments" name="comment" placeholder="Напишите свой комментарий тут"></textarea><div><i id="CommentError" style="display:none; color:red"></i></div>#}
+{#                  </br>#}
+{#                  <div class="buttons_row">#}
+{#                  <button class="btn btn-default save" style="text-align: center;" id="comment_submit">Submit</button>#}
+{#                  </div>#}
+{#                </div>#}
+{#                <input type="hidden" value="{{lead_record.id}}" name="leadid">#}
+{#              </form>#}
+{#              <ul class="list-group" id="comments_div">#}
+{#                {% for comment in comments %}#}
+{#                <li class="list-group-item list-row" id="comment{{comment.id}}">#}
+{#                  <div class="float-right right-container">#}
+{#                    <div class="list-row-buttons btn-group float-right">#}
+{#                      <button class="btn btn-link btn-sm dropdown-toggle" data-toggle="dropdown" type="button"><span class="caret"></span></button>#}
+{#                      <ul class="dropdown-menu text-center">#}
+{#                        <li>#}
+{#                          <a class="action" onclick="edit_comment({{comment.id}})">Редактировать</a>#}
+{#                        </li>#}
+{#                        <li>#}
+{#                          <a class="action" onclick="remove_comment({{comment.id}})">Удалить</a>#}
+{#                        </li>#}
+{#                      </ul>#}
+{#                    </div>#}
+{#                  </div>#}
+{#                  <div class="stream-post-container" id="comment_name{{comment.id}}"><pre>{{ comment.comment }}</pre></div>#}
+{#                  <div class="stream-container">#}
+{#                    <pre class="float-left">{{ comment.commented_by }}</pre>#}
+{#                    <pre class="float-right">{{ comment.commented_on }}</pre>#}
+{#                  </div>#}
+{#                </li>#}
+{#                {% endfor %}#}
+{#              </ul>#}
+{#            </div>#}
+{#          </div>#}
+{#          <div class="modal fade" id="Comments_Leads_Modal" role="dialog" data-keyboard="false" data-backdrop="static">#}
+{#            <div class="modal-dialog modal-lg">#}
+{#              <div class="modal-content">#}
+{#                <div class="modal-header">#}
+{#                  <h4 class="modal-title">Обновить комментарий</h4>#}
+{#                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>#}
+{##}
+{#                </div>#}
+{#                <form id="comment_edit_form" method="POST" >#}
+{#                  <div class="modal-body">#}
+{#                    <div class="form-group">#}
+{#                      <textarea class="form-control" textarea cols="40" rows="3" id="id_editcomment" name="comment" placeholder="Submit Your Comments"></textarea><span><i id="CommentEditError" style="display:none; color:red"></i></span>#}
+{#                      <input type="hidden" value="{{ lead.id }}" name="leadid">#}
+{#                      <input type="hidden" value="" name="commentid" id="commentid">#}
+{#                    </div>#}
+{#                  </div>#}
+{#                  <div class="modal-footer">#}
+{#                    <button class="btn btn-default save" id="comment_edit" type="submit">Update</button>#}
+{#                  </div>#}
+{#                </form>#}
+{#              </div>#}
+{#            </div>#}
+{#          </div>#}
+{#        </div></div>#}
+{#        <!-- Comments Section Ends-->#}
         </div>
-          <div class="row marl">
-            <div class="col-md-12">
-              <form id="comment_form" method="POST" enctype="multipart/form-data">
-                <div class="form-group ">
-                  <textarea class="form-control" textarea cols="40" rows="3" id="id_comments" name="comment" placeholder="Напишите свой комментарий тут"></textarea><div><i id="CommentError" style="display:none; color:red"></i></div>
-                  </br>
-                  <div class="buttons_row">
-                  <button class="btn btn-default save" style="text-align: center;" id="comment_submit">Submit</button>
-                  </div>
-                </div>
-                <input type="hidden" value="{{lead_record.id}}" name="leadid">
-              </form>
-              <ul class="list-group" id="comments_div">
-                {% for comment in comments %}
-                <li class="list-group-item list-row" id="comment{{comment.id}}">
-                  <div class="float-right right-container">
-                    <div class="list-row-buttons btn-group float-right">
-                      <button class="btn btn-link btn-sm dropdown-toggle" data-toggle="dropdown" type="button"><span class="caret"></span></button>
-                      <ul class="dropdown-menu text-center">
-                        <li>
-                          <a class="action" onclick="edit_comment({{comment.id}})">Редактировать</a>
-                        </li>
-                        <li>
-                          <a class="action" onclick="remove_comment({{comment.id}})">Удалить</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="stream-post-container" id="comment_name{{comment.id}}"><pre>{{ comment.comment }}</pre></div>
-                  <div class="stream-container">
-                    <pre class="float-left">{{ comment.commented_by }}</pre>
-                    <pre class="float-right">{{ comment.commented_on }}</pre>
-                  </div>
-                </li>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
-          <div class="modal fade" id="Comments_Leads_Modal" role="dialog" data-keyboard="false" data-backdrop="static">
-            <div class="modal-dialog modal-lg">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h4 class="modal-title">Обновить комментарий</h4>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-
-                </div>
-                <form id="comment_edit_form" method="POST" >
-                  <div class="modal-body">
-                    <div class="form-group">
-                      <textarea class="form-control" textarea cols="40" rows="3" id="id_editcomment" name="comment" placeholder="Submit Your Comments"></textarea><span><i id="CommentEditError" style="display:none; color:red"></i></span>
-                      <input type="hidden" value="{{ lead.id }}" name="leadid">
-                      <input type="hidden" value="" name="commentid" id="commentid">
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button class="btn btn-default save" id="comment_edit" type="submit">Update</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div></div>
-        <!-- Comments Section Ends-->
         </div>
-        </div>
-    <tr id="meeting{{ meeting.id }}">
-    </div>
-  </div>
-</div>
 {% endblock %}
 
 {% block js_block %}
