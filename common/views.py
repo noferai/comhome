@@ -15,7 +15,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from common.serializers import UserSerializer
-from common.utils import ROLES
 
 import json
 
@@ -92,12 +91,12 @@ class LoginView(TemplateView):
                 else:
                     return render(request, "login.html", {
                         "error": True,
-                        "message": "Your Account is InActive. Please Contact Administrator"
+                        "message": "Your Staff is InActive. Please Contact Administrator"
                     })
             else:
                 return render(request, "login.html", {
                     "error": True,
-                    "message": "Your Account is not Found. Please Contact Administrator"
+                    "message": "Your Staff is not Found. Please Contact Administrator"
                 })
         else:
             return render(request, "login.html", {

@@ -1,0 +1,264 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %} <title>{% if homeowner_obj %}Редактировать {% else %}Добавить {% endif %}собственника - Comfortable Home</title>{% endblock %}
+{% block extralinks %}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+{% block breadcrumb %}
+<div class="page-header">
+        <h2 class="pageheader-title">{% if homeowner_obj %}Редактировать {% else %}Добавить {% endif %}собственника</h2>
+    <div class="page-breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li  class="breadcrumb-item"><a href="{% url 'homeowners:list' %}">Собственники</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{% if homeowner_obj %}Редактировать {% else %}Добавить {% endif %}собственника</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+{% endblock %}
+{%block content%}
+  <form id="add_form" method="POST" action="" novalidate>
+    <div class="overview_form_block row marl">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <div>
+              <div>
+
+{#                 ФИО собственника#}
+                <div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1" class="name" >Фамилия Имя Отчество {% if homeowner_form.name.field.required %}<span class="error">*</span>{% endif %}</label>
+                    <div class="row">
+                      <div class="filter_col col-md-6">
+                        {{ homeowner_form.name }}
+                        <span class="error">{{ homeowner_form.name.errors }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+{#              Пол#}
+                <div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1" class="name" >Пол {% if homeowner_form.name.field.required %}<span class="error">*</span>{% endif %}</label>
+                    <div class="row">
+                      <div class="filter_col col-md-6">
+                        {{ homeowner_form.gender }}
+                        <span class="error">{{ homeowner_form.gender.errors }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+{#              Дата рождения#}
+                <div class="date">
+                        <p>Выберите дату рождения:
+                        {{ homeowner_form.birthday }}
+                </div>
+
+{#              Номер телефона#}
+                <div>
+                  <div class="form-group ">
+                    <label for="exampleInputEmail1">Телефон{% if homeowner_form.phone.field.required %}<span class="error"> *</span>{% endif %}</label>
+                    {{ homeowner_form.phone }}
+                    <span class="error">{{ homeowner_form.phone.errors }}</span>
+                  </div>
+                </div>
+
+{#              Мыло#}
+                <div>
+                  <div class="form-group ">
+                    <label for="exampleInputEmail1" class="required">Email{% if homeowner_form.email.field.required %}<span class="error">*</span>{% endif %}</label>
+                    {{ homeowner_form.email }}
+                    <span class="error">{{ homeowner_form.email.errors }}</span>
+                  </div>
+                </div>
+
+{#                Наличие задолжености#}
+                <div>
+                  <div class="form-group ">
+                    <label for="exampleInputEmail1" class="required">Задолженность{% if homeowner_form.debt.field.required %}<span class="error">*</span>{% endif %}</label>
+                    {{ homeowner_form.debt }}
+                    <span class="error">{{ homeowner_form.debt.errors }}</span>
+                  </div>
+                </div>
+
+{#              Статус взыскания задолженности#}
+                <div>
+                  <div class="form-group ">
+                    <label for="exampleInputEmail1" class="required">Статус взыскания задолженности{% if homeowner_form.status_of_work_with_debt.field.required %}<span class="error">*</span>{% endif %}</label>
+                    {{ homeowner_form.status_of_work_with_debt }}
+                    <span class="error">{{ homeowner_form.status_of_work_with_debt.errors }}</span>
+                  </div>
+                </div>
+
+              {#  Оплата мусора#}
+                <div>
+                  <div class="form-group ">
+                    <label for="exampleInputEmail1" class="required">Оплата мусора{% if homeowner_form.garbage_payment.field.required %}<span class="error">*</span>{% endif %}</label>
+                    {{ homeowner_form.garbage_payment }}
+                    <span class="error">{{ homeowner_form.garbage_payment.errors }}</span>
+                  </div>
+                </div>
+
+
+            <!-- Passport form start -->
+              <div>
+                <h2>Паспортные данные</h2>
+                    Дата выдачи
+                    <div class="date">
+                       {{ homeowner_form.passport_date }}
+                    </div>
+              </div>
+
+              <div>
+                    Серия
+                    <div>
+                       {{ homeowner_form.passport_series }}
+                    </div>
+              </div>
+
+              <div>
+                    Номер
+                    <div>
+                       {{ homeowner_form.passport_id }}
+                    </div>
+              </div>
+
+              <div>
+                    Кем выдан
+                    <div>
+                       {{ homeowner_form.issued_by }}
+                    </div>
+              </div>
+
+              <div>
+                    Код подразделения
+                    <div>
+                       {{ homeowner_form.unit_code }}
+                    </div>
+              </div>
+
+              <div>
+                    Тип
+                    <div>
+                       {{ homeowner_form.type_of_passport }}
+                    </div>
+              </div>
+            <!-- Passport form end -->
+
+
+
+            <!-- Information start -->
+
+              <div>
+                  <h2>Информация</h2>
+                    Напоминание о Дне Рождения
+                    <div>
+                       {{ homeowner_form.birthday_reminder }}
+                    </div>
+              </div>
+
+              <div>
+                    Проблемный клиент
+                    <div>
+                       {{ homeowner_form.hard_case }}
+                    </div>
+              </div>
+
+              <div>
+                    Лояльность
+                    <div>
+                       {{ homeowner_form.loyal }}
+                    </div>
+              </div>
+
+              <div>
+                    VIP-клиент
+                    <div>
+                       {{ homeowner_form.vip }}
+                    </div>
+              </div>
+
+              <div>
+                    Звонки
+                    <div>
+                       {{ homeowner_form.calls }}
+                    </div>
+              </div>
+
+              <div>
+                    SMS
+                    <div>
+                       {{ homeowner_form.sms }}
+                    </div>
+              </div>
+
+              <div>
+                    Email
+                    <div>
+                       {{ homeowner_form.mail }}
+                    </div>
+              </div>
+
+              <div>
+                    Комментарий
+                    <div>
+                       {{ homeowner_form.comments }}
+                    </div>
+              </div>
+
+            <!-- Information end -->
+
+
+
+              </div>
+
+{#             Квартира собственника, вероятно заменяется на выбор из базы#}
+              <div class="form-group">
+                    <label for="exampleInputEmail1" class="required">Квартиры{% if homeowner_form.apartments.field.required %}<span class="error">*</span>{% endif %}</label>
+                    {{ homeowner_form.apartments }}
+                    <span class="error">{{ homeowner_form.apartments.errors }}</span>
+              </div>
+
+
+              <div>
+                <div>
+                  <label for="exampleInputEmail1" >Описание{% if homeowner_form.description.field.required %}<span class="error">*</span>{% endif %}</label>
+                  {{ homeowner_form.description }}
+                  <span class="error">{{ homeowner_form.description.errors }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        <div class="card-footer  p-0 text-left d-flex justify-content-center">
+            <div class="card-footer-item card-footer-item-bordered">
+                <button class="btn btn-default save" type="submit">Сохранить</button>
+            </div>
+            {% if not homeowner_obj %}
+            <div class="card-footer-item card-footer-item-bordered">
+                <button class="btn btn-default save savenew" type="submit">Сохранить и добавить ещё</button>
+            </div>
+            {% endif %}
+            <div class="card-footer-item card-footer-item-bordered">
+                <a href="{% url 'homeowners:list' %}" class="btn btn-default clear">Отмена</a>
+            </div>
+        </div>
+          <br clear="all">
+        </div>
+      </div>
+      <input type="hidden" id="save_new_form" name="savenewform">
+    </div>
+  </form>
+{% endblock %}
+{% block js_block %}
+  <script type="text/javascript">
+    $(".savenew").on('click', function(e){
+      e.preventDefault()
+      $("#save_new_form").val('true')
+      $('#add_form').submit()
+    });
+  </script>
+{% endblock js_block %}

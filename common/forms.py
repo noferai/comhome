@@ -1,38 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import PasswordResetForm
-from common.models import Address, User, Document
-
-
-class BillingAddressForm(forms.ModelForm):
-
-    class Meta:
-        model = Address
-        fields = ('address_line', 'street', 'city', 'state', 'postcode', 'country')
-
-    def __init__(self, *args, **kwargs):
-        super(BillingAddressForm, self).__init__(*args, **kwargs)
-        for field in self.fields.values():
-            field.widget.attrs = {"class": "form-control"}
-        for key, value in self.fields.items():
-            if key == 'phone':
-                value.widget.attrs['placeholder'] = 'Введите номер телефона'
-            else:
-                value.widget.attrs['placeholder'] = value.label
-        self.fields["country"].choices = [("", "--Страна--"), ] + list(self.fields["country"].choices)[1:]
-
-
-class ShippingAddressForm(forms.ModelForm):
-    class Meta:
-        model = Address
-        fields = ('address_line', 'street', 'city', 'state', 'postcode', 'country')
-
-    def __init__(self, *args, **kwargs):
-        super(ShippingAddressForm, self).__init__(*args, **kwargs)
-        for field in self.fields.values():
-            field.widget.attrs = {"class": "form-control"}
-
-        self.fields["country"].choices = [("", "--Country--"), ] + list(self.fields["country"].choices)[1:]
+from common.models import User, Document
 
 
 class UserForm(forms.ModelForm):

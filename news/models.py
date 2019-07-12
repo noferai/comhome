@@ -5,10 +5,7 @@ from django.utils import timezone
 
 class Entry(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author')
-
-    # TODO: уточнить на счёт структуы новости
     title = models.CharField(max_length=2000)
-
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)

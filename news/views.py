@@ -15,7 +15,7 @@ import json
 
 class NewsListView(LoginRequiredMixin, TemplateView):
     model = Entry
-    template_name = 'news_list.html'
+    template_name = 'news.html'
 
     def get_context_data(self, **kwargs):
         context = super(NewsListView, self).get_context_data(**kwargs)
@@ -59,7 +59,7 @@ class CreateEntryView(LoginRequiredMixin, CreateView):
         entry_object.author = self.request.user     # User model object instance
         entry_object.save()
         if self.request.POST.get("savenewform"):
-            return redirect("news:new_entry")
+            return redirect("news:add")
         else:
             return redirect("news:list")
 
@@ -116,7 +116,7 @@ class EntryUpdateView(LoginRequiredMixin, UpdateView):
         entry_object = form.save(commit=False)
         entry_object.save()
         if self.request.POST.get("savenewform"):
-            return redirect("news:new_entry")
+            return redirect("news:add")
         else:
             return redirect("news:list")
 

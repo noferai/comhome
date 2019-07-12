@@ -1,6 +1,6 @@
 from django.contrib.auth import views as auth_views
 
-from django.urls import path, include
+from django.urls import path
 
 from common.views import (
     HomeView, LoginView, ForgotPasswordView, LogoutView, ChangePasswordView, ProfileView,

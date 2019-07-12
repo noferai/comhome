@@ -2,56 +2,45 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import (
-    CreateView, UpdateView, DetailView, TemplateView, View, DeleteView)
-from apartments.forms import ApartmentForm, ApartmentCommentForm, ApartmentAttachmentForm
+    CreateView, UpdateView, DetailView, TemplateView, View)
 from apartments.models import Apartment
-from homeowners.models import Homeowner
-from catalog.models import Address
 from common.models import Comment, Attachments
-from common.utils import ApartmentStatusChoices
+from homeowners.models import Homeowner
+from homeowners.forms import HomeownerCommentForm, HomeownerForm, HomeownerAttachmentForm
 
 
-class ApartmentListView(LoginRequiredMixin, TemplateView):
-    model = Apartment
-    context_object_name = "apartments_list"
-    template_name = "apartments.html"
-
-    def dispatch(self, request, *args, **kwargs):
-        self.owners = Homeowner.objects.all()
-        return super(ApartmentListView, self).dispatch(request, *args, **kwargs)
+class HomeownerListView(LoginRequiredMixin, TemplateView):
+    model = Homeowner
+    context_object_name = "homeowner_obj"
+    template_name = "homeowners.html"
 
     def get_queryset(self):
         queryset = self.model.objects.all()
         return queryset
 
     def get_context_data(self, **kwargs):
-        context = super(ApartmentListView, self).get_context_data(**kwargs)
-        context["owners"] = self.owners
-        context["apartments_list"] = self.get_queryset()
+        context = super(HomeownerListView, self).get_context_data(**kwargs)
+        context["homeowner_obj"] = self.get_queryset()
         context["per_page"] = self.request.POST.get('per_page')
         return context
 
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        return self.render_to_response(context)
-
-    def post(self, request, *args, **kwargs):
+    def post(self, **kwargs):
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context)
 
 
-class ApartmentAddView(LoginRequiredMixin, CreateView):
-    model = Apartment
-    form_class = ApartmentForm
-    template_name = "create_apartment.html"
+class CreateHomeownerView(LoginRequiredMixin, CreateView):
+    model = Homeowner
+    form_class = HomeownerForm
+    template_name = "create_homeowner.html"
 
     def dispatch(self, request, *args, **kwargs):
-        self.addresses = Address.objects.all()
-        return super(ApartmentAddView, self).dispatch(request, *args, **kwargs)
+        self.apartments = Apartment.objects.all()
+        return super(CreateHomeownerView, self).dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
-        kwargs = super(ApartmentAddView, self).get_form_kwargs()
-        kwargs.update({"addresses": self.addresses})
+        kwargs = super(CreateHomeownerView, self).get_form_kwargs()
+        kwargs.update({"apartments": self.apartments})
         return kwargs
 
     def post(self, request, *args, **kwargs):
@@ -63,54 +52,65 @@ class ApartmentAddView(LoginRequiredMixin, CreateView):
             return self.form_invalid(form)
 
     def form_valid(self, form):
-        account_object = form.save(commit=False)
-        account_object.created_by = self.request.user
-        account_object.save()
+        homeowner_obj = form.save(commit=False)
+        homeowner_obj.created_by = self.request.user
+        homeowner_obj.save()
+        if self.apartments.count() > 0:
+            form.save_m2m()
         if self.request.POST.get("savenewform"):
-            return redirect("apartments:add")
+            return redirect("homeowners:add")
         else:
-            return redirect("apartments:list")
+            return redirect('homeowners:list')
 
     def form_invalid(self, form):
         return self.render_to_response(
-            self.get_context_data(
-                form=form)
-        )
+            self.get_context_data(form=form))
 
     def get_context_data(self, **kwargs):
-        context = super(ApartmentAddView, self).get_context_data(**kwargs)
-        context["apartment_form"] = context["form"]
-        context["apartment_status"] = ApartmentStatusChoices.choices
+        context = super(CreateHomeownerView, self).get_context_data(**kwargs)
+        context["homeowner_form"] = context["form"]
         return context
 
 
-class ApartmentDetailView(LoginRequiredMixin, DetailView):
-    model = Apartment
-    context_object_name = "apartment"
-    template_name = "view_apartment.html"
-
-    def dispatch(self, request, *args, **kwargs):
-        self.addresses = Address.objects.all()
-        return super(ApartmentDetailView, self).dispatch(request, *args, **kwargs)
+class HomeownerDetailView(LoginRequiredMixin, DetailView):
+    model = Homeowner
+    context_object_name = "homeowner"
+    template_name = "view_homeowner.html"
 
     def get_context_data(self, **kwargs):
-        context = super(ApartmentDetailView, self).get_context_data(**kwargs)
+        context = super(HomeownerDetailView, self).get_context_data(**kwargs)
+        comments = Comment.objects.filter(homeowner__id=self.object.id).order_by('-id')
+        attachments = Attachments.objects.filter(homeowner__id=self.object.id).order_by('-id')
+        context.update({
+            "attachments": attachments, "comments": comments})
         return context
 
 
-class ApartmentEditView(LoginRequiredMixin, UpdateView):
-    model = Apartment
-    form_class = ApartmentForm
-    template_name = "create_apartment.html"
+class UpdateHomeownerView(LoginRequiredMixin, UpdateView):
+    model = Homeowner
+    form_class = HomeownerForm
+    template_name = "create_homeowner.html"
 
     def dispatch(self, request, *args, **kwargs):
-        self.addresses = Address.objects.all()
-        return super(ApartmentEditView, self).dispatch(request, *args, **kwargs)
+        self.error = "" # Зачем?
+        self.apartments = Apartment.objects.all()
+        return super(UpdateHomeownerView, self).dispatch(request, *args, **kwargs)
+
+    def get_initial(self):
+        initial = super(UpdateHomeownerView, self).get_initial()
+        status = self.request.GET.get('status', None)
+        if status:
+            initial.update({"status": status})
+        return initial
 
     def get_form_kwargs(self):
-        kwargs = super(ApartmentEditView, self).get_form_kwargs()
-        kwargs.update({"addresses": self.addresses})
+        kwargs = super(UpdateHomeownerView, self).get_form_kwargs()
+        kwargs.update({"apartments": self.apartments})
         return kwargs
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super(UpdateHomeownerView, self).get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -121,48 +121,52 @@ class ApartmentEditView(LoginRequiredMixin, UpdateView):
             return self.form_invalid(form)
 
     def form_valid(self, form):
-        apartment_object = form.save(commit=False)
-        apartment_object.save()
-        return redirect("apartments:list")
+        homeowner_obj = form.save(commit=False)
+        homeowner_obj.save()
+        form.save_m2m()
+        return redirect('homeowners:list')
 
     def form_invalid(self, form):
         return self.render_to_response(
-            self.get_context_data(
-                form=form)
-        )
+            self.get_context_data(form=form))
 
     def get_context_data(self, **kwargs):
-        context = super(ApartmentEditView, self).get_context_data(**kwargs)
-        context["apartment_obj"] = self.object
-        context["apartment_form"] = context["form"]
+        context = super(UpdateHomeownerView, self).get_context_data(**kwargs)
+        context["homeowner_obj"] = self.object
+        context["homeowner_form"] = context["form"]
+        context["error"] = self.error
         return context
 
 
-class ApartmentDeleteView(LoginRequiredMixin, DeleteView):
-    model = Apartment
-    template_name = 'view_apartment.html'
+class DeleteHomeownerView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
+        return self.post(**kwargs)
+
+    def post(self, **kwargs):
+        self.object = get_object_or_404(Homeowner, id=kwargs.get("pk"))
         self.object.delete()
-        return redirect("apartments:list")
+        return redirect("homeowners:list")
 
 
 class AddCommentView(LoginRequiredMixin, CreateView):
     model = Comment
-    form_class = ApartmentCommentForm
+    form_class = HomeownerCommentForm
     http_method_names = ["post"]
 
     def post(self, request, *args, **kwargs):
         self.object = None
-        self.account = get_object_or_404(Apartment, id=request.POST.get('accountid'))
-        data = {'error': "You don't have permission to comment for this account."}
-        return JsonResponse(data)
+        self.homeowner = get_object_or_404(Homeowner, id=request.POST.get('leadid'))
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
     def form_valid(self, form):
         comment = form.save(commit=False)
         comment.commented_by = self.request.user
-        comment.account = self.account
+        comment.homeowner = self.homeowner
         comment.save()
         return JsonResponse({
             "comment_id": comment.id, "comment": comment.comment,
@@ -174,13 +178,13 @@ class AddCommentView(LoginRequiredMixin, CreateView):
         return JsonResponse({"error": form['comment'].errors})
 
 
-class EditCommentView(LoginRequiredMixin, View):
+class UpdateCommentView(LoginRequiredMixin, View):
     http_method_names = ["post"]
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         self.comment_obj = get_object_or_404(Comment, id=request.POST.get("commentid"))
         if request.user == self.comment_obj.commented_by:
-            form = ApartmentCommentForm(request.POST, instance=self.comment_obj)
+            form = HomeownerCommentForm(request.POST, instance=self.comment_obj)
             if form.is_valid():
                 return self.form_valid(form)
             else:
@@ -193,7 +197,7 @@ class EditCommentView(LoginRequiredMixin, View):
         self.comment_obj.comment = form.cleaned_data.get("comment")
         self.comment_obj.save(update_fields=["comment"])
         return JsonResponse({
-            "comment_id": self.comment_obj.id,
+            "commentid": self.comment_obj.id,
             "comment": self.comment_obj.comment,
         })
 
@@ -203,21 +207,21 @@ class EditCommentView(LoginRequiredMixin, View):
 
 class DeleteCommentView(LoginRequiredMixin, View):
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         self.object = get_object_or_404(Comment, id=request.POST.get("comment_id"))
         self.object.delete()
         data = {"cid": request.POST.get("comment_id")}
         return JsonResponse(data)
 
 
-class AddAttachmentView(LoginRequiredMixin, CreateView):
+class AddAttachmentsView(LoginRequiredMixin, CreateView):
     model = Attachments
-    form_class = ApartmentAttachmentForm
+    form_class = HomeownerAttachmentForm
     http_method_names = ["post"]
 
     def post(self, request, *args, **kwargs):
         self.object = None
-        self.account = get_object_or_404(Apartment, id=request.POST.get('accountid'))
+        self.homeowner = get_object_or_404(Homeowner, id=request.POST.get('Homeownerid'))
         form = self.get_form()
         if form.is_valid():
             return self.form_valid(form)
@@ -228,7 +232,7 @@ class AddAttachmentView(LoginRequiredMixin, CreateView):
         attachment = form.save(commit=False)
         attachment.created_by = self.request.user
         attachment.file_name = attachment.attachment.name
-        attachment.account = self.account
+        attachment.homeowner = self.homeowner
         attachment.save()
         return JsonResponse({
             "attachment_id": attachment.id,
@@ -244,12 +248,8 @@ class AddAttachmentView(LoginRequiredMixin, CreateView):
 
 class DeleteAttachmentsView(LoginRequiredMixin, View):
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         self.object = get_object_or_404(Attachments, id=request.POST.get("attachment_id"))
-        if request.user == self.object.created_by:
-            self.object.delete()
-            data = {"acd": request.POST.get("attachment_id")}
-            return JsonResponse(data)
-        else:
-            data = {'error': "You don't have permission to delete this attachment."}
-            return JsonResponse(data)
+        self.object.delete()
+        data = {"aid": request.POST.get("attachment_id")}
+        return JsonResponse(data)
