@@ -14,7 +14,7 @@ from common.utils import ApartmentStatusChoices
 class ApartmentListView(LoginRequiredMixin, TemplateView):
     model = Apartment
     context_object_name = "apartments_list"
-    template_name = "apartments.html"
+    template_name = "apartments/list.html"
 
     def dispatch(self, request, *args, **kwargs):
         self.owners = Homeowner.objects.all()
@@ -43,7 +43,7 @@ class ApartmentListView(LoginRequiredMixin, TemplateView):
 class ApartmentAddView(LoginRequiredMixin, CreateView):
     model = Apartment
     form_class = ApartmentForm
-    template_name = "create_apartment.html"
+    template_name = "apartments/create.html"
 
     def dispatch(self, request, *args, **kwargs):
         self.addresses = Address.objects.all()
@@ -87,7 +87,7 @@ class ApartmentAddView(LoginRequiredMixin, CreateView):
 class ApartmentDetailView(LoginRequiredMixin, DetailView):
     model = Apartment
     context_object_name = "apartment"
-    template_name = "view_apartment.html"
+    template_name = "apartments/detail.html"
 
     def dispatch(self, request, *args, **kwargs):
         self.addresses = Address.objects.all()
@@ -101,7 +101,7 @@ class ApartmentDetailView(LoginRequiredMixin, DetailView):
 class ApartmentEditView(LoginRequiredMixin, UpdateView):
     model = Apartment
     form_class = ApartmentForm
-    template_name = "create_apartment.html"
+    template_name = "apartments/create.html"
 
     def dispatch(self, request, *args, **kwargs):
         self.addresses = Address.objects.all()
@@ -140,7 +140,7 @@ class ApartmentEditView(LoginRequiredMixin, UpdateView):
 
 class ApartmentDeleteView(LoginRequiredMixin, DeleteView):
     model = Apartment
-    template_name = 'view_apartment.html'
+    template_name = 'apartments/detail.html'
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()

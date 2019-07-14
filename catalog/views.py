@@ -9,7 +9,7 @@ from catalog.forms import AddressForm
 class AddressesListView(LoginRequiredMixin, TemplateView):
     model = Address
     context_object_name = "addresses_list"
-    template_name = "addresses.html"
+    template_name = "catalog/list.html"
 
     def get_queryset(self):
         queryset = self.model.objects.all()
@@ -33,7 +33,7 @@ class AddressesListView(LoginRequiredMixin, TemplateView):
 class AddressAddView(LoginRequiredMixin, CreateView):
     model = Address
     form_class = AddressForm
-    template_name = "create_address.html"
+    template_name = "catalog/create.html"
 
     def post(self, request, *args, **kwargs):
         self.object = None
@@ -67,7 +67,7 @@ class AddressAddView(LoginRequiredMixin, CreateView):
 class AddressEditView(LoginRequiredMixin, UpdateView):
     model = Address
     form_class = AddressForm
-    template_name = "create_address.html"
+    template_name = "catalog/create.html"
 
     def get_form_kwargs(self):
         kwargs = super(AddressEditView, self).get_form_kwargs()
@@ -101,7 +101,7 @@ class AddressEditView(LoginRequiredMixin, UpdateView):
 
 class AddressDeleteView(LoginRequiredMixin, DeleteView):
     model = Address
-    template_name = 'addresses.html'
+    template_name = 'catalog/list.html'
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()

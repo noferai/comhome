@@ -11,7 +11,7 @@ from common.models import User, Comment, Attachments
 class StaffListView(LoginRequiredMixin, TemplateView):
     model = Staff
     context_object_name = "accounts_list"
-    template_name = "staff.html"
+    template_name = "staff/list.html"
 
     def get_queryset(self):
         queryset = self.model.objects.all()
@@ -41,7 +41,7 @@ class StaffListView(LoginRequiredMixin, TemplateView):
 class CreateStaffView(LoginRequiredMixin, CreateView):
     model = Staff
     form_class = StaffForm
-    template_name = "create_staff.html"
+    template_name = "staff/create.html"
 
     def dispatch(self, request, *args, **kwargs):
         self.users = User.objects.filter(is_active=True).order_by('email')
@@ -84,7 +84,7 @@ class CreateStaffView(LoginRequiredMixin, CreateView):
 class StaffDetailView(LoginRequiredMixin, DetailView):
     model = Staff
     context_object_name = "staff"
-    template_name = "view_staff.html"
+    template_name = "staff/detail.html"
 
     def get_context_data(self, **kwargs):
         context = super(StaffDetailView, self).get_context_data(**kwargs)
@@ -94,7 +94,7 @@ class StaffDetailView(LoginRequiredMixin, DetailView):
 class StaffUpdateView(LoginRequiredMixin, UpdateView):
     model = Staff
     form_class = StaffForm
-    template_name = "create_staff.html"
+    template_name = "staff/create.html"
 
     def dispatch(self, request, *args, **kwargs):
         self.users = User.objects.filter(is_active=True).order_by('email')
@@ -133,7 +133,7 @@ class StaffUpdateView(LoginRequiredMixin, UpdateView):
 
 class StaffDeleteView(LoginRequiredMixin, DeleteView):
     model = Staff
-    template_name = 'view_staff.html'
+    template_name = 'staff/detail.html'
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()

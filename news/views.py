@@ -15,7 +15,7 @@ import json
 
 class NewsListView(LoginRequiredMixin, TemplateView):
     model = Entry
-    template_name = 'news.html'
+    template_name = 'news/list.html'
 
     def get_context_data(self, **kwargs):
         context = super(NewsListView, self).get_context_data(**kwargs)
@@ -36,7 +36,7 @@ class NewsListView(LoginRequiredMixin, TemplateView):
 class CreateEntryView(LoginRequiredMixin, CreateView):
     model = Entry
     form_class = EntryForm
-    template_name = "create_entry.html"
+    template_name = "news/create.html"
 
     def dispatch(self, request, *args, **kwargs):
         self.news = Entry.objects.filter(is_published=True).order_by('published_date')
@@ -80,7 +80,7 @@ class CreateEntryView(LoginRequiredMixin, CreateView):
 class EntryDetailView(LoginRequiredMixin, DetailView):
     model = Entry
     context_object_name = "entry_record"
-    template_name = "view_entry.html"
+    template_name = "news/detail.html"
 
     def get_context_data(self, **kwargs):
         context = super(EntryDetailView, self).get_context_data(**kwargs)
@@ -94,7 +94,7 @@ class EntryDetailView(LoginRequiredMixin, DetailView):
 class EntryUpdateView(LoginRequiredMixin, UpdateView):
     model = Entry
     form_class = EntryForm
-    template_name = "create_entry.html"
+    template_name = "news/create.html"
 
     def dispatch(self, request, *args, **kwargs):
         self.news = Entry.objects.filter(is_published=True).order_by('published_date')
@@ -137,7 +137,7 @@ class EntryUpdateView(LoginRequiredMixin, UpdateView):
 
 class EntryDeleteView(LoginRequiredMixin, DeleteView):
     model = Entry
-    template_name = 'view_entry.html'
+    template_name = 'news/detail.html'
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()

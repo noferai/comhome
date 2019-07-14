@@ -16,7 +16,7 @@ from common.utils import RequestTypeChoices, RequestPriorityChoices, RequestStat
 class RequestsListView(LoginRequiredMixin, TemplateView):
     model = Request
     context_object_name = "requests"
-    template_name = "requests.html"
+    template_name = "requests/list.html"
 
     def get_queryset(self):
         queryset = self.model.objects.all()
@@ -43,7 +43,7 @@ class RequestsListView(LoginRequiredMixin, TemplateView):
 class CreateRequestView(LoginRequiredMixin, CreateView):
     model = Request
     form_class = RequestForm
-    template_name = "create_request.html"
+    template_name = "requests/create.html"
 
     def dispatch(self, request, *args, **kwargs):
         self.assigned_to = Staff.objects.all()
@@ -90,7 +90,7 @@ class CreateRequestView(LoginRequiredMixin, CreateView):
 class RequestDetailView(LoginRequiredMixin, DetailView):
     model = Request
     context_object_name = "request_record"
-    template_name = "view_request.html"
+    template_name = "requests/detail.html"
 
     def dispatch(self, request, *args, **kwargs):
         self.assigned_to = Request.objects.all()
@@ -104,7 +104,7 @@ class RequestDetailView(LoginRequiredMixin, DetailView):
 class UpdateRequestView(LoginRequiredMixin, UpdateView):
     model = Request
     form_class = RequestForm
-    template_name = "create_request.html"
+    template_name = "requests/create.html"
 
     def dispatch(self, request, *args, **kwargs):
         self.assigned_to = Staff.objects.all()

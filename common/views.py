@@ -18,6 +18,7 @@ from common.serializers import UserSerializer
 
 import json
 
+# TODO: придумать, как организовать код в common. Возможно разбить на несколько приложений (doc, User, ....)
 
 def handler404(request, exception):
     return render(request, '404.html', status=404)
@@ -120,7 +121,7 @@ class LogoutView(LoginRequiredMixin, View):
 class UsersListView(AdminRequiredMixin, TemplateView):
     model = User
     context_object_name = "users"
-    template_name = "list.html"
+    template_name = "common/list.html"
 
     def get_queryset(self):
         queryset = self.model.objects.all()
@@ -153,7 +154,7 @@ class UsersListView(AdminRequiredMixin, TemplateView):
 class CreateUserView(AdminRequiredMixin, CreateView):
     model = User
     form_class = UserForm
-    template_name = "create.html"
+    template_name = "common/create.html"
 
     def form_valid(self, form):
         user = form.save(commit=False)
@@ -182,7 +183,7 @@ class CreateUserView(AdminRequiredMixin, CreateView):
 class UserDetailView(AdminRequiredMixin, DetailView):
     model = User
     context_object_name = "users"
-    template_name = "list.html"
+    template_name = "common/list.html"
 
     def get_context_data(self, **kwargs):
         context = super(UserDetailView, self).get_context_data(**kwargs)
@@ -198,7 +199,7 @@ class UserDetailView(AdminRequiredMixin, DetailView):
 class UpdateUserView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UserForm
-    template_name = "create.html"
+    template_name = "common/create.html"
 
     def form_valid(self, form):
         user = form.save(commit=False)
@@ -247,7 +248,7 @@ class PasswordResetView(PasswordResetView):
 class DocumentCreateView(LoginRequiredMixin, CreateView):
     model = Document
     form_class = DocumentForm
-    template_name = "doc_create.html"
+    template_name = "common/doc/create.html"
 
     def form_valid(self, form):
         doc = form.save(commit=False)
@@ -277,7 +278,7 @@ class DocumentCreateView(LoginRequiredMixin, CreateView):
 class DocumentListView(LoginRequiredMixin, TemplateView):
     model = Document
     context_object_name = "documents"
-    template_name = "doc_list.html"
+    template_name = "common/doc_list.html"
 
     def get_queryset(self):
         queryset = self.model.objects.all()
@@ -310,7 +311,7 @@ class DocumentDeleteView(LoginRequiredMixin, DeleteView):
 class UpdateDocumentView(LoginRequiredMixin, UpdateView):
     model = Document
     form_class = DocumentForm
-    template_name = "doc_create.html"
+    template_name = "common/create.html"
 
     def form_valid(self, form):
         doc = form.save(commit=False)
@@ -337,7 +338,7 @@ class UpdateDocumentView(LoginRequiredMixin, UpdateView):
 
 class DocumentDetailView(LoginRequiredMixin, DetailView):
     model = Document
-    template_name = "doc_detail.html"
+    template_name = "common/doc/detail.html"
 
     def get_context_data(self, **kwargs):
         context = super(DocumentDetailView, self).get_context_data(**kwargs)

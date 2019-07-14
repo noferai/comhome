@@ -79,7 +79,7 @@ class LeadsPostrequestTestCase(TestLeadModel, TestCase):
 
     def test_leads_list_html(self):
         response = self.client.get('/homeowners/list/')
-        self.assertTemplateUsed(response, 'homeowners.html')
+        self.assertTemplateUsed(response, 'list.html')
 
 
 class LeadsCreateUrlTestCase(TestLeadModel, TestCase):
@@ -103,7 +103,7 @@ class LeadsCreateUrlTestCase(TestLeadModel, TestCase):
             'title': 'LeadCreation', 'name': "kotha", 'email': "anjalikotha1993@gmail.com", 'account': self.account,
             'address': self.address, 'website': "www.gmail.com", 'status': "assigned",
             "source": "Call", 'opportunity_amount': "700", 'description': "Iam an Homeowner", 'created_by': self.user})
-        self.assertTemplateUsed(response, 'create_homeowner.html')
+        self.assertTemplateUsed(response, 'create.html')
 
 
 class LeadsEditUrlTestCase(TestLeadModel, TestCase):

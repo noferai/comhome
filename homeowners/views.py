@@ -12,7 +12,7 @@ from homeowners.forms import HomeownerCommentForm, HomeownerForm, HomeownerAttac
 class HomeownerListView(LoginRequiredMixin, TemplateView):
     model = Homeowner
     context_object_name = "homeowner_obj"
-    template_name = "homeowners.html"
+    template_name = "homeowners/list.html"
 
     def get_queryset(self):
         queryset = self.model.objects.all()
@@ -32,7 +32,7 @@ class HomeownerListView(LoginRequiredMixin, TemplateView):
 class CreateHomeownerView(LoginRequiredMixin, CreateView):
     model = Homeowner
     form_class = HomeownerForm
-    template_name = "create_homeowner.html"
+    template_name = "homeowners/create.html"
 
     def dispatch(self, request, *args, **kwargs):
         self.apartments = Apartment.objects.all()
@@ -75,7 +75,7 @@ class CreateHomeownerView(LoginRequiredMixin, CreateView):
 class HomeownerDetailView(LoginRequiredMixin, DetailView):
     model = Homeowner
     context_object_name = "homeowner"
-    template_name = "view_homeowner.html"
+    template_name = "homeowners/detail.html"
 
     def get_context_data(self, **kwargs):
         context = super(HomeownerDetailView, self).get_context_data(**kwargs)
@@ -89,7 +89,7 @@ class HomeownerDetailView(LoginRequiredMixin, DetailView):
 class UpdateHomeownerView(LoginRequiredMixin, UpdateView):
     model = Homeowner
     form_class = HomeownerForm
-    template_name = "create_homeowner.html"
+    template_name = "homeowners/create.html"
 
     def dispatch(self, request, *args, **kwargs):
         self.error = "" # Зачем?
