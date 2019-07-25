@@ -11,4 +11,4 @@ class AddressForm(forms.ModelForm):
 
     class Meta:
         model = Address
-        fields = ('address',)
+        fields = ('address_str',)

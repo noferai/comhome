@@ -3,7 +3,7 @@
 {% block extralinks %}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 {% endblock %}
-{% block title %} <title>{% if staff_obj %}Редактировать {% else %}Добавить {% endif %}исполнителя - Comfortable Home</title>{% endblock %}
+{% block title %} {% if staff_obj %}Редактировать {% else %}Добавить {% endif %}исполнителя - ComHome CRM {% endblock %}
 {% block breadcrumb %}
 <div class="page-header">
         <h2 class="pageheader-title">{% if staff_obj %}Редактировать {% else %}Добавить {% endif %}исполнителя</h2>

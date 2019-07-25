@@ -15,12 +15,19 @@ import json
 
 class NewsListView(LoginRequiredMixin, TemplateView):
     model = Entry
-    template_name = 'news/list.html'
+    template_name = 'list.html'
 
     def get_context_data(self, **kwargs):
         context = super(NewsListView, self).get_context_data(**kwargs)
         custom_context = {
-            'news_obj_list': Entry.objects.all(),
+            'objects': self.model.objects.all(),
+            'fields': ['created_date', 'title'],
+            'urls': {
+                'add': 'news:add',
+                'detail': 'news:detail',
+                'edit': 'news:edit',
+                'remove': 'news:remove',
+            }
         }
         return {**context, **custom_context}
 
@@ -28,7 +35,7 @@ class NewsListView(LoginRequiredMixin, TemplateView):
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, **kwargs):
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context)
 

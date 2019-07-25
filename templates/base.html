@@ -1,5 +1,6 @@
 {% load staticfiles %}
 {% load thumbnail %}
+{% load custom_tags %}
 <!doctype html>
 <html lang="ru">
 <head>
@@ -18,7 +19,7 @@
 {#    <link rel="stylesheet" href="{% static 'vendor/charts/morris-bundle/morris.css' %}">#}
 {#    <link rel="stylesheet" href="{% static 'vendor/charts/c3charts/c3.css' %}">#}
     {% block extralinks %} {% endblock %}
-    {% block title %} <title>ComHome CRM</title>{% endblock %}
+    <title>{% block title %} {% endblock %}</title>
 </head>
 
 <body>

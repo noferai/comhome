@@ -11,18 +11,24 @@ from homeowners.forms import HomeownerCommentForm, HomeownerForm, HomeownerAttac
 
 class HomeownerListView(LoginRequiredMixin, TemplateView):
     model = Homeowner
-    context_object_name = "homeowner_obj"
-    template_name = "homeowners/list.html"
-
-    def get_queryset(self):
-        queryset = self.model.objects.all()
-        return queryset
+    context_object_name = "objects"
+    template_name = "list.html"
 
     def get_context_data(self, **kwargs):
         context = super(HomeownerListView, self).get_context_data(**kwargs)
-        context["homeowner_obj"] = self.get_queryset()
-        context["per_page"] = self.request.POST.get('per_page')
-        return context
+        custom_context = {
+            'objects': self.model.objects.all(),
+            'per_page': self.request.POST.get('per_page'),
+            'fields': ['created_on', 'name', 'debt', 'apartments'],
+            'urls': {
+                'add': 'homeowners:add',
+                'detail': 'homeowners:view',
+                'edit': 'homeowners:edit',
+                'remove': 'homeowners:remove',
+                'apartments': 'apartments:view'
+            }
+        }
+        return {**context, **custom_context}
 
     def post(self, **kwargs):
         context = self.get_context_data(**kwargs)

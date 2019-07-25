@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-{% block title %} <title>{{ entry_record.title }} - Comfortable Home</title>{% endblock %}
+{% block title %}{{ entry_record.title }} - Comfortable Home{% endblock %}
 {% block breadcrumb %}
 <div class="page-header">
         <h2 class="pageheader-title">{{entry_record.title}}</h2>
@@ -20,8 +20,8 @@
             <div class="card-header d-flex">
                 <h3 class="card-header-title">{{ entry_record.title }}</h3>
                 <div class="toolbar ml-auto">
-                    <a href="{% url 'news:edit_entry' entry_record.id %}" title="Редактировать" class="btn btn-light btn-sm"><i class="fas fa-pencil-alt"></i></a>
-                    <a href="{% url 'news:remove_entry' entry_record.id %}" title="Удалить" class="btn btn-light btn-sm"><i class="fas fa-trash-alt"></i></a>
+                    <a href="{% url 'news:edit' entry_record.id %}" title="Редактировать" class="btn btn-light btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                    <a href="{% url 'news:remove' entry_record.id %}" title="Удалить" class="btn btn-light btn-sm"><i class="fas fa-trash-alt"></i></a>
                 </div>
             </div>
             <div class="card-body">

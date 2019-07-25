@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-{% block title %} <title>{% if address_obj %}Редактировать {% else %}Добавить {% endif %}адрес - Comfortable Home</title>{% endblock %}
+{% block title %} {% if address_obj %}Редактировать {% else %}Добавить {% endif %}адрес - ComHome CRM{% endblock %}
 {% block breadcrumb %}
 <div class="page-header">
         <h2 class="pageheader-title">{% if address_obj %}Редактировать {% else %}Добавить {% endif %} адрес</h2>
@@ -27,9 +27,9 @@
               <div class="col-md-12">
                 <div class="filter_col col-md-12">
                   <div class="form-group">
-                    <label for="exampleInputEmail1" class="required">Адрес{% if address_form.address.field.required %}<span class="error">*</span>{% endif %}</label>
-                    {{ address_form.address }}
-                    <span class="error">{{ address_form.address.errors }}</span>
+                    <label for="exampleInputEmail1" class="required">Адрес{% if address_form.address_str.field.required %}<span class="error">*</span>{% endif %}</label>
+                    {{ address_form.address_str }}
+                    <span class="error">{{ address_form.address_str.errors }}</span>
                   </div>
                 </div>
               </div>

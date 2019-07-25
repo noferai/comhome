@@ -2,6 +2,8 @@ import os
 import django_heroku
 import dj_database_url
 
+TITLE = "ComHome CRM"
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = 'mwx@&97%!$fx_*zgj(2ygi^(s=oh5j(cqb$=+-mkd9scbt!0v0'

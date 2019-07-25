@@ -9,7 +9,7 @@ from catalog.forms import AddressForm
 class AddressesListView(LoginRequiredMixin, TemplateView):
     model = Address
     context_object_name = "addresses_list"
-    template_name = "catalog/list.html"
+    template_name = "list.html"
 
     def get_queryset(self):
         queryset = self.model.objects.all()
@@ -17,15 +17,23 @@ class AddressesListView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(AddressesListView, self).get_context_data(**kwargs)
-        context["addresses_list"] = self.get_queryset()
-        context["per_page"] = self.request.POST.get('per_page')
-        return context
+        custom_context = {
+            'objects': self.get_queryset(),
+            'per_page': self.request.POST.get('per_page'),
+            'fields': ['address_str'],
+            'urls': {
+                'add': 'catalog:address_add',
+                'edit': 'catalog:address_edit',
+                'remove': 'catalog:address_remove'
+            }
+        }
+        return {**context, **custom_context}
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, **kwargs):
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context)
 
