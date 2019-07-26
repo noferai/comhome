@@ -15,7 +15,7 @@ class UserForm(forms.ModelForm):
     # def __init__(self, args: object, kwargs: object) -> object:
     #     super(UserForm, self).__init__(*args, **kwargs)
     #
-    #     self.fields['first_name'].required = True
+    #     self.fields['first_name'].required = True    def __init__(self)
     #     self.fields['username'].required = True
     #     self.fields['email'].required = True
     #

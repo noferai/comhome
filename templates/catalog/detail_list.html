@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %} <title>{{service.name_of_service}} - Comfortable Home</title>{% endblock %}
+{% block breadcrumb %}
+<div class="page-header">
+    <div class="page-breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li  class="breadcrumb-item"><a href="{% url 'catalog:services_list' %}">Взаиморасчёты`ns</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{service.name_of_service}}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+{% endblock breadcrumb %}
+{% block content %}
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header d-flex">
+                <h3 class="card-header-title">Подробная информация</h3>
+                <div class="toolbar ml-auto">
+                    <a href="{% url 'catalog:service_edit' service.id %}" class="btn btn-light btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                    <a href="{% url 'catalog:service_remove' service.id %}" class="btn btn-light btn-sm"><i class="fas fa-trash-alt"></i></a>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="text-left">Группа услуг: {{service.name_of_service}}</p>
+                <p class="text-left">Задолженность на начало периода: {{service.debt_at_beg_of_period}}</p>
+                <p class="text-left">Начислено: {{service.accrued}}</p>
+                <p class="text-left">Перерасчёты: {{service.recalculations}}</p>
+                <p class="text-left">Оплачено: {{service.paid}}</p>
+                <p class="text-left">Задолженность на конец периода: {{service.debt_at_end_of_period}}</p>
+            </div>
+        </div>
+    </div>
+  {% endblock content %}
+{% block js_block %}
+{% endblock js_block %}

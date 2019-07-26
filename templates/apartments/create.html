@@ -83,9 +83,16 @@
 {#                </div>#}
                 <div class="filter_col col-md-12">
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Лицевой счет{% if apartment_form.business_account.field.required %}<span class="error">*</span>{% endif %}</label>
-                    {{ apartment_form.business_account }}
-                    <span class="error">{{ apartment_form.business_account.errors }}</span>
+                    <label for="exampleInputEmail1">Лицевой счет{% if apartment_form.number_of_business_account.field.required %}<span class="error">*</span>{% endif %}</label>
+                    {{ apartment_form.number_of_business_account }}
+                    <span class="error">{{ apartment_form.number_of_business_account.errors }}</span>
+                  </div>
+                </div>
+                <div class="filter_col col-md-12">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Баланс лицевого счёта{% if apartment_form.balance_of_business_account.field.required %}<span class="error">*</span>{% endif %}</label>
+                    {{ apartment_form.balance_of_business_account }}
+                    <span class="error">{{ apartment_form.balance_of_business_account.errors }}</span>
                   </div>
                 </div>
               </div>
