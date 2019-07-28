@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-{% block title %} <title>{% if enrty_obj %}Редактировать {% else %}Добавить {% endif %} новость - Comfortable Home</title>{% endblock %}
+{% block title %} {% if enrty_obj %}Редактировать {% else %}Добавить {% endif %} новость - ComHome CRM{% endblock %}
 {% block breadcrumb %}
 <div class="page-header">
         <h2 class="pageheader-title">{% if enrty_obj %}Редактировать {% else %}Добавить {% endif %}новость</h2>

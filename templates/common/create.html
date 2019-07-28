@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-{% block title %} <title>{% if user_obj %}Редактировать {% else %}Добавить {% endif %}администратора - Comfortable Home</title>{% endblock %}
+{% block title %}{% if user_obj %}Редактировать {% else %}Добавить {% endif %}администратора - ComHome CRM{% endblock %}
 {% block breadcrumb %}
 <div class="page-header">
         <h2 class="pageheader-title">{% if user_obj %}Редактировать {% else %}Добавить {% endif %}администратора</h2>

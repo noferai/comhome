@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-{% block title %} <title>{{staff.name}} - Comfortable Home</title>{% endblock %}
+{% block title %} {{staff.name}} - Comfortable Home {% endblock %}
 {% block breadcrumb %}
 <div class="page-header">
         <h2 class="pageheader-title">{{staff.name}} ({{ staff.industry }})</h2>
@@ -20,8 +20,8 @@
             <div class="card-header d-flex">
                 <h3 class="card-header-title">Подробная информация</h3>
                 <div class="toolbar ml-auto">
-                    <a href="{% url 'staff:edit_staff' staff.id %}" class="btn btn-light btn-sm"><i class="fas fa-pencil-alt"></i></a>
-                    <a href="{% url 'staff:remove_staff' staff.id %}" class="btn btn-light btn-sm"><i class="fas fa-trash-alt"></i></a>
+                    <a href="{% url 'staff:edit' staff.id %}" class="btn btn-light btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                    <a href="{% url 'staff:remove' staff.id %}" class="btn btn-light btn-sm"><i class="fas fa-trash-alt"></i></a>
                 </div>
             </div>
             <div class="card-body">

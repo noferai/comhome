@@ -9,5 +9,4 @@ $(document).ready(function () {
         }
     });
     $(".date input").attr("type", "date");
-    console.log("loh-global");
 });

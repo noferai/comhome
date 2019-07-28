@@ -15,27 +15,30 @@ from common.utils import RequestTypeChoices, RequestPriorityChoices, RequestStat
 
 class RequestsListView(LoginRequiredMixin, TemplateView):
     model = Request
-    context_object_name = "requests"
-    template_name = "requests/list.html"
-
-    def get_queryset(self):
-        queryset = self.model.objects.all()
-        return queryset
+    context_object_name = "objects"
+    template_name = "list.html"
 
     def get_context_data(self, **kwargs):
         context = super(RequestsListView, self).get_context_data(**kwargs)
-        context["requests"] = self.get_queryset()
-        context["per_page"] = self.request.POST.get('per_page')
-        context["request_type"] = RequestTypeChoices.choices
-        context["request_priority"] = RequestPriorityChoices.choices
-        context["request_status"] = RequestStatusChoices.choices
-        return context
+        custom_context = {
+            'objects': self.model.objects.all(),
+            'per_page': self.request.POST.get('per_page'),
+            'fields': ['created_on', 'request_type', 'priority', 'assigned_to', 'is_proceed'],
+            'urls': {
+                'add': 'requests:add',
+                'detail': 'requests:view',
+                'edit': 'requests:edit',
+                'remove': 'requests:remove',
+                'assigned_to': 'staff:view'
+            }
+        }
+        return {**context, **custom_context}
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, **kwargs):
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context)
 

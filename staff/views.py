@@ -10,24 +10,23 @@ from common.models import User, Comment, Attachments
 
 class StaffListView(LoginRequiredMixin, TemplateView):
     model = Staff
-    context_object_name = "accounts_list"
-    template_name = "staff/list.html"
-
-    def get_queryset(self):
-        queryset = self.model.objects.all()
-        request_post = self.request.POST
-        if request_post:
-            if request_post.get('name'):
-                queryset = queryset.filter(name__icontains=request_post.get('name'))
-            if request_post.get('industry'):
-                queryset = queryset.filter(industry__icontains=request_post.get('industry'))
-        return queryset
+    context_object_name = "objects"
+    template_name = "list.html"
 
     def get_context_data(self, **kwargs):
         context = super(StaffListView, self).get_context_data(**kwargs)
-        context["staff_list"] = self.get_queryset()
-        context["per_page"] = self.request.POST.get('per_page')
-        return context
+        custom_context = {
+            'objects': self.model.objects.all(),
+            'per_page': self.request.POST.get('per_page'),
+            'fields': ['created_on', 'name', 'industry', 'phone', 'is_active'],
+            'urls': {
+                'add': 'staff:add',
+                'detail': 'staff:view',
+                'edit': 'staff:edit',
+                'remove': 'staff:remove',
+            }
+        }
+        return {**context, **custom_context}
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)

@@ -11,7 +11,7 @@ class AddressForm(forms.ModelForm):
 
     class Meta:
         model = Address
-        fields = ('address',)
+        fields = ('address_str',)
 
 
 class ServicesForm(forms.ModelForm):
@@ -25,3 +25,4 @@ class ServicesForm(forms.ModelForm):
         model = Services
         fields = ('name_of_service', 'debt_at_beg_of_period', 'accrued',
                   'recalculations', 'paid', 'debt_at_end_of_period',)
+

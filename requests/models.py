@@ -13,18 +13,20 @@ class Request(models.Model):
     priority = models.CharField('Приоритет', choices=RequestPriorityChoices.choices, max_length=64, default=RequestPriorityChoices.medium)
     request_type = models.CharField('Тип поломки', choices=RequestTypeChoices.choices, max_length=255, blank=True, null=True, default=RequestTypeChoices.other)
     assigned_to = models.ManyToManyField(Staff, blank=True, related_name='request_assigned_staff')
-    closed_on = models.DateField(blank=True, null=True)
+    closed_on = models.DateField('Закрыта', blank=True, null=True)
     description = models.TextField('Описание', blank=True, null=True)
-    created_by = models.ForeignKey(User, related_name='request_created_by', on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, related_name='request_created_by', on_delete=models.DO_NOTHING)
     created_on = models.DateTimeField('Создана', auto_now_add=True)
-    is_proceed = models.BooleanField(default=False)
+    is_proceed = models.BooleanField('В работе',default=False)
 
     organization = models.CharField(max_length=2, choices=OrganizationChoices.choices, default=OrganizationChoices.admiral)
-   #  apartment_to = models.ForeignKey(Apartment, related_name='apartments_to', on_delete=models.SET_DEFAULT, blank=True, null=True)
+    # apartment_to = models.ForeignKey(Apartment, related_name='apartments_to', on_delete=models.SET_DEFAULT, blank=True, null=True)
     # homeowner_to = models.ForeignKey(Homeowner, related_name='homeowner_to', on_delete=models.SET_DEFAULT, blank=True, null=True)
     # TODO: добавить ForeignKey на взаиморасчеты, когда они будут сделаны
 
     class Meta:
+        verbose_name = 'Заявка'
+        verbose_name_plural = 'Заявки'
         ordering = ['-created_on']
 
     def __str__(self):

@@ -1,11 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
-from django.views.generic import (
-    CreateView, UpdateView, DetailView, TemplateView, View, DeleteView)
+from django.views.generic import (CreateView, UpdateView, DetailView, TemplateView, View, DeleteView)
 from apartments.forms import ApartmentForm, ApartmentCommentForm, ApartmentAttachmentForm
 from apartments.models import Apartment
-from homeowners.models import Homeowner
 from catalog.models import Address
 from common.models import Comment, Attachments
 from common.utils import ApartmentStatusChoices
@@ -13,29 +11,31 @@ from common.utils import ApartmentStatusChoices
 
 class ApartmentListView(LoginRequiredMixin, TemplateView):
     model = Apartment
-    context_object_name = "apartments_list"
-    template_name = "apartments/list.html"
-
-    def dispatch(self, request, *args, **kwargs):
-        self.owners = Homeowner.objects.all()
-        return super(ApartmentListView, self).dispatch(request, *args, **kwargs)
-
-    def get_queryset(self):
-        queryset = self.model.objects.all()
-        return queryset
+    context_object_name = "objects"
+    template_name = "list.html"
 
     def get_context_data(self, **kwargs):
         context = super(ApartmentListView, self).get_context_data(**kwargs)
-        context["owners"] = self.owners
-        context["apartments_list"] = self.get_queryset()
-        context["per_page"] = self.request.POST.get('per_page')
-        return context
+        custom_context = {
+            'objects': self.model.objects.all(),
+            'per_page': self.request.POST.get('per_page'),
+            'fields': ['created_date', 'address', 'apartment_number', 'area', 'homeowner'],
+            'urls': {
+                'add': 'apartments:add',
+                'detail': 'apartments:view',
+                'edit': 'apartments:edit',
+                'remove': 'apartments:remove',
+                'homeowner': 'homeowners:view',
+                'address': False
+            }
+        }
+        return {**context, **custom_context}
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, **kwargs):
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context)
 
@@ -45,9 +45,9 @@ class ApartmentAddView(LoginRequiredMixin, CreateView):
     form_class = ApartmentForm
     template_name = "apartments/create.html"
 
-    def dispatch(self, request, *args, **kwargs):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.addresses = Address.objects.all()
-        return super(ApartmentAddView, self).dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
         kwargs = super(ApartmentAddView, self).get_form_kwargs()
@@ -55,7 +55,6 @@ class ApartmentAddView(LoginRequiredMixin, CreateView):
         return kwargs
 
     def post(self, request, *args, **kwargs):
-        self.object = None
         form = self.get_form()
         if form.is_valid():
             return self.form_valid(form)
@@ -89,9 +88,9 @@ class ApartmentDetailView(LoginRequiredMixin, DetailView):
     context_object_name = "apartment"
     template_name = "apartments/detail.html"
 
-    def dispatch(self, request, *args, **kwargs):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.addresses = Address.objects.all()
-        return super(ApartmentDetailView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(ApartmentDetailView, self).get_context_data(**kwargs)

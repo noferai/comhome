@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-{% block title %} <title>{% if apartment_obj %}Редактировать {% else %}Добавить {% endif %}квартиру - Comfortable Home</title>{% endblock %}
+{% load custom_tags %}
+{% block title %} {% if apartment_obj %}Редактировать {% else %}Добавить {% endif %}квартиру - ComHome CRM{% endblock %}
 {% block extralinks %}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 {% endblock %}

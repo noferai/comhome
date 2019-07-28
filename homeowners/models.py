@@ -20,7 +20,7 @@ class Homeowner(models.Model):
     garbage_payment = models.BooleanField('Задолженность по мусору', null=True,
                                           choices=RequestChoicesGarbagePayment.choices)
     date_of_issue = models.DateField('Дата выдачи паспорта', null=True)
-    apartments = models.ManyToManyField(Apartment, related_name='owners', blank=True)
+    apartments = models.ManyToManyField(Apartment, related_name='homeowner', blank=True)
 
     # Поля паспорта
     passport_date = models.DateField('Дата выдачи', null=True)
@@ -40,9 +40,11 @@ class Homeowner(models.Model):
     mail = models.BooleanField('Email', null=True, choices=RequestChoicesDebt.choices)
     comments = models.TextField('Комментарий', blank=True)
     created_by = models.ForeignKey(User, related_name='lead_created_by', on_delete=models.CASCADE)
-    created_on = models.DateTimeField('Добавлен', auto_now_add=True)
+    created_on = models.DateTimeField('Дата', auto_now_add=True)
 
     class Meta:
+        verbose_name = 'Собственник'
+        verbose_name_plural = 'Собственники'
         ordering = ['-created_on']
 
     def __str__(self):
