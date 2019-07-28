@@ -1,7 +1,7 @@
 from django.db import models
 from common.models import User
 from catalog.models import Address
-from requests.models import Request
+# from requests.models import Request
 from common.utils import ApartmentStatusChoices
 from django.utils import timezone
 
