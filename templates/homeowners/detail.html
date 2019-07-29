@@ -35,6 +35,9 @@
             <li class="nav-item">
                 <a class="nav-link" id="additional-information-tab" data-toggle="tab" href="#additional-information" role="tab" aria-controls="contact" aria-selected="false">Дополнительная информация</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" id="activity-information-tab" data-toggle="tab" href="#activity-information" role="tab" aria-controls="contact" aria-selected="false">Активность</a>
+            </li>
         </ul>
         <div class="tab-content" id="myTabContent5">
             <div class="tab-pane fade active show" id="main-information" role="tabpanel" aria-labelledby="home-tab-simple">
@@ -67,6 +70,9 @@
                 <p>SMS: {% if homeowner.sms %} Да {% else %} Нет {% endif %}</p>
                 <p>Email: {% if homeowner.mail %} Да {% else %} Нет {% endif %}</p>
                 <p>Комментарий: {{ homeowner.comments }}</p>
+            </div>
+            <div class="tab-pane fade" id="activity-information" role="tabpanel" aria-labelledby="activity-tab-simple">
+
             </div>
         </div>
         <div class="card-footer  p-0 text-left d-flex justify-content-center">

@@ -4,9 +4,6 @@
 *.swp
 db.sqlite3
 media/
-media-images/
-main.css.map
-ref.css.map
 .idea/
 __pycache__/
 venv/

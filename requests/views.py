@@ -12,7 +12,6 @@ from staff.models import Staff
 
 from common.utils import RequestTypeChoices, RequestPriorityChoices, RequestStatusChoices
 
-
 class RequestsListView(LoginRequiredMixin, TemplateView):
     model = Request
     context_object_name = "objects"

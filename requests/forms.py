@@ -7,6 +7,7 @@ class RequestForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         assigned_users = kwargs.pop('assigned_to', [])
+        homeowners = kwargs.pop('homeowner', [])
         super(RequestForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs = {"class": "form-control"}
@@ -20,7 +21,7 @@ class RequestForm(forms.ModelForm):
 
     class Meta:
         model = Request
-        fields = ('assigned_to', 'status', 'priority', 'request_type', 'closed_on', 'description')
+        fields = ('assigned_to', 'status', 'priority', 'request_type', 'closed_on', 'description', 'homeowner')
 
 
 class RequestCommentForm(forms.ModelForm):
