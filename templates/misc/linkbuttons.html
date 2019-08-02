@@ -1,0 +1,12 @@
+{% if view_link %}
+    <a href="{% url view_link record.id %}" title="Подробнее"><i
+            class="fas fa-eye"></i></a>
+{% endif %}
+{% if edit_link %}
+    <a href="{% url edit_link record.id %}" title="Редактировать"><i
+            class="fas fa-pencil-alt"></i></a>
+{% endif %}
+{% if remove_link %}
+    <a href="{% url remove_link record.id %}" title="Удалить"><i
+            class="fas fa-trash-alt"></i></a>
+{% endif %}

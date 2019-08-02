@@ -1,8 +1,10 @@
 from django.db import models
+from django.utils import timezone
 
 
 class Address(models.Model):
     address_str = models.CharField('Адрес', max_length=500)
+    created_date = models.DateField('Дата', default=timezone.now)
 
     def __str__(self):
         return self.address_str
@@ -19,6 +21,11 @@ class Services(models.Model):
     recalculations = models.FloatField('Перерасчёты')
     paid = models.FloatField('Оплачено')
     debt_at_end_of_period = models.FloatField('Задолженность на конец периода')
+    created_date = models.DateField('Дата', default=timezone.now)
+
+    class Meta:
+        verbose_name = 'Услуга'
+        verbose_name_plural = 'Услуги'
 
 
 class Document(models.Model):

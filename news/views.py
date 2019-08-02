@@ -2,7 +2,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import (
     CreateView, UpdateView, DetailView, TemplateView, DeleteView)
 from django.shortcuts import redirect
+from django_filters.views import FilterView
+from django_tables2.views import SingleTableMixin
+from django_tables2.export.views import ExportMixin
 from .forms import EntryForm
+from .tables import EntryTable, EntryFilter
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -13,31 +17,22 @@ import textwrap
 import json
 
 
-class NewsListView(LoginRequiredMixin, TemplateView):
+class NewsListView(LoginRequiredMixin, ExportMixin, SingleTableMixin, FilterView):
     model = Entry
-    template_name = 'list.html'
+    table_class = EntryTable
+    template_name = "list.html"
+    export_name = "Novosti"
+    filterset_class = EntryFilter
 
     def get_context_data(self, **kwargs):
         context = super(NewsListView, self).get_context_data(**kwargs)
         custom_context = {
             'objects': self.model.objects.all(),
-            'fields': ['created_date', 'title'],
             'urls': {
                 'add': 'news:add',
-                'detail': 'news:detail',
-                'edit': 'news:edit',
-                'remove': 'news:remove',
             }
         }
         return {**context, **custom_context}
-
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        return self.render_to_response(context)
-
-    def post(self, **kwargs):
-        context = self.get_context_data(**kwargs)
-        return self.render_to_response(context)
 
 
 class CreateEntryView(LoginRequiredMixin, CreateView):

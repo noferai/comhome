@@ -1,43 +1,34 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
-from django.views.generic import (CreateView, UpdateView, DetailView, TemplateView, View, DeleteView)
+from django.views.generic import (CreateView, UpdateView, DetailView, View, DeleteView)
 from apartments.forms import ApartmentForm, ApartmentCommentForm, ApartmentAttachmentForm
 from apartments.models import Apartment
 from catalog.models import Address
 from common.models import Comment, Attachments
 from common.utils import ApartmentStatusChoices
+from django_filters.views import FilterView
+from django_tables2.views import SingleTableMixin
+from django_tables2.export.views import ExportMixin
+from .tables import ApartmentTable, ApartmentFilter
 
 
-class ApartmentListView(LoginRequiredMixin, TemplateView):
+class ApartmentListView(LoginRequiredMixin, ExportMixin, SingleTableMixin, FilterView):
     model = Apartment
-    context_object_name = "objects"
+    table_class = ApartmentTable
     template_name = "list.html"
+    export_name = "Kvartiry"
+    filterset_class = ApartmentFilter
 
     def get_context_data(self, **kwargs):
         context = super(ApartmentListView, self).get_context_data(**kwargs)
         custom_context = {
             'objects': self.model.objects.all(),
-            'per_page': self.request.POST.get('per_page'),
-            'fields': ['created_date', 'address', 'apartment_number', 'area', 'homeowner'],
             'urls': {
                 'add': 'apartments:add',
-                'detail': 'apartments:view',
-                'edit': 'apartments:edit',
-                'remove': 'apartments:remove',
-                'homeowner': 'homeowners:view',
-                'address': False
             }
         }
         return {**context, **custom_context}
-
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        return self.render_to_response(context)
-
-    def post(self, **kwargs):
-        context = self.get_context_data(**kwargs)
-        return self.render_to_response(context)
 
 
 class ApartmentAddView(LoginRequiredMixin, CreateView):

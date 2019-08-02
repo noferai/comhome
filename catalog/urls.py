@@ -8,7 +8,6 @@ urlpatterns = [
     path('addresses/add/', AddressAddView.as_view(), name='address_add'),
     path('addresses/<int:pk>/edit/', AddressEditView.as_view(), name="address_edit"),
     path('addresses/<int:pk>/delete/', AddressDeleteView.as_view(), name="address_remove"),
-
 	path('<int:pk>/view/', ServiceDetailView.as_view(), name="services_detail"),
     path('services/list/', ServicesListView.as_view(), name='services_list'),
     path('services/add/', ServiceAddView.as_view(), name='service_add'),

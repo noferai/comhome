@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.urls import reverse
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
 
 import time
@@ -19,7 +20,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
-    date_joined = models.DateTimeField('date joined', auto_now_add=True)
+    date_joined = models.DateField('Дата', auto_now_add=True)
     role = models.CharField('Роль', max_length=50)
     profile_pic = models.FileField('Аватар', max_length=1000, upload_to=img_url, null=True, blank=True)
 
@@ -33,6 +34,13 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __unicode__(self):
         return self.email
+
+    def get_absolute_url(self):
+        return reverse('common:view_user', args=[str(self.id)])
+
+    class Meta:
+        verbose_name = 'Администратор'
+        verbose_name_plural = 'Администраторы'
 
 
 # class Address(models.Model):
@@ -81,7 +89,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Comment(models.Model):
     request = models.ForeignKey('requests.Request', blank=True, null=True, related_name="requests", on_delete=models.CASCADE)
     comment = models.CharField(max_length=255)
-    commented_on = models.DateTimeField(auto_now_add=True)
+    commented_on = models.DateField(auto_now_add=True)
     commented_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     staff = models.ForeignKey(
         'staff.Staff', blank=True, null=True, related_name="staff_comments", on_delete=models.CASCADE)
@@ -93,7 +101,7 @@ class Comment(models.Model):
 
 class Comment_Files(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
-    updated_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateField(auto_now_add=True)
     comment_file = models.FileField("File", upload_to="comment_files", default='')
 
     def get_file_name(self):
@@ -106,7 +114,7 @@ class Comment_Files(models.Model):
 class Attachments(models.Model):
     created_by = models.ForeignKey(User, related_name='attachment_created_by', on_delete=models.CASCADE)
     file_name = models.CharField(max_length=60)
-    created_on = models.DateTimeField(_("Created on"), auto_now_add=True)
+    created_on = models.DateField(_("Created on"), auto_now_add=True)
     attachment = models.FileField(max_length=1001, upload_to='attachments/%Y/%m/')
     homeowner = models.ForeignKey('homeowners.Homeowner', null=True, blank=True, related_name='homeowner_attachment',
                              on_delete=models.CASCADE)
@@ -125,7 +133,7 @@ class Document(models.Model):
     title = models.CharField('Название', max_length=1000, blank=True, null=True)
     document_file = models.FileField(upload_to=document_path, max_length=5000)
     created_by = models.ForeignKey(User, related_name='document_uploaded', on_delete=models.CASCADE)
-    created_on = models.DateTimeField(auto_now_add=True)
+    created_on = models.DateField(auto_now_add=True)
 
     def is_document_file_image(self, ext):
         image_ext_list = ['bmp', 'dds', 'gif', 'jpg', 'jpeg', 'png', 'psd', 'pspimage',

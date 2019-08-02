@@ -1,97 +1,47 @@
 {% extends 'base.html' %}
+{% load bootstrap4 %}
 {% load staticfiles %}
 {% load custom_tags %}
-{% load paginate %}
+{% load render_table from django_tables2 %}
+{% load export_url from  django_tables2 %}
 {% block title %} {% website_title objects %} {% endblock %}
 
 {% block breadcrumb %}
     <div class="page-header">
-        <h2 class="pageheader-title">{{ verbose_name_plural }}</h2>
+        <h2 class="pageheader-title">{% verbose_name_plural objects %}</h2>
     </div>
 {% endblock breadcrumb %}
 
 {% block content %}
     <div class="main_container">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <div class="card">
-                <div class="card-header d-flex">
-                    <h3 class="card-header-title">{% if show_pageitems %} {% show_pageitems %}{% else %}Всего:
-                        {{ objects|length }}{% endif %}</h3>
-                    <div class="toolbar ml-auto">
-                        <a href="#" title="Конвертировать" class="btn btn-light btn-sm to-xls">XLS</a>
-                        <a href="#" title="Конвертировать" class="btn btn-light btn-sm to-cvs">CSV</a>
-                        <a href="{% url urls.add %}" title="Добавить" class="btn btn-light btn-sm add-btn"><i
-                                class="fas fa-plus"></i></a>
-                    </div>
+        {% if filter %}
+            <form action="" method="get">
+            <div class="card filter">
+            <div class="card-header d-flex">
+                <h4>Фильтры</h4>
+            </div>
+                 <div class="card-body">
+                    {% bootstrap_form filter.form layout='inline' %}
+            </div>
+            <div class="card-footer-item">
+                {% bootstrap_button 'Применить' %}
+            </div>
+            </div>
+            </form>
+        {% endif %}
+        <div class="card">
+            <div class="card-header d-flex">
+                <div class="toolbar ml-auto">
+                    <a href="{% export_url "xls" %}" title="Конвертировать" class="btn btn-light btn-sm to-xls">XLS</a>
+                    <a href="{% export_url "csv" %}" title="Конвертировать" class="btn btn-light btn-sm to-cvs">CSV</a>
+                    <a href="#" title="Конвертировать" class="btn btn-light btn-sm filter-toggle">
+                        <i class="fas fa-filter"></i></a>
+                    <a href="{% url urls.add %}" title="Добавить" class="btn btn-light btn-sm add-btn"><i
+                            class="fas fa-plus"></i></a>
                 </div>
-                <div class="card-body list-cat ">
-                    <div class="table-responsive">
-                        <table class="table table-striped table-bordered first">
-                            <thead>
-                            {% if objects|length > 0 %}
-                                <tr>
-                                    {% for field_name in fields %}
-                                        {% get_field objects.first field_name as field %}
-                                        <th> {% field_label field %}</th>
-                                    {% endfor %}
-                                    <th>Действия</th>
-                                </tr>
-                            {% endif %}
-                            </thead>
-                            <tbody>
-                            {% if per_page %}
-                                {% paginate per_page objects %}
-                            {% else %}
-                                {% paginate 10 objects %}
-                            {% endif %}
-                            {% for object in objects %}
-                                <tr class="text-center">
-                                    {% for field_name in fields %}
-                                        {% get_field object field_name as field %}
-                                        <td>
-                                            {% if field.is_relation %}
-                                                {% field_value object field as value %}
-                                                {% related_url object field as url %}
-                                                {% if value %}
-                                                    {% if url %}
-                                                        <a href="{{ url }}">{{ value }}</a>
-                                                    {% else %}
-                                                        {{ value }}
-                                                    {% endif %}
-                                                {% else %}
-                                                    Не указано
-                                                {% endif %}
-                                            {% else %}
-                                                {% field_value object field %}
-                                            {% endif %}
-                                        </td>
-                                    {% endfor %}
-                                    <td class="actions">
-                                        {% if urls.detail %}
-                                            <a href="{% url urls.detail object.id %}" title="Подробнее"><i
-                                                    class="fas fa-eye"></i></a>
-                                        {% endif %}
-                                        {% if urls.edit %}
-                                            <a href="{% url urls.edit object.id %}" title="Редактировать"><i
-                                                    class="fas fa-pencil-alt"></i></a>
-                                        {% endif %}
-                                        {% if urls.remove %}
-                                            <a href="{% url urls.remove object.id %}" title="Удалить"><i
-                                                    class="fas fa-trash-alt"></i></a>
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    {% ifequal objects|length 0 %}
-                        <h5 class="text-center nothing-found">Ничего не найдено</h5>
-                    {% endifequal %}
-                    <div class="text-center row marl">
-                        {% show_pages %}
-                    </div>
-                </div>
+            </div>
+            <div class="card-body list-cat ">
+                {% render_table table %}
             </div>
         </div>
     </div>

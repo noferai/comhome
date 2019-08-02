@@ -1,10 +1,8 @@
 Django
-django-simple-pagination
 pytz
 psycopg2
 psycopg2-binary
 redis
-django-compressor
 coverage
 pytest
 pytest-cov
@@ -20,3 +18,5 @@ django-bootstrap4
 django-heroku
 django-choices
 gunicorn
+tablib
+django-filter

@@ -10,13 +10,9 @@ class HomeownerForm(forms.ModelForm):
         super(HomeownerForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs = {"class": "form-control"}
-        self.fields['apartments'].queryset = apartments
+        self.fields['apartments'] = forms.ModelMultipleChoiceField(widget=forms.widgets.SelectMultiple(attrs={'class': 'select2'}),
+                                                                   queryset=apartments)
         self.fields['birthday'] = forms.CharField(widget=forms.TextInput(attrs={'autocomplete': 'off'}))
-        for key, value in self.fields.items():
-            if key == 'phone':
-                value.widget.attrs['placeholder'] = 'Введите номер телефона'
-            else:
-                value.widget.attrs['placeholder'] = value.label
 
         self.fields['phone'].widget.attrs.update({
             'placeholder': '+7 777-777-77-77'})

@@ -2,37 +2,34 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import (
-    CreateView, UpdateView, DetailView, TemplateView, View)
+    CreateView, UpdateView, DetailView, View)
+from django_filters.views import FilterView
+from django_tables2.views import SingleTableMixin
+from django_tables2.export.views import ExportMixin
 from apartments.models import Apartment
+from requests.models import Request
 from common.models import Comment, Attachments
 from homeowners.models import Homeowner
 from homeowners.forms import HomeownerCommentForm, HomeownerForm, HomeownerAttachmentForm
+from .tables import HomeownerTable, HomeownerFilter, HomeownerRequestTable
 
 
-class HomeownerListView(LoginRequiredMixin, TemplateView):
+class HomeownerListView(LoginRequiredMixin, ExportMixin, SingleTableMixin, FilterView):
     model = Homeowner
-    context_object_name = "objects"
+    table_class = HomeownerTable
     template_name = "list.html"
+    export_name = "Sobstvenniki"
+    filterset_class = HomeownerFilter
 
     def get_context_data(self, **kwargs):
         context = super(HomeownerListView, self).get_context_data(**kwargs)
         custom_context = {
             'objects': self.model.objects.all(),
-            'per_page': self.request.POST.get('per_page'),
-            'fields': ['created_on', 'name', 'debt', 'apartments'],
             'urls': {
                 'add': 'homeowners:add',
-                'detail': 'homeowners:view',
-                'edit': 'homeowners:edit',
-                'remove': 'homeowners:remove',
-                'apartments': 'apartments:view'
             }
         }
         return {**context, **custom_context}
-
-    def post(self, **kwargs):
-        context = self.get_context_data(**kwargs)
-        return self.render_to_response(context)
 
 
 class CreateHomeownerView(LoginRequiredMixin, CreateView):
@@ -88,7 +85,8 @@ class HomeownerDetailView(LoginRequiredMixin, DetailView):
         comments = Comment.objects.filter(homeowner__id=self.object.id).order_by('-id')
         attachments = Attachments.objects.filter(homeowner__id=self.object.id).order_by('-id')
         context.update({
-            "attachments": attachments, "comments": comments})
+            "attachments": attachments, "comments": comments,
+            "table": HomeownerRequestTable(Request.objects.filter(applicant__id=self.object.id))})
         return context
 
 

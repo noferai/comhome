@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth import views
 from django.urls import include, path
 from common.views import handler404, handler500
@@ -16,6 +17,12 @@ urlpatterns = [
     path('news/', include('news.urls', namespace='news')),
     path('logout/', views.LogoutView, {'next_page': '/login/'}, name="logout"),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns
 
 handler404 = handler404
 handler500 = handler500

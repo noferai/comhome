@@ -11,6 +11,10 @@ from common.forms import UserForm, LoginForm, ChangePasswordForm, PasswordResetE
 from django.contrib.auth.views import PasswordResetView
 from django.urls import reverse_lazy
 from django.conf import settings
+from django_filters.views import FilterView
+from django_tables2.views import SingleTableMixin
+from django_tables2.export.views import ExportMixin
+from .tables import UserTable, UserFilter
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -19,6 +23,7 @@ from common.serializers import UserSerializer
 import json
 
 # TODO: придумать, как организовать код в common. Возможно разбить на несколько приложений (doc, User, ....)
+
 
 def handler404(request, exception):
     return render(request, '404.html', status=404)
@@ -118,37 +123,22 @@ class LogoutView(LoginRequiredMixin, View):
         return redirect("common:login")
 
 
-class UsersListView(AdminRequiredMixin, TemplateView):
+class UsersListView(LoginRequiredMixin, ExportMixin, SingleTableMixin, FilterView):
     model = User
-    context_object_name = "users"
-    template_name = "common/list.html"
-
-    def get_queryset(self):
-        queryset = self.model.objects.all()
-        request_post = self.request.POST
-        if request_post:
-            if request_post.get('first_name'):
-                queryset = queryset.filter(first_name__icontains=request_post.get('first_name'))
-            if request_post.get('last_name'):
-                queryset = queryset.filter(last_name_id=request_post.get('last_name'))
-            if request_post.get('username'):
-                queryset = queryset.filter(username__icontains=request_post.get('username'))
-            if request_post.get('email'):
-                queryset = queryset.filter(email__icontains=request_post.get('email'))
-        return queryset
+    template_name = "list.html"
+    table_class = UserTable
+    export_name = "Polzovateli"
+    filterset_class = UserFilter
 
     def get_context_data(self, **kwargs):
         context = super(UsersListView, self).get_context_data(**kwargs)
-        context["users"] = self.get_queryset()
-        context["active_users"] = self.get_queryset().filter(is_active=True)
-        context["inactive_users"] = self.get_queryset().filter(is_active=False)
-        context["per_page"] = self.request.POST.get('per_page')
-        context['admin_email'] = settings.ADMIN_EMAIL
-        return context
-
-    def post(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        return self.render_to_response(context)
+        custom_context = {
+            'objects': self.model.objects.all(),
+            'urls': {
+                'add': 'common:create_user',
+            }
+        }
+        return {**context, **custom_context}
 
 
 class CreateUserView(AdminRequiredMixin, CreateView):

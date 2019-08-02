@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from staff.models import Staff
 from common.models import User
@@ -10,7 +11,7 @@ from homeowners.utils import RequestChoicesGender, RequestChoicesDebtStatus,\
 class Homeowner(models.Model):
     name = models.CharField('ФИО', max_length=255, null=True)
     gender = models.CharField('Пол', max_length=10, choices=RequestChoicesGender.choices, null=True)
-    email = models.EmailField()
+    email = models.EmailField('Email')
     phone = models.CharField('Телефон', max_length=255)
     birthday = models.DateField('Дата рождения', null=True)
     debt = models.BooleanField('Задолженность', null=True, choices=RequestChoicesDebt.choices)
@@ -40,12 +41,15 @@ class Homeowner(models.Model):
     mail = models.BooleanField('Email', null=True, choices=RequestChoicesDebt.choices)
     comments = models.TextField('Комментарий', blank=True)
     created_by = models.ForeignKey(User, related_name='lead_created_by', on_delete=models.CASCADE)
-    created_on = models.DateTimeField('Дата', auto_now_add=True)
+    created_on = models.DateField('Дата', auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('homeowners:view', args=[str(self.id)])
 
     class Meta:
         verbose_name = 'Собственник'
         verbose_name_plural = 'Собственники'
         ordering = ['-created_on']
-
-    def __str__(self):
-        return self.name

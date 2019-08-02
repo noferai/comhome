@@ -3,38 +3,31 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import (
     CreateView, UpdateView, DetailView, TemplateView, View, DeleteView)
+from django_filters.views import FilterView
+from django_tables2.views import SingleTableMixin
+from django_tables2.export.views import ExportMixin
 from staff.forms import StaffForm, StaffCommentForm, StaffAttachmentForm
 from staff.models import Staff
 from common.models import User, Comment, Attachments
+from .tables import StaffTable, StaffFilter
 
 
-class StaffListView(LoginRequiredMixin, TemplateView):
+class StaffListView(LoginRequiredMixin, ExportMixin, SingleTableMixin, FilterView):
     model = Staff
-    context_object_name = "objects"
+    table_class = StaffTable
     template_name = "list.html"
+    export_name = "Ispolniteli"
+    filterset_class = StaffFilter
 
     def get_context_data(self, **kwargs):
         context = super(StaffListView, self).get_context_data(**kwargs)
         custom_context = {
             'objects': self.model.objects.all(),
-            'per_page': self.request.POST.get('per_page'),
-            'fields': ['created_on', 'name', 'industry', 'phone', 'is_active'],
             'urls': {
                 'add': 'staff:add',
-                'detail': 'staff:view',
-                'edit': 'staff:edit',
-                'remove': 'staff:remove',
             }
         }
         return {**context, **custom_context}
-
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        return self.render_to_response(context)
-
-    def post(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        return self.render_to_response(context)
 
 
 class CreateStaffView(LoginRequiredMixin, CreateView):

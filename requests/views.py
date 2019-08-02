@@ -1,45 +1,36 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
-from django.views.generic import CreateView, UpdateView, DetailView, TemplateView, DeleteView
-
+from django.views.generic import CreateView, UpdateView, DetailView, DeleteView
+from django_filters.views import FilterView
+from django_tables2.views import SingleTableMixin
+from django_tables2.export.views import ExportMixin
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
 from requests.models import Request
 from requests.forms import RequestForm
 from staff.models import Staff
-
+from homeowners.models import Homeowner
+from .tables import RequestTable, RequestFilter
 from common.utils import RequestTypeChoices, RequestPriorityChoices, RequestStatusChoices
 
-class RequestsListView(LoginRequiredMixin, TemplateView):
+
+class RequestsListView(LoginRequiredMixin, ExportMixin, SingleTableMixin, FilterView):
     model = Request
-    context_object_name = "objects"
+    table_class = RequestTable
     template_name = "list.html"
+    export_name = "Zayavki"
+    filterset_class = RequestFilter
 
     def get_context_data(self, **kwargs):
         context = super(RequestsListView, self).get_context_data(**kwargs)
         custom_context = {
             'objects': self.model.objects.all(),
-            'per_page': self.request.POST.get('per_page'),
-            'fields': ['created_on', 'request_type', 'priority', 'assigned_to', 'is_proceed'],
             'urls': {
                 'add': 'requests:add',
-                'detail': 'requests:view',
-                'edit': 'requests:edit',
-                'remove': 'requests:remove',
-                'assigned_to': 'staff:view'
             }
         }
         return {**context, **custom_context}
-
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        return self.render_to_response(context)
-
-    def post(self, **kwargs):
-        context = self.get_context_data(**kwargs)
-        return self.render_to_response(context)
 
 
 class CreateRequestView(LoginRequiredMixin, CreateView):
@@ -49,11 +40,12 @@ class CreateRequestView(LoginRequiredMixin, CreateView):
 
     def dispatch(self, request, *args, **kwargs):
         self.assigned_to = Staff.objects.all()
+        self.homeowners = Homeowner.objects.all()
         return super(CreateRequestView, self).dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
         kwargs = super(CreateRequestView, self).get_form_kwargs()
-        kwargs.update({"assigned_to": self.assigned_to})
+        kwargs.update({"assigned_to": self.assigned_to, 'homeowners': self.homeowners})
         return kwargs
 
     def post(self, request, *args, **kwargs):

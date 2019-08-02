@@ -41,7 +41,7 @@
                 </div>
                 <div class="filter_col col-md-12">
                   <div class="form-group">
-                    <label for="id_request_type">Что сломалось?{% if request_form.request_type.field.required %}<span class="error">*</span>{% endif %}</label>
+                    <label for="id_request_type">Тип заявки{% if request_form.request_type.field.required %}<span class="error">*</span>{% endif %}</label>
                     {{ request_form.request_type }}
                     <span class="error">{{ request_form.request_type.errors }}</span>
                   </div>
@@ -58,20 +58,19 @@
               </div>
               <div class="col-md-6">
                 <div class="filter_col col-md-12">
-{#                  <div class="form-group">#}
-{#                    <label for="exampleInputEmail1">Исполнители</label>#}
-{#                     <select class="assigned_users form-control" name="assigned_to" multiple="multiple">#}
-{#                      {% for staff in staff %}#}
-{#                        <option value="{{staff.id}}" {% if staff in request_obj.assigned_to.all or staff.id in assignedto_list %} selected="" {% endif %}>{{staff.name}}</option>#}
-{#                      {% endfor %}#}
-{#                    </select>#}
-{#                    <span class="error">{{ request_form.assigned_to.errors }}</span>#}
-{#                  </div>#}
                     <div class="form-group">
                     <label for="exampleInputEmail1" class="required">Исполнители{% if request_form.assigned_to.field.required %}<span class="error">*</span>{% endif %}</label>
                     {{ request_form.assigned_to }}
                     <span class="error">{{ request_form.assigned_to.errors }}</span>
                     </div>
+                </div>
+              <div class="filter_col col-md-12">
+                    <div class="form-group">
+                    <label for="exampleInputEmail1">Заявитель{% if request_form.applicant.field.required %}<span class="error">*</span>{% endif %}</label>
+                    {{ request_form.applicant }}
+                    <span class="error">{{ request_form.applicant.errors }}</span>
+                    </div>
+                </div>
                 <div class="filter_col col-md-12">
                   <div class="form-group">
                     <label for="id_description">Описание проблемы{% if request_form.description.field.required %}<span class="error">*</span>{% endif %}</label>
@@ -103,10 +102,4 @@
     </div>
   </form>
 {% endblock %}
-{% block js_block %}
-<script>
-    $( document ).ready(function() {
-    $(".date input").attr("type", "date");
-    });
-</script>
-{% endblock js_block %}
+

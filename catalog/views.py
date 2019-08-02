@@ -1,41 +1,31 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import (
-    CreateView, UpdateView,  TemplateView, DeleteView, DetailView)
+    CreateView, UpdateView, DeleteView, DetailView)
 from catalog.models import Address, Services
 from catalog.forms import AddressForm, ServicesForm
+from django_filters.views import FilterView
+from django_tables2.views import SingleTableMixin
+from django_tables2.export.views import ExportMixin
+from .tables import AddressTable, AddressFilter, ServicesTable, ServicesFilter
 
 
-class AddressesListView(LoginRequiredMixin, TemplateView):
+class AddressesListView(LoginRequiredMixin, ExportMixin, SingleTableMixin, FilterView):
     model = Address
-    context_object_name = "addresses_list"
+    table_class = AddressTable
     template_name = "list.html"
-
-    def get_queryset(self):
-        queryset = self.model.objects.all()
-        return queryset
+    export_name = "Adresa"
+    filterset_class = AddressFilter
 
     def get_context_data(self, **kwargs):
         context = super(AddressesListView, self).get_context_data(**kwargs)
         custom_context = {
-            'objects': self.get_queryset(),
-            'per_page': self.request.POST.get('per_page'),
-            'fields': ['address_str'],
+            'objects': self.model.objects.all(),
             'urls': {
                 'add': 'catalog:address_add',
-                'edit': 'catalog:address_edit',
-                'remove': 'catalog:address_remove'
             }
         }
         return {**context, **custom_context}
-
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        return self.render_to_response(context)
-
-    def post(self, **kwargs):
-        context = self.get_context_data(**kwargs)
-        return self.render_to_response(context)
 
 
 class AddressAddView(LoginRequiredMixin, CreateView):
@@ -117,28 +107,22 @@ class AddressDeleteView(LoginRequiredMixin, DeleteView):
         return redirect("catalog:addresses_list")
 
 
-class ServicesListView(LoginRequiredMixin, TemplateView):
+class ServicesListView(LoginRequiredMixin, ExportMixin, SingleTableMixin, FilterView):
     model = Services
-    context_object_name = "services_list"
-    template_name = "catalog/list_service.html"
-
-    def get_queryset(self):
-        queryset = self.model.objects.all()
-        return queryset
+    table_class = ServicesTable
+    template_name = "list.html"
+    export_name = "Servisy"
+    filterset_class = ServicesFilter
 
     def get_context_data(self, **kwargs):
         context = super(ServicesListView, self).get_context_data(**kwargs)
-        context["services_list"] = self.get_queryset()
-        context["per_page"] = self.request.POST.get('per_page')
-        return context
-
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        return self.render_to_response(context)
-
-    def post(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        return self.render_to_response(context)
+        custom_context = {
+            'objects': self.model.objects.all(),
+            'urls': {
+                'add': 'catalog:service_add',
+            }
+        }
+        return {**context, **custom_context}
 
 
 class ServiceAddView(LoginRequiredMixin, CreateView):

@@ -27,9 +27,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'simple_pagination',
+    'django_tables2',
+    'django_filters',
+    'debug_toolbar',
     'rest_framework',
     'bootstrap4',
-    'compressor',
     'common',
     'staff',
     'requests',
@@ -43,6 +45,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -275,3 +278,10 @@ ADMIN_EMAIL = "admin@micropyramid.com"
 
 # Configure Django App for Heroku.
 django_heroku.settings(locals())
+
+
+INTERNAL_IPS = [
+    # ...
+    '127.0.0.1',
+    # ...
+]

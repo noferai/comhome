@@ -4,16 +4,13 @@ from common.models import Comment, Attachments
 
 
 class ApartmentForm(forms.ModelForm):
-
     def __init__(self, *args, **kwargs):
-        #owners = kwargs.pop('owners', [])
         addresses = kwargs.pop('addresses', [])
         super(ApartmentForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs = {"class": "form-control"}
         self.fields['area'].required = False
         self.fields['address'].queryset = addresses
-        #self.fields['owners'].queryset = owners
 
     class Meta:
         model = Apartment
