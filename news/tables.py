@@ -7,7 +7,7 @@ from common.models import User
 
 class EntryTable(tables.Table):
     created_date = tables.DateColumn(format="d.m.Y")
-    author = tables.Column(verbose_name="Автор")
+    author = tables.Column(verbose_name="Автор", linkify=True, accessor="author")
     actions = tables.TemplateColumn(verbose_name="Действия", template_name="misc/linkbuttons.html", extra_context={
         'view_link': 'news:view',
         'edit_link': 'news:edit',

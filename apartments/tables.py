@@ -4,6 +4,8 @@ from django.forms import widgets
 from .models import Apartment
 from catalog.models import Address
 from homeowners.models import Homeowner
+from homeowners.tables import HomeownerTable
+from requests.tables import RequestTable
 
 
 class ApartmentTable(tables.Table):
@@ -33,3 +35,10 @@ class ApartmentFilter(filters.FilterSet):
     class Meta:
         model = Apartment
         fields = ['created_date', 'address', 'apartment_number', 'area', 'homeowner']
+
+
+class ApartmentRequestTable(RequestTable):
+    class Meta:
+        exclude = ['apartment']
+        template_name = 'django_tables2/bootstrap4.html'
+        attrs = {'class': 'table table-striped table-bordered text-center'}

@@ -4,7 +4,6 @@ from common.models import Comment, Attachments
 
 
 class HomeownerForm(forms.ModelForm):
-
     def __init__(self, *args, **kwargs):
         apartments = kwargs.pop('apartments', [])
         super(HomeownerForm, self).__init__(*args, **kwargs)

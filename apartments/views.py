@@ -4,13 +4,14 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import (CreateView, UpdateView, DetailView, View, DeleteView)
 from apartments.forms import ApartmentForm, ApartmentCommentForm, ApartmentAttachmentForm
 from apartments.models import Apartment
+from requests.models import Request
 from catalog.models import Address
 from common.models import Comment, Attachments
 from common.utils import ApartmentStatusChoices
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 from django_tables2.export.views import ExportMixin
-from .tables import ApartmentTable, ApartmentFilter
+from .tables import ApartmentTable, ApartmentFilter, ApartmentRequestTable
 
 
 class ApartmentListView(LoginRequiredMixin, ExportMixin, SingleTableMixin, FilterView):
@@ -69,39 +70,14 @@ class ApartmentAddView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(ApartmentAddView, self).get_context_data(**kwargs)
-        context["apartment_form"] = context["form"]
-        context["apartment_status"] = ApartmentStatusChoices.choices
-        return context
+        custom_context = {
+            'apartment_form': context["form"],
+            'apartment_status': ApartmentStatusChoices.choices
+        }
+        return {**context, **custom_context}
 
 
-class ApartmentDetailView(LoginRequiredMixin, DetailView):
-    model = Apartment
-    context_object_name = "apartment"
-    template_name = "apartments/detail.html"
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.addresses = Address.objects.all()
-
-    def get_context_data(self, **kwargs):
-        context = super(ApartmentDetailView, self).get_context_data(**kwargs)
-        return context
-
-
-class ApartmentEditView(LoginRequiredMixin, UpdateView):
-    model = Apartment
-    form_class = ApartmentForm
-    template_name = "apartments/create.html"
-
-    def dispatch(self, request, *args, **kwargs):
-        self.addresses = Address.objects.all()
-        return super(ApartmentEditView, self).dispatch(request, *args, **kwargs)
-
-    def get_form_kwargs(self):
-        kwargs = super(ApartmentEditView, self).get_form_kwargs()
-        kwargs.update({"addresses": self.addresses})
-        return kwargs
-
+class ApartmentEditView(ApartmentAddView, UpdateView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form = self.get_form()
@@ -115,22 +91,24 @@ class ApartmentEditView(LoginRequiredMixin, UpdateView):
         apartment_object.save()
         return redirect("apartments:list")
 
-    def form_invalid(self, form):
-        return self.render_to_response(
-            self.get_context_data(
-                form=form)
-        )
+
+class ApartmentDetailView(LoginRequiredMixin, DetailView):
+    model = Apartment
+    context_object_name = "apartment"
+    template_name = "apartments/detail.html"
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.addresses = Address.objects.all()
 
     def get_context_data(self, **kwargs):
-        context = super(ApartmentEditView, self).get_context_data(**kwargs)
-        context["apartment_obj"] = self.object
-        context["apartment_form"] = context["form"]
+        context = super(ApartmentDetailView, self).get_context_data(**kwargs)
+        context.update({'table': ApartmentRequestTable(Request.objects.filter(apartment__id=self.object.id))})
         return context
 
 
 class ApartmentDeleteView(LoginRequiredMixin, DeleteView):
     model = Apartment
-    template_name = 'apartments/detail.html'
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()

@@ -186,11 +186,7 @@ class UserDetailView(AdminRequiredMixin, DetailView):
         return context
 
 
-class UpdateUserView(LoginRequiredMixin, UpdateView):
-    model = User
-    form_class = UserForm
-    template_name = "common/create.html"
-
+class UpdateUserView(CreateUserView, UpdateView):
     def form_valid(self, form):
         user = form.save(commit=False)
         if user.role == "USER":
@@ -204,20 +200,6 @@ class UpdateUserView(LoginRequiredMixin, UpdateView):
             data = {'success_url': reverse_lazy('common:profile'), 'error': False}
             return JsonResponse(data)
         return super(UpdateUserView, self).form_valid(form)
-
-    def form_invalid(self, form):
-        response = super(UpdateUserView, self).form_invalid(form)
-        if self.request.is_ajax():
-            return JsonResponse({'error': True, 'errors': form.errors})
-        return response
-
-    def get_context_data(self, **kwargs):
-        context = super(UpdateUserView, self).get_context_data(**kwargs)
-        context["user_obj"] = self.object
-        context["user_form"] = context["form"]
-        if "errors" in kwargs:
-            context["errors"] = kwargs["errors"]
-        return context
 
 
 class UserDeleteView(AdminRequiredMixin, DeleteView):

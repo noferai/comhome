@@ -75,6 +75,22 @@ class CreateHomeownerView(LoginRequiredMixin, CreateView):
         return context
 
 
+class UpdateHomeownerView(CreateHomeownerView, UpdateView):
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        homeowner_obj = form.save(commit=False)
+        homeowner_obj.save()
+        form.save_m2m()
+        return redirect('homeowners:list')
+
+
 class HomeownerDetailView(LoginRequiredMixin, DetailView):
     model = Homeowner
     context_object_name = "homeowner"
@@ -90,60 +106,7 @@ class HomeownerDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-class UpdateHomeownerView(LoginRequiredMixin, UpdateView):
-    model = Homeowner
-    form_class = HomeownerForm
-    template_name = "homeowners/create.html"
-
-    def dispatch(self, request, *args, **kwargs):
-        self.error = "" # Зачем?
-        self.apartments = Apartment.objects.all()
-        return super(UpdateHomeownerView, self).dispatch(request, *args, **kwargs)
-
-    def get_initial(self):
-        initial = super(UpdateHomeownerView, self).get_initial()
-        status = self.request.GET.get('status', None)
-        if status:
-            initial.update({"status": status})
-        return initial
-
-    def get_form_kwargs(self):
-        kwargs = super(UpdateHomeownerView, self).get_form_kwargs()
-        kwargs.update({"apartments": self.apartments})
-        return kwargs
-
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        return super(UpdateHomeownerView, self).get(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
-
-    def form_valid(self, form):
-        homeowner_obj = form.save(commit=False)
-        homeowner_obj.save()
-        form.save_m2m()
-        return redirect('homeowners:list')
-
-    def form_invalid(self, form):
-        return self.render_to_response(
-            self.get_context_data(form=form))
-
-    def get_context_data(self, **kwargs):
-        context = super(UpdateHomeownerView, self).get_context_data(**kwargs)
-        context["homeowner_obj"] = self.object
-        context["homeowner_form"] = context["form"]
-        context["error"] = self.error
-        return context
-
-
 class DeleteHomeownerView(LoginRequiredMixin, View):
-
     def get(self, request, *args, **kwargs):
         return self.post(**kwargs)
 
@@ -251,7 +214,6 @@ class AddAttachmentsView(LoginRequiredMixin, CreateView):
 
 
 class DeleteAttachmentsView(LoginRequiredMixin, View):
-
     def post(self, request):
         self.object = get_object_or_404(Attachments, id=request.POST.get("attachment_id"))
         self.object.delete()

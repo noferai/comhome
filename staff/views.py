@@ -83,19 +83,7 @@ class StaffDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-class StaffUpdateView(LoginRequiredMixin, UpdateView):
-    model = Staff
-    form_class = StaffForm
-    template_name = "staff/create.html"
-
-    def dispatch(self, request, *args, **kwargs):
-        self.users = User.objects.filter(is_active=True).order_by('email')
-        return super(StaffUpdateView, self).dispatch(request, *args, **kwargs)
-
-    def get_form_kwargs(self):
-        kwargs = super(StaffUpdateView, self).get_form_kwargs()
-        return kwargs
-
+class StaffUpdateView(CreateStaffView, UpdateView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form = self.get_form()
@@ -109,23 +97,9 @@ class StaffUpdateView(LoginRequiredMixin, UpdateView):
         staff_object.save()
         return redirect("staff:list")
 
-    def form_invalid(self, form):
-        return self.render_to_response(
-            self.get_context_data(
-                form=form)
-        )
-
-    def get_context_data(self, **kwargs):
-        context = super(StaffUpdateView, self).get_context_data(**kwargs)
-        context["staff_obj"] = self.object
-        context["staff_form"] = context["form"]
-        context["users"] = self.users
-        return context
-
 
 class StaffDeleteView(LoginRequiredMixin, DeleteView):
     model = Staff
-    template_name = 'staff/detail.html'
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()

@@ -2,104 +2,130 @@
 {% load staticfiles %}
 {% block title %} {% if request_obj %}Редактировать {% else %}Добавить {% endif %}заявку - ComHome CRM{% endblock %}
 {% block extralinks %}
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
 {% endblock %}
 {% block breadcrumb %}
-<div class="page-header">
+    <div class="page-header">
         <h2 class="pageheader-title">{% if request_obj %}Редактировать {% else %}Добавить {% endif %}заявку</h2>
-    <div class="page-breadcrumb">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li  class="breadcrumb-item"><a href="{% url 'requests:list' %}">Заявки</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{% if request_obj %}Редактировать {% else %}Добавить {% endif %}заявку</li>
-            </ol>
-        </nav>
+        <div class="page-breadcrumb">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'requests:list' %}">Заявки</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{% if request_obj %}Редактировать {% else %}
+                        Добавить {% endif %}заявку
+                    </li>
+                </ol>
+            </nav>
+        </div>
     </div>
-</div>
 {% endblock %}
 {% block content %}
-  <form id="submitForm" method="POST" action="" novalidate>
-    <div class="overview_form_block row marl">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-body">
-            <div class="row marl no-gutters">
-              <div class="col-md-6">
-                <div class="filter_col col-md-12">
-                  <div class="form-group">
-                    <label for="id_status" class="required">Статус{% if request_form.status.field.required %}<span class="error">*</span>{% endif %}</label>
-                    {{ request_form.status }}
-                    <span class="error">{{ request_form.status.errors }}</span>
-                  </div>
-                </div>
-                <div class="filter_col col-md-12">
-                  <div class="form-group">
-                    <label for="id_priority" class="required">Приоритет{% if request_form.priority.field.required %}<span class="error">*</span>{% endif %}</label>
-                    {{ request_form.priority }}
-                    <span class="error">{{ request_form.priority.errors }}</span>
-                  </div>
-                </div>
-                <div class="filter_col col-md-12">
-                  <div class="form-group">
-                    <label for="id_request_type">Тип заявки{% if request_form.request_type.field.required %}<span class="error">*</span>{% endif %}</label>
-                    {{ request_form.request_type }}
-                    <span class="error">{{ request_form.request_type.errors }}</span>
-                  </div>
-                </div>
-                <div class="filter_col col-md-12">
-                  <div class="form-group">
-                    <label for="exampleInputEmail1" class="required">Дата закрытия{% if request_form.closed_on.field.required %}<span class="error">*</span>{% endif %}</label>
-                    <div class='input-group date' id='datepicker1'>
-                      {{ request_form.closed_on }}
+    <form id="submitForm" method="POST" action="" novalidate>
+        <div class="overview_form_block row marl">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row marl no-gutters">
+                            <div class="col-md-6">
+                                <div class="filter_col col-md-12">
+                                    <div class="form-group">
+                                        <label for="id_status" class="required">Статус
+                                            {% if request_form.status.field.required %}
+                                                <span class="error">*</span>{% endif %}</label>
+                                        {{ request_form.status }}
+                                        <span class="error">{{ request_form.status.errors }}</span>
+                                    </div>
+                                </div>
+                                <div class="filter_col col-md-12">
+                                    <div class="form-group">
+                                        <label for="id_priority" class="required">Приоритет
+                                            {% if request_form.priority.field.required %}
+                                                <span class="error">*</span>{% endif %}</label>
+                                        {{ request_form.priority }}
+                                        <span class="error">{{ request_form.priority.errors }}</span>
+                                    </div>
+                                </div>
+                                <div class="filter_col col-md-12">
+                                    <div class="form-group">
+                                        <label for="id_request_type">Тип заявки
+                                            {% if request_form.request_type.field.required %}
+                                                <span class="error">*</span>{% endif %}</label>
+                                        {{ request_form.request_type }}
+                                        <span class="error">{{ request_form.request_type.errors }}</span>
+                                    </div>
+                                </div>
+                                <div class="filter_col col-md-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="required">Дата закрытия
+                                            {% if request_form.closed_on.field.required %}
+                                                <span class="error">*</span>{% endif %}</label>
+                                        <div class='input-group date' id='datepicker1'>
+                                            {{ request_form.closed_on }}
+                                        </div>
+                                        <span class="error">{{ request_form.closed_on.errors }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="filter_col col-md-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="required">Исполнители
+                                            {% if request_form.assigned_to.field.required %}
+                                                <span class="error">*</span>{% endif %}</label>
+                                        {{ request_form.assigned_to }}
+                                        <span class="error">{{ request_form.assigned_to.errors }}</span>
+                                    </div>
+                                </div>
+                                <div class="filter_col col-md-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Заявитель
+                                            {% if request_form.applicant.field.required %}
+                                                <span class="error">*</span>{% endif %}</label>
+                                        {{ request_form.applicant }}
+                                        <span class="error">{{ request_form.applicant.errors }}</span>
+                                    </div>
+                                </div>
+                                <div class="filter_col col-md-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Квартира
+                                            {% if request_form.apartment.field.required %}
+                                                <span class="error">*</span>{% endif %}</label>
+                                        {{ request_form.apartment }}
+                                        <span class="error">{{ request_form.apartment.errors }}</span>
+                                    </div>
+                                </div>
+                                <div class="filter_col col-md-12">
+                                    <div class="form-group">
+                                        <label for="id_description">Описание проблемы
+                                            {% if request_form.description.field.required %}
+                                                <span class="error">*</span>{% endif %}</label>
+                                        {{ request_form.description }}
+                                        <span class="error">{{ request_form.description.errors }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br clear="all">
                     </div>
-                    <span class="error">{{ request_form.closed_on.errors }}</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="filter_col col-md-12">
-                    <div class="form-group">
-                    <label for="exampleInputEmail1" class="required">Исполнители{% if request_form.assigned_to.field.required %}<span class="error">*</span>{% endif %}</label>
-                    {{ request_form.assigned_to }}
-                    <span class="error">{{ request_form.assigned_to.errors }}</span>
+                    <div class="card-footer  p-0 text-left d-flex justify-content-center">
+                        <div class="card-footer-item card-footer-item-bordered">
+                            <button class="btn btn-default save" type="submit">Сохранить</button>
+                        </div>
+                        {% if not account_obj %}
+                            <div class="card-footer-item card-footer-item-bordered">
+                                <button class="btn btn-default save savenew" type="submit">Сохранить и добавить ещё
+                                </button>
+                            </div>
+                        {% endif %}
+                        <div class="card-footer-item card-footer-item-bordered">
+                            <a href="{% url 'requests:list' %}" class="btn btn-default clear">Отмена</a>
+                        </div>
                     </div>
                 </div>
-              <div class="filter_col col-md-12">
-                    <div class="form-group">
-                    <label for="exampleInputEmail1">Заявитель{% if request_form.applicant.field.required %}<span class="error">*</span>{% endif %}</label>
-                    {{ request_form.applicant }}
-                    <span class="error">{{ request_form.applicant.errors }}</span>
-                    </div>
-                </div>
-                <div class="filter_col col-md-12">
-                  <div class="form-group">
-                    <label for="id_description">Описание проблемы{% if request_form.description.field.required %}<span class="error">*</span>{% endif %}</label>
-                    {{ request_form.description }}
-                    <span class="error">{{ request_form.description.errors }}</span>
-                  </div>
-                </div>
-              </div>
             </div>
             <br clear="all">
-          </div>
-        <div class="card-footer  p-0 text-left d-flex justify-content-center">
-            <div class="card-footer-item card-footer-item-bordered">
-                <button class="btn btn-default save" type="submit">Сохранить</button>
-            </div>
-            {% if not account_obj %}
-            <div class="card-footer-item card-footer-item-bordered">
-                <button class="btn btn-default save savenew" type="submit">Сохранить и добавить ещё</button>
-            </div>
-            {% endif %}
-            <div class="card-footer-item card-footer-item-bordered">
-                <a href="{% url 'requests:list' %}" class="btn btn-default clear">Отмена</a>
-            </div>
+            <input type="hidden" id="save_new_form" name="savenewform">
         </div>
-        </div>
-      </div>
-      <br clear="all">
-      <input type="hidden" id="save_new_form" name="savenewform">
-    </div>
-  </form>
+    </form>
 {% endblock %}
 

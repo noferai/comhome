@@ -1,51 +1,74 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-{% block title %}{{apartment.address}} - Comfortable Home{% endblock %}
+{% load render_table from django_tables2 %}
+{% block title %}{{ apartment.address }} - Comfortable Home{% endblock %}
 {% block breadcrumb %}
-<div class="page-header">
-        <h2 class="pageheader-title">{{apartment.address}}, квартира {{ apartment.apartment_number }}</h2>
-    <div class="page-breadcrumb">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li  class="breadcrumb-item"><a href="{% url 'apartments:list' %}">Квартиры</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{apartment.address}}, квартира {{ apartment.apartment_number }}</li>
-            </ol>
-        </nav>
+    <div class="page-header">
+        <h2 class="pageheader-title">{{ apartment.address }}, квартира {{ apartment.apartment_number }}</h2>
+        <div class="page-breadcrumb">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'apartments:list' %}">Квартиры</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ apartment.address }},
+                        квартира {{ apartment.apartment_number }}</li>
+                </ol>
+            </nav>
+        </div>
     </div>
-</div>
 {% endblock breadcrumb %}
 {% block content %}
     <div class="col-md-12">
-        <div class="card">
+        <div class="simple-card">
             <div class="card-header d-flex">
-                <h3 class="card-header-title">Подробная информация</h3>
                 <div class="toolbar ml-auto">
-                    <a href="{% url 'apartments:edit' apartment.id %}" class="btn btn-light btn-sm"><i class="fas fa-pencil-alt"></i></a>
-                    <a href="{% url 'apartments:remove' apartment.id %}" class="btn btn-light btn-sm"><i class="fas fa-trash-alt"></i></a>
+                    <a href="{% url 'apartments:edit' apartment.id %}" class="btn btn-light btn-sm"><i
+                            class="fas fa-pencil-alt"></i></a>
+                    <a href="{% url 'apartments:remove' apartment.id %}" class="btn btn-light btn-sm"><i
+                            class="fas fa-trash-alt"></i></a>
                 </div>
             </div>
-            <div class="card-body">
-                <p class="text-left">Адрес: {{apartment.address}}</p>
-                <p class="text-left">Номер квартиры: {{apartment.apartment_number}}</p>
-                <p class="text-left">Подъезд: {{apartment.entrance}}</p>
-                <p class="text-left">Этаж: {{apartment.floor}}</p>
-                <p class="text-left">Количество комнат: {{apartment.number_of_rooms}}</p>
-                <p class="text-left">Площадь: {{apartment.area}}</p>
-                <p class="text-left">Статус: {{apartment.status}}</p>
-                <p class="text-left">История заявок: -</p>
-                <p class="text-left">Номер лицевого счета: {{apartment.number_of_business_account}}</p>
-                <p class="text-left">Баланс лицевого счёта: {{apartment.balance_of_business_account}}</p>
+            <div class="card-body p-0">
+                <ul class="nav nav-tabs" id="myTab5" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link border-left-0 active show" id="main-information-tab"
+                           data-toggle="tab" href="#main-information" role="tab" aria-controls="home"
+                           aria-selected="true">Подробная информация</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="activity-information-tab" data-toggle="tab"
+                           href="#activity-information" role="tab" aria-controls="contact"
+                           aria-selected="false">Обращения</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent5">
+                    <div class="tab-pane fade active show" id="main-information" role="tabpanel"
+                         aria-labelledby="home-tab-simple">
+                        <p class="text-left">Адрес: {{ apartment.address }}</p>
+                        <p class="text-left">Номер квартиры: {{ apartment.apartment_number }}</p>
+                        <p class="text-left">Подъезд: {{ apartment.entrance }}</p>
+                        <p class="text-left">Этаж: {{ apartment.floor }}</p>
+                        <p class="text-left">Количество комнат: {{ apartment.number_of_rooms }}</p>
+                        <p class="text-left">Площадь: {{ apartment.area }}</p>
+                        <p class="text-left">Статус: {{ apartment.status }}</p>
+                        <p class="text-left">Номер лицевого счета: {{ apartment.number_of_business_account }}</p>
+                        <p class="text-left">Баланс лицевого счёта: {{ apartment.balance_of_business_account }}</p>
+                    </div>
+                    <div class="tab-pane fade" id="activity-information" role="tabpanel"
+                         aria-labelledby="activity-tab-simple">
+                        {% render_table table %}
+                    </div>
+                </div>
             </div>
             <div class="card-footer  p-0 text-left d-flex justify-content-center">
                 <div class="card-footer-item card-footer-item-bordered">
-                Дата: {{ apartment.created_date }}
+                    Дата: {{ apartment.created_date }}
                 </div>
                 <div class="card-footer-item card-footer-item-bordered">
-                Добавил: {{ apartment.created_by.username }}
+                    Добавил: {{ apartment.created_by.username }}
                 </div>
             </div>
         </div>
     </div>
-  {% endblock content %}
+{% endblock content %}
 {% block js_block %}
 {% endblock js_block %}

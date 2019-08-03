@@ -18,5 +18,6 @@ django-bootstrap4
 django-heroku
 django-choices
 gunicorn
+django-tables2
 tablib
 django-filter

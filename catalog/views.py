@@ -62,15 +62,7 @@ class AddressAddView(LoginRequiredMixin, CreateView):
         return context
 
 
-class AddressEditView(LoginRequiredMixin, UpdateView):
-    model = Address
-    form_class = AddressForm
-    template_name = "catalog/create.html"
-
-    def get_form_kwargs(self):
-        kwargs = super(AddressEditView, self).get_form_kwargs()
-        return kwargs
-
+class AddressEditView(AddressAddView, UpdateView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form = self.get_form()
@@ -84,22 +76,9 @@ class AddressEditView(LoginRequiredMixin, UpdateView):
         account_object.save()
         return redirect("catalog:addresses_list")
 
-    def form_invalid(self, form):
-        return self.render_to_response(
-            self.get_context_data(
-                form=form)
-        )
-
-    def get_context_data(self, **kwargs):
-        context = super(AddressEditView, self).get_context_data(**kwargs)
-        context["address_obj"] = self.object
-        context["address_form"] = context["form"]
-        return context
-
 
 class AddressDeleteView(LoginRequiredMixin, DeleteView):
     model = Address
-    template_name = 'catalog/list.html'
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -159,15 +138,7 @@ class ServiceAddView(LoginRequiredMixin, CreateView):
         return context
 
 
-class ServiceEditView(LoginRequiredMixin, UpdateView):
-    model = Services
-    form_class = ServicesForm
-    template_name = "catalog/create_service.html"
-
-    def get_form_kwargs(self):
-        kwargs = super(ServiceEditView, self).get_form_kwargs()
-        return kwargs
-
+class ServiceEditView(ServiceAddView, UpdateView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form = self.get_form()
@@ -181,22 +152,9 @@ class ServiceEditView(LoginRequiredMixin, UpdateView):
         account_object.save()
         return redirect("catalog:services_list")
 
-    def form_invalid(self, form):
-        return self.render_to_response(
-            self.get_context_data(
-                form=form)
-        )
-
-    def get_context_data(self, **kwargs):
-        context = super(ServiceEditView, self).get_context_data(**kwargs)
-        context["services_obj"] = self.object
-        context["service_form"] = context["form"]
-        return context
-
 
 class ServiceDeleteView(LoginRequiredMixin, DeleteView):
     model = Services
-    template_name = 'catalog/list_service.html'
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()

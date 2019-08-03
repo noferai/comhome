@@ -7,6 +7,7 @@ class RequestForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         assigned_users = kwargs.pop('assigned_to', [])
         homeowners = kwargs.pop('homeowners', [])
+        apartments = kwargs.pop('apartments', [])
         super(RequestForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs = {"class": "form-control"}
@@ -16,11 +17,13 @@ class RequestForm(forms.ModelForm):
                                                            queryset=homeowners)
         self.fields['assigned_to'] = forms.ModelMultipleChoiceField(widget=forms.widgets.SelectMultiple(attrs={'class': 'select2'}),
                                                                     queryset=assigned_users, required=False)
+        self.fields['apartment'] = forms.ModelChoiceField(widget=forms.widgets.Select(attrs={'class': 'select2'}),
+                                                          queryset=apartments)
         self.fields['closed_on'].required = False
 
     class Meta:
         model = Request
-        fields = ('assigned_to', 'status', 'priority', 'request_type', 'closed_on', 'description', 'applicant')
+        fields = ('assigned_to', 'status', 'priority', 'request_type', 'closed_on', 'description', 'applicant', 'apartment')
 
 
 class RequestCommentForm(forms.ModelForm):

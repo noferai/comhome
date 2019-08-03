@@ -79,33 +79,7 @@ class CreateEntryView(LoginRequiredMixin, CreateView):
         return {**context, **custom_context}
 
 
-class EntryDetailView(LoginRequiredMixin, DetailView):
-    model = Entry
-    context_object_name = "entry_record"
-    template_name = "news/detail.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(EntryDetailView, self).get_context_data(**kwargs)
-        custom_context = {
-            'entry_form': context["entry_record"],
-        }
-
-        return {**context, **custom_context}
-
-
-class EntryUpdateView(LoginRequiredMixin, UpdateView):
-    model = Entry
-    form_class = EntryForm
-    template_name = "news/create.html"
-
-    def dispatch(self, request, *args, **kwargs):
-        self.news = Entry.objects.filter(is_published=True).order_by('published_date')
-        return super(EntryUpdateView, self).dispatch(request, *args, **kwargs)
-
-    def get_form_kwargs(self):
-        kwargs = super(EntryUpdateView, self).get_form_kwargs()
-        return kwargs
-
+class EntryUpdateView(CreateEntryView, UpdateView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form = self.get_form()
@@ -122,24 +96,23 @@ class EntryUpdateView(LoginRequiredMixin, UpdateView):
         else:
             return redirect("news:list")
 
-    def form_invalid(self, form):
-        return self.render_to_response(
-            self.get_context_data(form=form)
-        )
+
+class EntryDetailView(LoginRequiredMixin, DetailView):
+    model = Entry
+    context_object_name = "entry_record"
+    template_name = "news/detail.html"
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context = super(EntryDetailView, self).get_context_data(**kwargs)
         custom_context = {
-            'enrty_obj': self.object,
-            'entry_form': context["form"],
-            'news_list': self.news,
+            'entry_form': context["entry_record"],
         }
+
         return {**context, **custom_context}
 
 
 class EntryDeleteView(LoginRequiredMixin, DeleteView):
     model = Entry
-    template_name = 'news/detail.html'
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()

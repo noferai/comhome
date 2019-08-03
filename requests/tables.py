@@ -8,7 +8,8 @@ from staff.models import Staff
 class RequestTable(tables.Table):
     created_on = tables.DateColumn(format="d.m.Y")
     assigned_to = tables.ManyToManyColumn(verbose_name="Исполнители", linkify_item=True)
-    applicant = tables.Column(verbose_name="Заявитель")
+    applicant = tables.Column(verbose_name="Заявитель", linkify=True, accessor="applicant")
+    apartment = tables.Column(verbose_name="Квартира", linkify=True)
     actions = tables.TemplateColumn(verbose_name="Действия", template_name="misc/linkbuttons.html", extra_context={
         'view_link': 'requests:view',
         'edit_link': 'requests:edit',
@@ -17,7 +18,7 @@ class RequestTable(tables.Table):
 
     class Meta:
         model = Request
-        fields = ['created_on', 'applicant', 'request_type', 'assigned_to', 'priority', 'is_proceed', 'closed_on']
+        fields = ['created_on', 'applicant', 'request_type', 'assigned_to', 'priority', 'is_proceed', 'closed_on', 'apartment']
         template_name = 'django_tables2/bootstrap4.html'
         attrs = {'class': 'table table-striped table-bordered text-center'}
 

@@ -4,6 +4,7 @@ from django.urls import reverse
 from staff.models import Staff
 from common.models import User
 from homeowners.models import Homeowner
+from apartments.models import Apartment
 from common.utils import RequestTypeChoices, RequestPriorityChoices, RequestStatusChoices
 
 
@@ -16,6 +17,7 @@ class Request(models.Model):
     description = models.TextField('Описание', blank=True, null=True)
     created_by = models.ForeignKey(User, related_name='request_created_by', on_delete=models.DO_NOTHING)
     applicant = models.ForeignKey(Homeowner, on_delete=models.DO_NOTHING)
+    apartment = models.ForeignKey(Apartment, on_delete=models.DO_NOTHING)
     created_on = models.DateField('Дата', auto_now_add=True)
     is_proceed = models.BooleanField('В работе', default=False)
 
