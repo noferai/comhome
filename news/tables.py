@@ -22,9 +22,15 @@ class EntryTable(tables.Table):
 
 
 class EntryFilter(filters.FilterSet):
-    created_date = filters.DateFromToRangeFilter(widget=filters.widgets.RangeWidget(attrs={'type': 'date'}))
+    created_date = filters.DateFromToRangeFilter(
+        widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range', 'type': 'date'}))
     author = filters.ModelMultipleChoiceFilter(widget=widgets.SelectMultiple(attrs={'class': 'select2'}),
-                                                queryset=User.objects.all())
+                                               queryset=User.objects.all())
+
+    def __init__(self, *args, **kwargs):
+        super(EntryFilter, self).__init__(*args, **kwargs)
+        self.filters['created_date'].label = 'Дата (диапазон)'
+        self.filters['author'].label = 'Автор'
 
     class Meta:
         model = Entry

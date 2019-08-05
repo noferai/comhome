@@ -19,8 +19,13 @@ class StaffTable(tables.Table):
 
 
 class StaffFilter(filters.FilterSet):
-    created_on = filters.DateFromToRangeFilter(widget=filters.widgets.RangeWidget(attrs={'type': 'date'}))
+    created_on = filters.DateFromToRangeFilter(
+        widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range', 'type': 'date'}))
+
+    def __init__(self, *args, **kwargs):
+        super(StaffFilter, self).__init__(*args, **kwargs)
+        self.filters['created_on'].label = 'Дата (диапазон)'
 
     class Meta:
         model = Staff
-        fields = ['created_on', 'name', 'industry', 'phone', 'is_active']
+        fields = ['created_on', 'industry', 'is_active']

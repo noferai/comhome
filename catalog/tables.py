@@ -18,7 +18,12 @@ class AddressTable(tables.Table):
 
 
 class AddressFilter(filters.FilterSet):
-    created_date = filters.DateFromToRangeFilter(widget=filters.widgets.RangeWidget(attrs={'type': 'date'}))
+    created_date = filters.DateFromToRangeFilter(
+        widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range', 'type': 'date'}))
+
+    def __init__(self, *args, **kwargs):
+        super(AddressFilter, self).__init__(*args, **kwargs)
+        self.filters['created_date'].label = 'Дата (диапазон)'
 
     class Meta:
         model = Services
@@ -35,14 +40,20 @@ class ServicesTable(tables.Table):
 
     class Meta:
         model = Services
-        fields = ['created_date', 'name_of_service', 'debt_at_beg_of_period', 'accrued',  'recalculations', 'paid', 'debt_at_end_of_period']
+        fields = ['created_date', 'name_of_service', 'debt_at_beg_of_period', 'accrued', 'recalculations', 'paid',
+                  'debt_at_end_of_period']
         template_name = 'django_tables2/bootstrap4.html'
         attrs = {'class': 'table table-striped table-bordered text-center'}
 
 
 class ServicesFilter(filters.FilterSet):
-    created_date = filters.DateFromToRangeFilter(widget=filters.widgets.RangeWidget(attrs={'type': 'date'}))
+    created_date = filters.DateFromToRangeFilter(
+        widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range', 'type': 'date'}))
+
+    def __init__(self, *args, **kwargs):
+        super(ServicesFilter, self).__init__(*args, **kwargs)
+        self.filters['created_date'].label = 'Дата (диапазон)'
 
     class Meta:
         model = Services
-        fields = ['created_date', 'name_of_service', 'debt_at_beg_of_period', 'accrued',  'recalculations', 'paid', 'debt_at_end_of_period']
+        fields = ['created_date']

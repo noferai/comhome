@@ -23,13 +23,19 @@ class HomeownerTable(tables.Table):
 
 
 class HomeownerFilter(filters.FilterSet):
-    created_on = filters.DateFromToRangeFilter(widget=filters.widgets.RangeWidget(attrs={'type': 'date'}))
+    created_on = filters.DateFromToRangeFilter(
+        widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range', 'type': 'date'}))
     apartments = filters.ModelMultipleChoiceFilter(widget=widgets.SelectMultiple(attrs={'class': 'select2'}),
-                                                queryset=Apartment.objects.all())
+                                                   queryset=Apartment.objects.all())
+
+    def __init__(self, *args, **kwargs):
+        super(HomeownerFilter, self).__init__(*args, **kwargs)
+        self.filters['created_on'].label = 'Дата (диапазон)'
+        self.filters['apartments'].label = 'Квартиры'
 
     class Meta:
         model = Homeowner
-        fields = ['created_on', 'name', 'debt', 'apartments']
+        fields = ['created_on', 'debt', 'apartments']
 
 
 class HomeownerRequestTable(RequestTable):

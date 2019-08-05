@@ -18,17 +18,24 @@ class RequestTable(tables.Table):
 
     class Meta:
         model = Request
-        fields = ['created_on', 'applicant', 'request_type', 'assigned_to', 'priority', 'is_proceed', 'closed_on', 'apartment']
+        fields = ['created_on', 'applicant', 'request_type', 'assigned_to', 'priority', 'is_proceed', 'closed_on',
+                  'apartment']
         template_name = 'django_tables2/bootstrap4.html'
         attrs = {'class': 'table table-striped table-bordered text-center'}
 
 
 class RequestFilter(filters.FilterSet):
-    created_on = filters.DateFromToRangeFilter(widget=filters.widgets.RangeWidget(attrs={'type': 'date'}))
-    closed_on = filters.DateFromToRangeFilter(widget=filters.widgets.RangeWidget(attrs={'type': 'date'}))
+    created_on = filters.DateFromToRangeFilter(
+        widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range', 'type': 'date'}))
+    # closed_on = filters.DateFromToRangeFilter(widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range','type': 'date'}))
     assigned_to = filters.ModelMultipleChoiceFilter(widget=widgets.SelectMultiple(attrs={'class': 'select2'}),
-                                                queryset=Staff.objects.all())
+                                                    queryset=Staff.objects.all())
+
+    def __init__(self, *args, **kwargs):
+        super(RequestFilter, self).__init__(*args, **kwargs)
+        self.filters['created_on'].label = 'Дата (диапазон)'
+        self.filters['assigned_to'].label = 'Исполнители'
 
     class Meta:
         model = Request
-        fields = ['created_on', 'request_type', 'assigned_to', 'priority', 'is_proceed', 'closed_on']
+        fields = ['created_on', 'request_type', 'assigned_to', 'priority', 'is_proceed']

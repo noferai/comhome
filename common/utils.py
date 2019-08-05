@@ -8,8 +8,8 @@ class ApartmentStatusChoices(DjangoChoices):
 
 
 class RequestTypeChoices(DjangoChoices):
-    plumb = ChoiceItem('Сантехника', _('Сантехника'))
-    electrical = ChoiceItem('Эллектрик', _('Эллектрик'))
+    plumb = ChoiceItem('Сантехник', _('Сантехник'))
+    electrical = ChoiceItem('Электрик', _('Электрик'))
     house_master = ChoiceItem('House master', _('House master'))
     cleaner = ChoiceItem('Уборщик', _('Уборщик'))
     low_voltage_master = ChoiceItem('Слаботочник', _('Слаботочник'))

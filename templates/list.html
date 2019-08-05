@@ -14,32 +14,38 @@
 
 {% block content %}
     <div class="main_container">
-        {% if filter %}
-            <form action="" method="get">
-            <div class="card filter">
+        <div class="card mb-0">
             <div class="card-header d-flex">
-                <h4>Фильтры</h4>
-            </div>
-                 <div class="card-body">
-                    {% bootstrap_form filter.form layout='inline' %}
-            </div>
-            <div class="card-footer-item">
-                {% bootstrap_button 'Применить' %}
-            </div>
-            </div>
-            </form>
-        {% endif %}
-        <div class="card">
-            <div class="card-header d-flex">
+                <div class="toolbar mr-auto">
+                    <input class="form-control" id="table-search" type="text" placeholder="Поиск">
+                </div>
                 <div class="toolbar ml-auto">
-                    <a href="{% export_url "xls" %}" title="Конвертировать" class="btn btn-light btn-sm to-xls">XLS</a>
-                    <a href="{% export_url "csv" %}" title="Конвертировать" class="btn btn-light btn-sm to-cvs">CSV</a>
-                    <a href="#" title="Конвертировать" class="btn btn-light btn-sm filter-toggle">
-                        <i class="fas fa-filter"></i></a>
-                    <a href="{% url urls.add %}" title="Добавить" class="btn btn-light btn-sm add-btn"><i
-                            class="fas fa-plus"></i></a>
+                    <a href="#" class="btn btn-light btn-sm dropdown-toggle" type="button" id="exportChoices"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+                            class="fas fa-file-download" data-toggle="download-formats"></i> Загрузить</a>
+                    <div class="dropdown-menu" aria-labelledby="exportChoices">
+                        <a class="dropdown-item" href="{% export_url "xls" %}">XLS</a>
+                        <a class="dropdown-item" href="{% export_url "csv" %}">CSV</a>
+                    </div>
+                    {% if filter %}<a data-toggle="collapse" href="#filters" role="button" aria-expanded="false"
+                                      aria-controls="filters" class="btn btn-light btn-sm">
+                        <i class="fas fa-filter"></i> Фильтры</a> {% endif %}
+                    <a href="{% url urls.add %}" class="btn btn-light btn-sm add-btn"><i
+                            class="fas fa-plus"></i> Добавить</a>
                 </div>
             </div>
+            {% if filter %}
+                <form action="" id="filters" method="get" class="collapse">
+                    <div class="row card-body filter">
+                        {% bootstrap_form filter.form form_group_class="col-md-4 d-inline-block mb-1" %}
+                    </div>
+                    <div class="card-footer">
+                        {% bootstrap_button 'Применить' button_class="btn btn-light btn-sm" %}
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+        <div class="card">
             <div class="card-body list-cat ">
                 {% render_table table %}
             </div>

@@ -4,7 +4,6 @@ from django.forms import widgets
 from .models import Apartment
 from catalog.models import Address
 from homeowners.models import Homeowner
-from homeowners.tables import HomeownerTable
 from requests.tables import RequestTable
 
 
@@ -26,15 +25,22 @@ class ApartmentTable(tables.Table):
 
 
 class ApartmentFilter(filters.FilterSet):
-    created_date = filters.DateFromToRangeFilter(widget=filters.widgets.RangeWidget(attrs={'type': 'date'}))
+    created_date = filters.DateFromToRangeFilter(
+        widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range', 'type': 'date'}))
     address = filters.ModelMultipleChoiceFilter(widget=widgets.SelectMultiple(attrs={'class': 'select2'}),
                                                 queryset=Address.objects.all())
     homeowner = filters.ModelMultipleChoiceFilter(widget=widgets.SelectMultiple(attrs={'class': 'select2'}),
-                                                queryset=Homeowner.objects.all())
+                                                  queryset=Homeowner.objects.all())
+
+    def __init__(self, *args, **kwargs):
+        super(ApartmentFilter, self).__init__(*args, **kwargs)
+        self.filters['created_date'].label = 'Дата (диапазон)'
+        self.filters['address'].label = 'Адреса'
+        self.filters['homeowner'].label = 'Собственники'
 
     class Meta:
         model = Apartment
-        fields = ['created_date', 'address', 'apartment_number', 'area', 'homeowner']
+        fields = ['created_date', 'address', 'homeowner']
 
 
 class ApartmentRequestTable(RequestTable):

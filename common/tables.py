@@ -1,6 +1,5 @@
 import django_tables2 as tables
 import django_filters as filters
-from django.forms import widgets
 from .models import User
 
 
@@ -20,8 +19,13 @@ class UserTable(tables.Table):
 
 
 class UserFilter(filters.FilterSet):
-    date_joined = filters.DateFromToRangeFilter(widget=filters.widgets.RangeWidget(attrs={'type': 'date'}))
+    date_joined = filters.DateFromToRangeFilter(
+        widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range', 'type': 'date'}))
+
+    def __init__(self, *args, **kwargs):
+        super(UserFilter, self).__init__(*args, **kwargs)
+        self.filters['date_joined'].label = 'Дата (диапазон)'
 
     class Meta:
         model = User
-        fields = ['date_joined', 'first_name', 'last_name']
+        fields = ['date_joined']

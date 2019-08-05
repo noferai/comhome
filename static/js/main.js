@@ -10,11 +10,15 @@ $(document).ready(function () {
 
     $(".date input").attr("type", "date");
 
-    $('.filter-toggle').click(function () {
-        $('.filter').toggle("slow");
-    });
-
     $('.select2').select2({
         placeholder: "Выберите значения"
     });
+
+    $("#table-search").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        $("table.table > tbody tr").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+
 });

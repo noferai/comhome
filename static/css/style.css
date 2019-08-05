@@ -264,7 +264,8 @@ label {
     color: #71748d;
 }
 
-.form-control {
+.form-control,
+.select2-container--default .select2-selection--multiple {
     display: block;
     width: 100%;
     font-size: 14px;
@@ -276,7 +277,8 @@ label {
     border-radius: 2px;
 }
 
-.form-control:focus {
+.form-control:focus,
+.select2-container--default.select2-container--focus .select2-selection--multiple{
     color: #71748d;
     background-color: #fff;
     border-color: #a7a7f0;
@@ -307,16 +309,7 @@ button:focus {
 }
 
 select.form-control {
-    color: #71748d;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-position: 99% 52%;
-    background-size: auto;
-    background-repeat: no-repeat;
-    background-image: url(/images/down-arrow.png);
-    padding-right: 15px;
-    border: 1px solid #d2d2e4;
-    border-radius: 2px;
+    height: auto !important;
 }
 
 textarea.form-control {
@@ -7293,8 +7286,8 @@ div.footer {
 }
 
 th.orderable {
-  cursor: pointer;
-  position: relative;
+    cursor: pointer;
+    position: relative;
 }
 
 th.orderable:after {
@@ -7303,7 +7296,7 @@ th.orderable:after {
     height: 0;
     width: 0;
     right: 10px;
-    top: 16px;
+    top: 18px;
 }
 
 /* Default sortable indicator */
@@ -7311,7 +7304,7 @@ th.orderable:after {
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     border-top: 5px solid #ccc;
-    border-bottom: 0px solid transparent;
+    border-bottom: 0 solid transparent;
 }
 
 /* !Default */
@@ -7347,22 +7340,28 @@ th.orderable.desc:after {
 
 /* !Descending */
 
-.filter {
-    display: none;
+.select2 {
+    width: 100% !important;
 }
 
-.filter .form-group,
-.filter input {
-    min-width: 150px !important;
-    max-width: 200px !important;
-    display: inline-block !important;
+.card-body.filter label{
+    width: unset;
+    height: unset;
+    overflow: visible;
+    position: unset;
+    margin: unset;
+    display: block !important;
 }
 
- .select2 {
-    min-width: 200px !important;
-    max-width: 300px !important;
+.date-range {
+    display: inline-block;
+    width: 48%;
 }
 
+#filters .card-footer {
+    background: #fff;
+    border: none;
+}
 
 
 /* Custom, iPhone Retina */
