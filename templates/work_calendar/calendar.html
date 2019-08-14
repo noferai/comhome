@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extralinks %}
+    <link href="{% static 'vendor/full-calendar/css/fullcalendar.css' %}" rel='stylesheet' />
+    <link href="{%  static 'vendor/full-calendar/css/fullcalendar.print.css' %}" rel='stylesheet' media='print' />
+{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            <div id='calendar1'></div>
+        </div>
+    </div>
+
+
+    {% block extrajs %}
+        <script src="{% static 'vendor/full-calendar/js/fullcalendar.js' %}"></script>
+        <script src="{% static 'vendor/full-calendar/js/moment.min.js' %}"></script>
+        <script src="{% static 'vendor/full-calendar/js/jquery-ui.min.js' %}"></script>
+        <script>
+            $(document).ready(function() {
+
+                $('#calendar1').fullCalendar({
+                    header: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'month,agendaWeek,agendaDay,listWeek'
+                    },
+                    navLinks: true, // can click day/week names to navigate views
+                    editable: true,
+                    eventLimit: true, // allow "more" link when too many events
+                    events: [
+                        {% for i in eventlist %}
+                            {
+                                title: "{{ i.event_title }}",
+                                start: '{{ i.event_start }}',
+                                end: '{{ i.event_end }}',
+                                location: "{{ i.event_location }}",
+                            },
+                        {% endfor %}
+                    ]
+                });
+
+            });
+
+        </script>
+    {% endblock %}
+
+{% endblock %}

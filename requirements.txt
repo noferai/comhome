@@ -21,3 +21,6 @@ gunicorn
 django-tables2
 tablib
 django-filter
+django-simple-pagination
+django-debug-toolbar
+django-compressor

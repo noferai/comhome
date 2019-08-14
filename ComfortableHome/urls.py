@@ -16,6 +16,7 @@ urlpatterns = [
     path('catalog/', include('catalog.urls', namespace="catalog")),
     path('news/', include('news.urls', namespace='news')),
     path('logout/', views.LogoutView, {'next_page': '/login/'}, name="logout"),
+    path('calendar/', include('work_calendar.urls', namespace='work_calendar'))
 ]
 
 if settings.DEBUG:
