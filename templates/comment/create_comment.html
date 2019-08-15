@@ -1,0 +1,24 @@
+{% load comment_tags %}
+{% if user.is_authenticated %}
+    <form class="js-comment-form" method="post" data-url="{% url 'comment:create' %}">
+        {% csrf_token %}
+        <div class="row">
+            <div class="{% block c_form_space %}col-sm-9 col-md-10 px-2 m-2 m-sm-0{% endblock c_form_space %}">
+                {% include 'comment/commentform.html' with placeholder_var=placeholder %}
+            </div>
+            <div class="{% block post_btn_space %}col-sm-3 col-md-2 px-2 m-3 m-sm-0{% endblock post_btn_space %}">
+                <input name="model_name" value="{% get_model_name model_object %}" hidden>
+                <input name="model_id" value="{{ model_object.id }}" hidden>
+                <input name="app_name" value="{% get_app_name model_object %}" hidden>
+                <input name="cpp" value="{{cpp}}" hidden>
+                <input name="paginate" value="{{paginate}}" hidden>
+                <input name="has_parent" value="{{has_parent}}" hidden>
+                <input name="oauth" value="{{oauth}}" hidden>
+                {% if is_child %}
+                <input type="hidden" name="parent_id" value="{{ comment.id }}"/>
+                {% endif %}
+                <button disabled class="js-comment-btn {% block post_btn_cls %}btn btn-outline-success btn-block btn-sm{% endblock post_btn_cls %}" type="submit" name="commentform" {% if is_child %}child{% endif %}>{{button_name}}</button>
+            </div>
+        </div>
+    </form>
+{% endif %}

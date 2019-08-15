@@ -1,28 +1,17 @@
 from django import forms
-from .models import Address, Services
+from .models import Address
 
 
 class AddressForm(forms.ModelForm):
-
     def __init__(self, *args, **kwargs):
         super(AddressForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs = {"class": "form-control"}
+        self.fields['city'] = forms.ChoiceField(
+            widget=forms.widgets.Select(attrs={'class': 'select2'}),
+            label="Город", choices=self.fields['city'].choices, initial=self.fields['city'].choices[1])
 
     class Meta:
         model = Address
-        fields = ('address_str',)
-
-
-class ServicesForm(forms.ModelForm):
-
-    def __init__(self, *args, **kwargs):
-        super(ServicesForm, self).__init__(*args, **kwargs)
-        for field in self.fields.values():
-            field.widget.attrs = {"class": "form-control"}
-
-    class Meta:
-        model = Services
-        fields = ('name_of_service', 'debt_at_beg_of_period', 'accrued',
-                  'recalculations', 'paid', 'debt_at_end_of_period',)
+        fields = ('city', 'street', 'building')
 

@@ -265,7 +265,8 @@ label {
 }
 
 .form-control,
-.select2-container--default .select2-selection--multiple {
+.select2-container--default .select2-selection--multiple,
+.select2-container--default .select2-selection--single {
     display: block;
     width: 100%;
     font-size: 14px;
@@ -273,6 +274,21 @@ label {
     color: #71748d;
     background-color: #fff;
     background-image: none;
+    border: 1px solid #d2d2e4;
+    border-radius: 2px;
+    min-height: 32px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #6c757d;
+    line-height: 32px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 32px;
+}
+
+.select2-dropdown {
     border: 1px solid #d2d2e4;
     border-radius: 2px;
 }
@@ -1725,8 +1741,9 @@ Left Navigation Sidebar
 .nav-left-sidebar .nav-link i {
     font-size: 16px;
     margin-right: 9px;
-    text-align: center;
+    text-align: left;
     line-height: 16px;
+    width: 20px;
 }
 
 .nav-divider {

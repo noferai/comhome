@@ -13,34 +13,34 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-# Application definition
-
-LOGIN_REDIRECT_URL = '/'
-
 LOGIN_URL = '/login/'
 
 INSTALLED_APPS = [
+    'ComfortableHome',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'simple_pagination',
+    'sorl.thumbnail',
+    'phonenumber_field',
     'django_tables2',
     'django_filters',
     'debug_toolbar',
+    'widget_tweaks',
+    'comment',
     'rest_framework',
     'bootstrap4',
-    'common',
+    'users',
     'staff',
     'requests',
     'homeowners',
-    'sorl.thumbnail',
-    'phonenumber_field',
     'news',
     'apartments',
-    'catalog'
+    'catalog',
+    'invoices',
+    'webclient'
     # 'api',
 ]
 
@@ -216,8 +216,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # EMAIL_HOST = 'localhost'
 # EMAIL_PORT = 25
-# AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', )
 
+AUTHENTICATION_BACKENDS = ('ComfortableHome.backends.UserModelBackend',)
+AUTH_USER_MODEL = 'users.User'
 
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = os.getenv('SG_USER', '')
@@ -227,38 +228,15 @@ EMAIL_USE_TLS = True
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-AUTH_USER_MODEL = 'common.User'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (BASE_DIR + '/static',)
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder'
 )
 
-COMPRESS_ROOT = BASE_DIR + '/static/'
-COMPRESS_URL = STATIC_URL
-COMPRESS_ENABLED = False
-
-COMPRESS_CSS_FILTERS = ['compressor.filters.css_default.CssAbsoluteFilter', 'compressor.filters.cssmin.CSSMinFilter']
-COMPRESS_REBUILD_TIMEOUT = 5400
-
-COMPRESS_OUTPUT_DIR = 'CACHE'
-COMPRESS_URL = STATIC_URL
-COMPRESS_ENABLED = False
-
-COMPRESS_PRECOMPILERS = (
-    ('text/less', 'lessc {infile} {outfile}'),
-    ('text/x-sass', 'sass {infile} {outfile}'),
-    ('text/x-scss', 'sass --scss {infile} {outfile}'),
-)
-
-COMPRESS_OFFLINE_CONTEXT = {
-    'STATIC_URL': 'STATIC_URL',
-}
-
-DEFAULT_FROM_EMAIL = 'no-reply@django-ComfortableHome.micropyramid.com'
+DEFAULT_FROM_EMAIL = 'no-reply@django-ComfortableHome.com'
 MAIL_SENDER = 'AMAZON'
 INACTIVE_MAIL_SENDER = 'MANDRILL'
 
@@ -272,13 +250,14 @@ MGUN_API_KEY = os.getenv('MGUN_API_KEY', '')
 SG_USER = os.getenv('SG_USER', '')
 SG_PWD = os.getenv('SG_PWD', '')
 
-MANDRILL_API_KEY = os.getenv('MANDRILL_API_KEY', '')
+# MANDRILL_API_KEY = os.getenv('MANDRILL_API_KEY', '')
 
-ADMIN_EMAIL = "admin@micropyramid.com"
+# ADMIN_EMAIL = ""
 
 # Configure Django App for Heroku.
 django_heroku.settings(locals())
 
+PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
 
 INTERNAL_IPS = [
     # ...

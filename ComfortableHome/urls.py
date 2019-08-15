@@ -1,21 +1,24 @@
 from django.conf import settings
 from django.contrib.auth import views
 from django.urls import include, path
-from common.views import handler404, handler500
+from .views import handler404, handler500
 
 app_name = 'ComfortableHome'
 
 urlpatterns = [
-    path('', include('common.urls', namespace="common")),
+    path('', include('users.urls', namespace="users")),
     path('', include('django.contrib.auth.urls')),
+    path('client/', include('webclient.urls', namespace="client")),
     path('staff/', include('staff.urls', namespace="staff")),
     path('apartments/', include('apartments.urls', namespace="apartments")),
     path('homeowners/', include('homeowners.urls', namespace="homeowners")),
     # path('polls/', include('opportunity.urls', namespace="opportunities")),
     path('requests/', include('requests.urls', namespace="requests")),
     path('catalog/', include('catalog.urls', namespace="catalog")),
+    path('invoices/', include('invoices.urls', namespace="invoices")),
     path('news/', include('news.urls', namespace='news')),
     path('logout/', views.LogoutView, {'next_page': '/login/'}, name="logout"),
+    path('comment/', include('comment.urls')),
 ]
 
 if settings.DEBUG:

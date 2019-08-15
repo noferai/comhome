@@ -20,5 +20,10 @@ $(document).ready(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });
+});
 
+$(function (e) {
+    "use strict";
+    $(".date-inputmask").inputmask("дд/мм/гггг")
+    $(".international-inputmask").inputmask("+9(999)999-99-99")
 });

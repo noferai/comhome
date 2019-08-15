@@ -1,4 +1,3 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import (
     CreateView, UpdateView, DetailView, TemplateView, DeleteView)
 from django.shortcuts import redirect
@@ -7,6 +6,7 @@ from django_tables2.views import SingleTableMixin
 from django_tables2.export.views import ExportMixin
 from .forms import EntryForm
 from .tables import EntryTable, EntryFilter
+from users.views import AdminRequiredMixin
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -17,10 +17,10 @@ import textwrap
 import json
 
 
-class NewsListView(LoginRequiredMixin, ExportMixin, SingleTableMixin, FilterView):
+class NewsListView(AdminRequiredMixin, ExportMixin, SingleTableMixin, FilterView):
     model = Entry
     table_class = EntryTable
-    template_name = "list.html"
+    template_name = "crm/list.html"
     export_name = "Novosti"
     filterset_class = EntryFilter
 
@@ -29,19 +29,19 @@ class NewsListView(LoginRequiredMixin, ExportMixin, SingleTableMixin, FilterView
         custom_context = {
             'objects': self.model.objects.all(),
             'urls': {
-                'add': 'news:add',
+                'add': 'news:create',
             }
         }
         return {**context, **custom_context}
 
 
-class CreateEntryView(LoginRequiredMixin, CreateView):
+class CreateEntryView(AdminRequiredMixin, CreateView):
     model = Entry
     form_class = EntryForm
-    template_name = "news/create.html"
+    template_name = "crm/create.html"
 
     def dispatch(self, request, *args, **kwargs):
-        self.news = Entry.objects.filter(is_published=True).order_by('published_date')
+        self.news = Entry.objects.filter(is_published=True).order_by('created_on')
         return super(CreateEntryView, self).dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
@@ -57,11 +57,11 @@ class CreateEntryView(LoginRequiredMixin, CreateView):
             return self.form_invalid(form)
 
     def form_valid(self, form):
-        entry_object = form.save(commit=False)
-        entry_object.author = self.request.user     # User model object instance
-        entry_object.save()
-        if self.request.POST.get("savenewform"):
-            return redirect("news:add")
+        instance = form.save(commit=False)
+        instance.author = self.request.user     # User model object instance
+        instance.save()
+        if self.request.POST.get("save_new"):
+            return redirect("news:create")
         else:
             return redirect("news:list")
 
@@ -73,8 +73,9 @@ class CreateEntryView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         custom_context = {
-            'entry_form': context["form"],
-            'news_list': self.news,
+            'urls': {
+                'list': 'news:list',
+            }
         }
         return {**context, **custom_context}
 
@@ -89,18 +90,18 @@ class EntryUpdateView(CreateEntryView, UpdateView):
             return self.form_invalid(form)
 
     def form_valid(self, form):
-        entry_object = form.save(commit=False)
-        entry_object.save()
+        instance = form.save(commit=False)
+        instance.save()
         if self.request.POST.get("savenewform"):
-            return redirect("news:add")
+            return redirect("news:create")
         else:
             return redirect("news:list")
 
 
-class EntryDetailView(LoginRequiredMixin, DetailView):
+class EntryDetailView(AdminRequiredMixin, DetailView):
     model = Entry
     context_object_name = "entry_record"
-    template_name = "news/detail.html"
+    template_name = "crm/news/detail.html"
 
     def get_context_data(self, **kwargs):
         context = super(EntryDetailView, self).get_context_data(**kwargs)
@@ -111,7 +112,7 @@ class EntryDetailView(LoginRequiredMixin, DetailView):
         return {**context, **custom_context}
 
 
-class EntryDeleteView(LoginRequiredMixin, DeleteView):
+class EntryDeleteView(AdminRequiredMixin, DeleteView):
     model = Entry
 
     def get(self, request, *args, **kwargs):

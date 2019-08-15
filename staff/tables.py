@@ -4,7 +4,6 @@ from .models import Staff
 
 
 class StaffTable(tables.Table):
-    created_on = tables.DateColumn(format="d.m.Y")
     actions = tables.TemplateColumn(verbose_name="Действия", template_name="misc/linkbuttons.html", extra_context={
         'view_link': 'staff:view',
         'edit_link': 'staff:edit',
@@ -13,19 +12,13 @@ class StaffTable(tables.Table):
 
     class Meta:
         model = Staff
-        fields = ['created_on', 'name', 'industry', 'phone', 'is_active']
+        fields = ['name', 'occupation', 'phone', 'is_active']
         template_name = 'django_tables2/bootstrap4.html'
         attrs = {'class': 'table table-striped table-bordered text-center'}
+        empty_text = "Ничего не найдено"
 
 
 class StaffFilter(filters.FilterSet):
-    created_on = filters.DateFromToRangeFilter(
-        widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range', 'type': 'date'}))
-
-    def __init__(self, *args, **kwargs):
-        super(StaffFilter, self).__init__(*args, **kwargs)
-        self.filters['created_on'].label = 'Дата (диапазон)'
-
     class Meta:
         model = Staff
-        fields = ['created_on', 'industry', 'is_active']
+        fields = ['occupation', 'is_active']

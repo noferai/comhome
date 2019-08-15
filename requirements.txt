@@ -10,9 +10,10 @@ pytest-django
 codacy-coverage
 sorl-thumbnail
 Pillow
-phonenumbers
 django-phonenumber-field
+phonenumbers
 whitenoise
+django-widget-tweaks
 djangorestframework
 django-bootstrap4
 django-heroku
@@ -21,3 +22,5 @@ gunicorn
 django-tables2
 tablib
 django-filter
+django-debug-toolbar
+django-model-utils

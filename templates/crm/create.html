@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load staticfiles %}
+{% load custom_tags %}
+{% block title %} {% if object %}Редактировать {% else %}Добавить {% endif %}{% endblock %}
+{% block breadcrumb %}
+    <div class="page-header">
+        <h2 class="pageheader-title">{% if object %}Редактировать {% else %}Добавить {% endif %}</h2>
+        <div class="page-breadcrumb">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url urls.list %}">{% verbose_name_plural view.model %}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{% if object %}
+                        Редактировать {% else %}Добавить {% endif %}
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <form method="POST" action="" novalidate>
+        <div class="overview_form_block row marl">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        {% bootstrap_form form %}
+                    </div>
+                    <div class="card-footer  p-0 text-left d-flex justify-content-center">
+                        <div class="card-footer-item card-footer-item-bordered">
+                            <input class="btn btn-default save" type="submit" value="Сохранить">
+                        </div>
+                        {% if not object %}
+                            <div class="card-footer-item card-footer-item-bordered">
+                                <input class="btn btn-default save" name="save_new" type="submit"
+                                       value="Сохранить и добавить ещё">
+                            </div>
+                        {% endif %}
+                        <div class="card-footer-item card-footer-item-bordered">
+                            <a href="{% url urls.list %}" class="btn btn-default clear">Отмена</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

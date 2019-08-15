@@ -12,11 +12,6 @@ class RequestChoicesDebtStatus(DjangoChoices):
     second = ChoiceItem('В процессе', _('В процессе'))
 
 
-class RequestChoicesDebt(DjangoChoices):
-    yes = ChoiceItem(True, _('Да'))
-    no = ChoiceItem(False, _('Нет'))
-
-
 class RequestChoicesGarbagePayment(DjangoChoices):
     paid = ChoiceItem(True, _('Оплачено'))
     no = ChoiceItem(False, _('Нет'))
@@ -24,4 +19,4 @@ class RequestChoicesGarbagePayment(DjangoChoices):
 
 class RequestChoicesTypePassport(DjangoChoices):
     usual = ChoiceItem('РФ', _('РФ'))
-    overseas = ChoiceItem('Загран', _('Загран'))
+    overseas = ChoiceItem('Заграничный', _('Заграничный'))

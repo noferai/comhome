@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load custom_tags %}
+{% block title %} {% website_title %} {% endblock %}
+{% block content %}
+ <h3>Добро пожаловать, {{ request.user.name }}</h3>
+{% endblock %}

@@ -1,20 +1,15 @@
 from django.db import models
 from django.urls import reverse
-from common.models import User
-from django.utils import timezone
+from users.models import User
 
 
 class Entry(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField('Заголовок', max_length=2000)
     text = models.TextField('Текст')
-    created_date = models.DateField('Дата', default=timezone.now)
-    published_date = models.DateField('Дата публикации', blank=True, null=True)
     is_published = models.BooleanField('Опубликовано', default=True)
-
-    def publish(self):
-        self.published_date = timezone.now()
-        self.save()
+    created_on = models.DateField('Создано', auto_now_add=True)
+    modified_on = models.DateField('Изменено', auto_now=True)
 
     def __str__(self):
         return self.title
@@ -25,3 +20,4 @@ class Entry(models.Model):
     class Meta:
         verbose_name = 'Новость'
         verbose_name_plural = 'Новости'
+        ordering = ['-created_on']

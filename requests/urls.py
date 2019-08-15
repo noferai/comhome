@@ -5,7 +5,7 @@ app_name = 'requests'
 
 urlpatterns = [
     path('list/', RequestsListView.as_view(), name='list'),
-    path('create/', CreateRequestView.as_view(), name='add'),
+    path('create/', CreateRequestView.as_view(), name='create'),
     path('<int:pk>/view/', RequestDetailView.as_view(), name="view"),
     path('<int:pk>/edit_request/', UpdateRequestView.as_view(), name="edit"),
     path('<int:pk>/remove/', RemoveRequestView.as_view(), name="remove"),

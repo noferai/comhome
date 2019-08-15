@@ -7,9 +7,9 @@ class EntryForm(forms.ModelForm):
         super(EntryForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs = {"class": "form-control"}
-        self.fields['title'].widget.attrs.update({'rows': '1'})
+        # self.fields['title'].widget.attrs.update({'rows': '1'})
         self.fields['text'].widget.attrs.update({'rows': '10'})
 
     class Meta:
         model = Entry
-        fields = ('title', 'text')
+        fields = ['title', 'text']

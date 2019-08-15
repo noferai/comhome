@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load comment_tags %}
+{% load render_table from django_tables2 %}
+{% block extralinks %}
+    <link rel="stylesheet" href="{% static 'css/comment.css' %}">
+{% endblock %}
+{% block title %} {{ homeowner.name }} - Comfortable Home{% endblock %}
+{% block breadcrumb %}
+    <div class="page-header">
+        <h2 class="pageheader-title">Собственник {{ homeowner.name }}</h2>
+        <div class="page-breadcrumb">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'homeowners:list' %}">Собственники</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ homeowner.name }}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+{% endblock breadcrumb %}
+{% block content %}
+    <div class="main_container" id="maincontainer">
+        <div class="overview_form_block row marl justify-content-center">
+            <div class="col-md-12">
+                <div class="simple-card">
+                    <div class="card-header d-flex">
+                        <div class="toolbar ml-auto">
+                            <a href="{% url 'homeowners:edit' homeowner.id %}" class="btn btn-light btn-sm"><i
+                                    class="fas fa-pencil-alt"></i></a>
+                            <a href="{% url 'homeowners:remove' homeowner.id %}" class="btn btn-light btn-sm"><i
+                                    class="fas fa-trash-alt"></i></a>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="nav nav-tabs" id="myTab5" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link border-left-0 active show" id="main-information-tab"
+                                   data-toggle="tab" href="#main-information" role="tab" aria-controls="home"
+                                   aria-selected="true">Подробная информация</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="passport-information-tab" data-toggle="tab"
+                                   href="#passport-information" role="tab" aria-controls="profile"
+                                   aria-selected="false">Паспортные данные</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="additional-information-tab" data-toggle="tab"
+                                   href="#additional-information" role="tab" aria-controls="contact"
+                                   aria-selected="false">Дополнительная информация</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="activity-information-tab" data-toggle="tab"
+                                   href="#activity-information" role="tab" aria-controls="contact"
+                                   aria-selected="false">Обращения</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent5">
+                            <div class="tab-pane fade active show" id="main-information" role="tabpanel"
+                                 aria-labelledby="home-tab-simple">
+                                <p>ФИО: {{ homeowner.name }} </p>
+                                <p>Пол: {{ homeowner.gender }}</p>
+                                <p>Дата рождения: {{ homeowner.birthday }}</p>
+                                <p>Номер телефона: {{ homeowner.phone }}</p>
+                                <p>Email: {{ homeowner.email }}</p>
+                                <p>Задолженность: {% if homeowner.debt %} Да {% else %} Нет {% endif %}</p>
+                                <p>Статус взыскания задолженности: {{ homeowner.status_of_work_with_debt }}</p>
+                                <p>Оплата мусора: {% if homeowner.garbage_payment %} Оплачено {% else %}
+                                    Нет {% endif %}</p>
+
+                            </div>
+                            <div class="tab-pane fade" id="passport-information" role="tabpanel"
+                                 aria-labelledby="profile-tab-simple">
+                                <p>Дата выдачи: {{ homeowner.passport_date }}</p>
+                                <p>Серия: {{ homeowner.passport_series }}</p>
+                                <p>Номер: {{ homeowner.passport_id }}</p>
+                                <p>Кем выдан: {{ homeowner.issued_by }}</p>
+                                <p>Код подразделения: {{ homeowner.unit_code }}</p>
+                                <p>Тип паспорта: {{ homeowner.type_of_passport }}</p>
+                                <p></p>
+                                <p></p>
+                            </div>
+                            <div class="tab-pane fade" id="additional-information" role="tabpanel"
+                                 aria-labelledby="contact-tab-simple">
+                                <p>Напоминание о Дне Рождения: {% if homeowner.birthday_reminder %} Да {% else %}
+                                    Нет {% endif %}</p>
+                                <p>Проблемный клиент: {% if homeowner.hard_case %} Да {% else %} Нет {% endif %}</p>
+                                <p>Лояльный: {% if homeowner.loyal %} Да {% else %} Нет {% endif %}</p>
+                                <p>VIP-клиент: {% if homeowner.vip %} Да {% else %} Нет {% endif %}</p>
+                                <p>Звонки: {% if homeowner.calls %} Да {% else %} Нет {% endif %}</p>
+                                <p>SMS: {% if homeowner.sms %} Да {% else %} Нет {% endif %}</p>
+                                <p>Email: {% if homeowner.mail %} Да {% else %} Нет {% endif %}</p>
+                                <p>Комментарий: {{ homeowner.comments }}</p>
+                            </div>
+                            <div class="tab-pane fade" id="activity-information" role="tabpanel"
+                                 aria-labelledby="activity-tab-simple">
+                                {% render_table table %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% get_comments homeowner request %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block extra_js %}
+    <script src="{% static 'js/comment.js' %}"></script>
+{% endblock %}

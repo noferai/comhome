@@ -22,6 +22,7 @@ class RequestTable(tables.Table):
                   'apartment']
         template_name = 'django_tables2/bootstrap4.html'
         attrs = {'class': 'table table-striped table-bordered text-center'}
+        empty_text = "Ничего не найдено"
 
 
 class RequestFilter(filters.FilterSet):

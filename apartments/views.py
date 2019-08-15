@@ -1,23 +1,21 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, redirect
-from django.views.generic import (CreateView, UpdateView, DetailView, View, DeleteView)
-from apartments.forms import ApartmentForm, ApartmentCommentForm, ApartmentAttachmentForm
+from django.shortcuts import redirect
+from django.views.generic import (CreateView, UpdateView, DetailView, DeleteView)
+from apartments.forms import ApartmentForm
 from apartments.models import Apartment
 from requests.models import Request
 from catalog.models import Address
-from common.models import Comment, Attachments
-from common.utils import ApartmentStatusChoices
+from invoices.models import Invoice
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 from django_tables2.export.views import ExportMixin
-from .tables import ApartmentTable, ApartmentFilter, ApartmentRequestTable
+from .tables import ApartmentTable, ApartmentFilter, ApartmentRequestTable, ApartmentInvoiceTable
+from users.views import AdminRequiredMixin
 
 
-class ApartmentListView(LoginRequiredMixin, ExportMixin, SingleTableMixin, FilterView):
+class ApartmentListView(AdminRequiredMixin, ExportMixin, SingleTableMixin, FilterView):
     model = Apartment
     table_class = ApartmentTable
-    template_name = "list.html"
+    template_name = "crm/list.html"
     export_name = "Kvartiry"
     filterset_class = ApartmentFilter
 
@@ -26,16 +24,16 @@ class ApartmentListView(LoginRequiredMixin, ExportMixin, SingleTableMixin, Filte
         custom_context = {
             'objects': self.model.objects.all(),
             'urls': {
-                'add': 'apartments:add',
+                'add': 'apartments:create',
             }
         }
         return {**context, **custom_context}
 
 
-class ApartmentAddView(LoginRequiredMixin, CreateView):
+class ApartmentAddView(AdminRequiredMixin, CreateView):
     model = Apartment
     form_class = ApartmentForm
-    template_name = "apartments/create.html"
+    template_name = "crm/create.html"
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -54,11 +52,11 @@ class ApartmentAddView(LoginRequiredMixin, CreateView):
             return self.form_invalid(form)
 
     def form_valid(self, form):
-        account_object = form.save(commit=False)
-        account_object.created_by = self.request.user
-        account_object.save()
-        if self.request.POST.get("savenewform"):
-            return redirect("apartments:add")
+        instance = form.save(commit=False)
+        instance.created_by = self.request.user
+        instance.save()
+        if self.request.POST.get("save_new"):
+            return redirect("apartments:create")
         else:
             return redirect("apartments:list")
 
@@ -71,13 +69,14 @@ class ApartmentAddView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(ApartmentAddView, self).get_context_data(**kwargs)
         custom_context = {
-            'apartment_form': context["form"],
-            'apartment_status': ApartmentStatusChoices.choices
+            'urls': {
+                'list': 'apartments:list',
+            }
         }
         return {**context, **custom_context}
 
 
-class ApartmentEditView(ApartmentAddView, UpdateView):
+class ApartmentEditView(AdminRequiredMixin, UpdateView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form = self.get_form()
@@ -87,15 +86,15 @@ class ApartmentEditView(ApartmentAddView, UpdateView):
             return self.form_invalid(form)
 
     def form_valid(self, form):
-        apartment_object = form.save(commit=False)
-        apartment_object.save()
+        instance = form.save(commit=False)
+        instance.save()
         return redirect("apartments:list")
 
 
-class ApartmentDetailView(LoginRequiredMixin, DetailView):
+class ApartmentDetailView(AdminRequiredMixin, DetailView):
     model = Apartment
     context_object_name = "apartment"
-    template_name = "apartments/detail.html"
+    template_name = "crm/apartments/detail.html"
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -103,121 +102,15 @@ class ApartmentDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ApartmentDetailView, self).get_context_data(**kwargs)
-        context.update({'table': ApartmentRequestTable(Request.objects.filter(apartment__id=self.object.id))})
+        context.update({'requests_table': ApartmentRequestTable(Request.objects.filter(apartment__id=self.object.id)),
+                        'invoices_table': ApartmentInvoiceTable(Invoice.objects.filter(apartment__id=self.object.id))})
         return context
 
 
-class ApartmentDeleteView(LoginRequiredMixin, DeleteView):
+class ApartmentDeleteView(AdminRequiredMixin, DeleteView):
     model = Apartment
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         self.object.delete()
         return redirect("apartments:list")
-
-
-class AddCommentView(LoginRequiredMixin, CreateView):
-    model = Comment
-    form_class = ApartmentCommentForm
-    http_method_names = ["post"]
-
-    def post(self, request, *args, **kwargs):
-        self.object = None
-        self.account = get_object_or_404(Apartment, id=request.POST.get('accountid'))
-        data = {'error': "You don't have permission to comment for this account."}
-        return JsonResponse(data)
-
-    def form_valid(self, form):
-        comment = form.save(commit=False)
-        comment.commented_by = self.request.user
-        comment.account = self.account
-        comment.save()
-        return JsonResponse({
-            "comment_id": comment.id, "comment": comment.comment,
-            "commented_on": comment.commented_on,
-            "commented_by": comment.commented_by.email
-        })
-
-    def form_invalid(self, form):
-        return JsonResponse({"error": form['comment'].errors})
-
-
-class EditCommentView(LoginRequiredMixin, View):
-    http_method_names = ["post"]
-
-    def post(self, request, *args, **kwargs):
-        self.comment_obj = get_object_or_404(Comment, id=request.POST.get("commentid"))
-        if request.user == self.comment_obj.commented_by:
-            form = ApartmentCommentForm(request.POST, instance=self.comment_obj)
-            if form.is_valid():
-                return self.form_valid(form)
-            else:
-                return self.form_invalid(form)
-        else:
-            data = {'error': "You don't have permission to edit this comment."}
-            return JsonResponse(data)
-
-    def form_valid(self, form):
-        self.comment_obj.comment = form.cleaned_data.get("comment")
-        self.comment_obj.save(update_fields=["comment"])
-        return JsonResponse({
-            "comment_id": self.comment_obj.id,
-            "comment": self.comment_obj.comment,
-        })
-
-    def form_invalid(self, form):
-        return JsonResponse({"error": form['comment'].errors})
-
-
-class DeleteCommentView(LoginRequiredMixin, View):
-
-    def post(self, request, *args, **kwargs):
-        self.object = get_object_or_404(Comment, id=request.POST.get("comment_id"))
-        self.object.delete()
-        data = {"cid": request.POST.get("comment_id")}
-        return JsonResponse(data)
-
-
-class AddAttachmentView(LoginRequiredMixin, CreateView):
-    model = Attachments
-    form_class = ApartmentAttachmentForm
-    http_method_names = ["post"]
-
-    def post(self, request, *args, **kwargs):
-        self.object = None
-        self.account = get_object_or_404(Apartment, id=request.POST.get('accountid'))
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
-
-    def form_valid(self, form):
-        attachment = form.save(commit=False)
-        attachment.created_by = self.request.user
-        attachment.file_name = attachment.attachment.name
-        attachment.account = self.account
-        attachment.save()
-        return JsonResponse({
-            "attachment_id": attachment.id,
-            "attachment": attachment.file_name,
-            "attachment_url": attachment.attachment.url,
-            "created_on": attachment.created_on,
-            "created_by": attachment.created_by.email
-        })
-
-    def form_invalid(self, form):
-        return JsonResponse({"error": form['attachment'].errors})
-
-
-class DeleteAttachmentsView(LoginRequiredMixin, View):
-
-    def post(self, request, *args, **kwargs):
-        self.object = get_object_or_404(Attachments, id=request.POST.get("attachment_id"))
-        if request.user == self.object.created_by:
-            self.object.delete()
-            data = {"acd": request.POST.get("attachment_id")}
-            return JsonResponse(data)
-        else:
-            data = {'error': "You don't have permission to delete this attachment."}
-            return JsonResponse(data)

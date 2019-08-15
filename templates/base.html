@@ -13,11 +13,9 @@
     {% bootstrap_javascript jquery='full' %}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
           integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet" />
-{#    <link rel="stylesheet" href="{% static 'vendor/charts/chartist-bundle/chartist.css' %}">#}
-{#    <link rel="stylesheet" href="{% static 'vendor/charts/morris-bundle/morris.css' %}">#}
-{#    <link rel="stylesheet" href="{% static 'vendor/charts/c3charts/c3.css' %}">#}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/inputmask/css/inputmask.css' %}"/>
     {% block extralinks %} {% endblock %}
     <title>{% block title %} {% endblock %}</title>
 </head>
@@ -40,58 +38,6 @@
                         <ul class="dropdown-menu dropdown-menu-right notification-dropdown">
                             <li>
                                 <div class="notification-title"> Оповещения</div>
-                                {#                                <div class="notification-list">#}
-                                {#                                    <div class="list-group">#}
-                                {#                                        <a href="#" class="list-group-item list-group-item-action active">#}
-                                {#                                            <div class="notification-info">#}
-                                {#                                                <div class="notification-list-user-img"><img#}
-                                {#                                                        src="{% static 'images/avatar-2.jpg' %}" alt=""#}
-                                {#                                                        class="user-avatar-md rounded-circle"></div>#}
-                                {#                                                <div class="notification-list-user-block"><span#}
-                                {#                                                        class="notification-list-user-name">Jeremy Rakestraw</span>accepted#}
-                                {#                                                    your invitation to join the team.#}
-                                {#                                                    <div class="notification-date">2 min ago</div>#}
-                                {#                                                </div>#}
-                                {#                                            </div>#}
-                                {#                                        </a>#}
-                                {#                                        <a href="#" class="list-group-item list-group-item-action">#}
-                                {#                                            <div class="notification-info">#}
-                                {#                                                <div class="notification-list-user-img"><img#}
-                                {#                                                        src="{% static 'images/avatar-3.jpg' %}" alt=""#}
-                                {#                                                        class="user-avatar-md rounded-circle"></div>#}
-                                {#                                                <div class="notification-list-user-block"><span#}
-                                {#                                                        class="notification-list-user-name">John Abraham </span>is now#}
-                                {#                                                    following you#}
-                                {#                                                    <div class="notification-date">2 days ago</div>#}
-                                {#                                                </div>#}
-                                {#                                            </div>#}
-                                {#                                        </a>#}
-                                {#                                        <a href="#" class="list-group-item list-group-item-action">#}
-                                {#                                            <div class="notification-info">#}
-                                {#                                                <div class="notification-list-user-img"><img#}
-                                {#                                                        src="{% static 'images/avatar-4.jpg' %}" alt=""#}
-                                {#                                                        class="user-avatar-md rounded-circle"></div>#}
-                                {#                                                <div class="notification-list-user-block"><span#}
-                                {#                                                        class="notification-list-user-name">Monaan Pechi</span> is#}
-                                {#                                                    watching your main repository#}
-                                {#                                                    <div class="notification-date">2 min ago</div>#}
-                                {#                                                </div>#}
-                                {#                                            </div>#}
-                                {#                                        </a>#}
-                                {#                                        <a href="#" class="list-group-item list-group-item-action">#}
-                                {#                                            <div class="notification-info">#}
-                                {#                                                <div class="notification-list-user-img"><img#}
-                                {#                                                        src="{% static 'images/avatar-5.jpg' %}" alt=""#}
-                                {#                                                        class="user-avatar-md rounded-circle"></div>#}
-                                {#                                                <div class="notification-list-user-block"><span#}
-                                {#                                                        class="notification-list-user-name">Jessica Caruso</span>accepted#}
-                                {#                                                    your invitation to join the team.#}
-                                {#                                                    <div class="notification-date">2 min ago</div>#}
-                                {#                                                </div>#}
-                                {#                                            </div>#}
-                                {#                                        </a>#}
-                                {#                                    </div>#}
-                                {#                                </div>#}
                             </li>
                             <li>
                                 <div class="list-footer"><a href="#">Смотреть все</a></div>
@@ -102,38 +48,6 @@
                         <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false"> <i class="fas fa-fw fa-th"></i> </a>
                         <ul class="dropdown-menu dropdown-menu-right connection-dropdown">
-                            {#                            <li class="connection-list">#}
-                            {#                                <div class="row">#}
-                            {#                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 ">#}
-                            {#                                        <a href="#" class="connection-item"><img src="{% static 'images/github.png' %}"#}
-                            {#                                                                                 alt=""> <span>Github</span></a>#}
-                            {#                                    </div>#}
-                            {#                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 ">#}
-                            {#                                        <a href="#" class="connection-item"><img#}
-                            {#                                                src="{% static 'images/dribbble.png' %}" alt="">#}
-                            {#                                            <span>Dribbble</span></a>#}
-                            {#                                    </div>#}
-                            {#                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 ">#}
-                            {#                                        <a href="#" class="connection-item"><img src="{% static 'images/dropbox.png' %}"#}
-                            {#                                                                                 alt=""> <span>Dropbox</span></a>#}
-                            {#                                    </div>#}
-                            {#                                </div>#}
-                            {#                                <div class="row">#}
-                            {#                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 ">#}
-                            {#                                        <a href="#" class="connection-item"><img#}
-                            {#                                                src="{% static 'images/bitbucket.png' %}" alt=""> <span>Bitbucket</span></a>#}
-                            {#                                    </div>#}
-                            {#                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 ">#}
-                            {#                                        <a href="#" class="connection-item"><img#}
-                            {#                                                src="{% static 'images/mail_chimp.png' %}"#}
-                            {#                                                alt=""><span>Mail chimp</span></a>#}
-                            {#                                    </div>#}
-                            {#                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 ">#}
-                            {#                                        <a href="#" class="connection-item"><img src="{% static 'images/slack.png' %}"#}
-                            {#                                                                                 alt=""> <span>Slack</span></a>#}
-                            {#                                    </div>#}
-                            {#                                </div>#}
-                            {#                            </li>#}
                             <li>
                                 <div class="conntection-footer"><a href="#">Ещё</a></div>
                             </li>
@@ -161,10 +75,10 @@
                                 <h5 class="mb-0 text-white nav-user-name">{{ request.user }} </h5>
                                 <span class="status"></span><span class="ml-2">Доступен</span>
                             </div>
-                            <a class="dropdown-item" href="{% url 'common:profile' %}"><i class="fas fa-user mr-2"></i>Мой
+                            <a class="dropdown-item" href="{% url 'users:profile' %}"><i class="fas fa-user mr-2"></i>Мой
                                 профиль</a>
                             <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>Настройки</a>
-                            <a class="dropdown-item" href="{% url 'common:logout' %}"><i
+                            <a class="dropdown-item" href="{% url 'users:logout' %}"><i
                                     class="fas fa-power-off mr-2"></i>Выйти</a>
                         </div>
                     </li>
@@ -182,70 +96,62 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav flex-column">
-                        <li class="nav-divider">
-                        </li>
-                        <li class="nav-item ">
-                            <a id="home" class="nav-link" href="/"><i
-                                    class="fas fa-tachometer-alt"></i>Консоль</a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{% url 'common:users_list' %}"><i
-                                    class="fas fa-user-circle"></i>Администраторы</a>
-{#                            <div id="submenu-1" class="collapse submenu" style="">#}
-{#                                <ul class="nav flex-column">#}
-{#                                    {% if request.user.role == "ADMIN"  or request.user.is_superuser %}#}
-{#                                        <li class="nav-item"><a class="nav-link" id="users"#}
-{#                                                                href="{% url 'common:users_list' %}">Список</a></li>#}
-{#                                        <li class="nav-item"><a class="nav-link" href="{% url 'common:create_user' %}">Добавить</a></li>#}
-{#                                    {% endif %}#}
-{#                                </ul>#}
-{#                            </div>#}
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'staff:list' %}"><i class="fas fa-wrench"></i>Исполнители</a>
-                        </li>
+                        {% if request.user.is_admin %}
+                            <li class="nav-divider">
+                            </li>
+                            <li class="nav-item ">
+                                <a id="home" class="nav-link" href="/"><i
+                                        class="fas fa-tachometer-alt"></i>Консоль</a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link" href="{% url 'users:list' %}"><i
+                                        class="fas fa-user-circle"></i>Администраторы</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'staff:list' %}"><i class="fas fa-wrench"></i>Исполнители</a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'apartments:list' %}"><i class="fas fa-building"></i>Квартиры</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'apartments:list' %}"><i class="fas fa-building"></i>Квартиры</a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'homeowners:list' %}"><i class="fas fa-user-friends"></i>Собственники</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'homeowners:list' %}"><i
+                                        class="fas fa-user-friends"></i>Собственники</a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="/"><i class="fas fa-poll"></i>Опросы</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/"><i class="fas fa-poll"></i>Опросы</a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'requests:list' %}"><i class="fas fa-clipboard"></i>Заявки</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'requests:list' %}"><i class="fas fa-clipboard"></i>Заявки</a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'news:list' %}"><i class="fas fa-newspaper"></i>Новости</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'news:list' %}"><i class="fas fa-newspaper"></i>Новости</a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="/catalog" data-toggle="collapse" aria-expanded="false"
-                               data-target="#submenu-8" aria-controls="submenu-8"><i class="fas fa-book"></i>Справочники</a>
-                            <div id="submenu-8" class="collapse submenu" style="">
-                                <ul class="nav flex-column">
-                                    <li class="nav-item"><a class="nav-link" id="contacts"
-                                                            href="{% url 'catalog:addresses_list' %}">Адреса</a>
-                                    </li>
-                                    <li class="nav-item"><a class="nav-link" id="contacts"
-                                                            href="#">Документы</a>
-                                    </li>
-                                    <li class="nav-item"><a class="nav-link" id="contacts"
-                                                            href="{% url 'catalog:services_list' %}">Взаиморасчеты</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="nav-divider">
-                        </li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'common:doc_list' %}">Файлы</a></li>
-
+                            <li class="nav-item">
+                                <a class="nav-link" href="/catalog" data-toggle="collapse" aria-expanded="false"
+                                   data-target="#submenu-8" aria-controls="submenu-8"><i class="fas fa-book"></i>Справочники</a>
+                                <div id="submenu-8" class="collapse submenu" style="">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item"><a class="nav-link" id="contacts"
+                                                                href="{% url 'catalog:addresses_list' %}">Адреса</a>
+                                        </li>
+                                        <li class="nav-item"><a class="nav-link" id="contacts"
+                                                                href="#">Документы</a>
+                                        </li>
+                                        <li class="nav-item"><a class="nav-link" id="contacts"
+                                                                href="{% url 'invoices:list' %}">Взаиморасчеты</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-divider">
+                            </li>
+                        {% endif %}
                     </ul>
                 </div>
             </nav>
@@ -255,11 +161,10 @@
     <div class="dashboard-wrapper">
         <div class="dashboard-ecommerce">
             <div class="container-fluid dashboard-content">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                {% block breadcrumb %}
-                {% endblock %}
-            </div>
-
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    {% block breadcrumb %}
+                    {% endblock %}
+                </div>
                 {% block content %}
                 {% endblock %}
             </div>
@@ -273,32 +178,18 @@
                     </div>
                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                         <div class="text-md-right footer-links d-none d-sm-block">
-                            {#                            <a href="javascript: void(0);">About</a>#}
-                            {#                            <a href="javascript: void(0);">Support</a>#}
-                            {#                            <a href="javascript: void(0);">Contact Us</a>#}
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
-
 </div>
-
 <script src="{% static 'vendor/slimscroll/jquery.slimscroll.js' %}"></script>
-{#<!-- chart chartist js -->#}
-{#<script src="{% static 'vendor/charts/chartist-bundle/chartist.min.js' %}"></script>#}
-{#<!-- sparkline js -->#}
-{#<script src="{% static 'vendor/charts/sparkline/jquery.sparkline.js' %}"></script>#}
-{#<!-- morris js -->#}
-{#<script src="{% static 'vendor/charts/morris-bundle/raphael.min.js' %}"></script>#}
-{#<script src="{% static 'vendor/charts/morris-bundle/morris.js' %}"></script>#}
-{#<!-- chart c3 js -->#}
-{#<script src="{% static 'vendor/charts/c3charts/c3.min.js' %}"></script>#}
-{#<script src="{% static 'vendor/charts/c3charts/d3-5.4.0.min.js' %}"></script>#}
-{#<script src="{% static 'vendor/charts/c3charts/C3chartjs.js' %}"></script>#}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"></script>
+<script src="{% static 'vendor/inputmask/js/jquery.inputmask.bundle.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
+{% block extra_js %} {% endblock %}
 </body>
 </html>
