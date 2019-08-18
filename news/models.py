@@ -1,13 +1,14 @@
 from django.db import models
 from django.urls import reverse
-from users.models import User
+from users.models import Admin
+from ComfortableHome.utils import PostStatusChoices
 
 
 class Entry(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(Admin, on_delete=models.DO_NOTHING)
     title = models.CharField('Заголовок', max_length=2000)
     text = models.TextField('Текст')
-    is_published = models.BooleanField('Опубликовано', default=True)
+    status = models.BooleanField('Статус', choices=PostStatusChoices.choices, default=PostStatusChoices.draft)
     created_on = models.DateField('Создано', auto_now_add=True)
     modified_on = models.DateField('Изменено', auto_now=True)
 

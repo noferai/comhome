@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    let word = window.location.pathname.split('/')[1];
+    let word = window.location.pathname.split('/')[1] === "client" ? window.location.pathname.split('/')[2] : window.location.pathname.split('/')[1];
     $('#navbarNav a.nav-link').each(function () {
         if (word === "") {
             $("#home").addClass('active');

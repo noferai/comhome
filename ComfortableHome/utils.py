@@ -45,3 +45,8 @@ class OrganizationChoices(DjangoChoices):
 
 class CityChoices(DjangoChoices):
     moscow = ChoiceItem('Москва', _('Москва'))
+
+
+class PostStatusChoices(DjangoChoices):
+    published = ChoiceItem(True, _('Опубликовано'))
+    draft = ChoiceItem(False, _('Черновик'))

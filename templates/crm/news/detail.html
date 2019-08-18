@@ -33,12 +33,12 @@
                 </div>
                 <div class="card-footer-item card-footer-item-bordered">
                     Опубликована:
-                    {% if entry_record.is_published %} Да
+                    {% if entry_record.status %} Да
                     {% else %} Нет
                     {% endif %}
                 </div>
             <div class="card-footer-item card-footer-item-bordered">
-                Автор: {{ entry_record.author.username }}
+                Автор: {{ entry_record.author }}
             </div>
             </div>
         </div>

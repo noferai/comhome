@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'apartments',
     'catalog',
     'invoices',
+    'polls',
     # 'work_calendar',
     'webclient'
     # 'api',

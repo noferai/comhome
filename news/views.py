@@ -7,11 +7,9 @@ from django_tables2.export.views import ExportMixin
 from .forms import EntryForm
 from .tables import EntryTable, EntryFilter
 from users.views import AdminRequiredMixin
-
+from news.models import Entry
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
-from news.models import Entry
 from news.serializer import EntrySerializer
 import textwrap
 import json
@@ -39,10 +37,6 @@ class CreateEntryView(AdminRequiredMixin, CreateView):
     model = Entry
     form_class = EntryForm
     template_name = "crm/create.html"
-
-    def dispatch(self, request, *args, **kwargs):
-        self.news = Entry.objects.filter(is_published=True).order_by('created_on')
-        return super(CreateEntryView, self).dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
         kwargs = super(CreateEntryView, self).get_form_kwargs()

@@ -31,16 +31,6 @@ urlpatterns = [
         'reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
-    # # Document
-    # path('documents/list/', DocumentListView.as_view(), name='doc_list'),
-    # path('documents/create/', DocumentCreateView.as_view(), name='create_doc'),
-    # path('documents/<int:pk>/edit/', UpdateDocumentView.as_view(), name="edit_doc"),
-    # path('documents/<int:pk>/view/', DocumentDetailView.as_view(), name='view_doc'),
-    # path('documents/<int:pk>/delete/', DocumentDeleteView.as_view(), name='remove_doc'),
-    #
-    # # download
-    # path('documents/<int:pk>/download/', download_document, name='download_document'),
-
     # api
     # path('api/', include('api.urls', namespace='api')),
 

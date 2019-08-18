@@ -3,11 +3,14 @@ import django_filters as filters
 from django.forms import widgets
 from .models import Entry
 from users.models import User
+from ComfortableHome.utils import PostStatusChoices
 
 
 class EntryTable(tables.Table):
     created_on = tables.DateColumn(format="d.m.Y")
     author = tables.Column(verbose_name="Автор", linkify=True, accessor="author")
+    status = tables.BooleanColumn(
+        yesno=",".join([str(PostStatusChoices.labels.published), str(PostStatusChoices.labels.draft)]))
     actions = tables.TemplateColumn(verbose_name="Действия", template_name="misc/linkbuttons.html", extra_context={
         'view_link': 'news:view',
         'edit_link': 'news:edit',
@@ -16,7 +19,7 @@ class EntryTable(tables.Table):
 
     class Meta:
         model = Entry
-        fields = ['created_on', 'author', 'is_published']
+        fields = ['created_on', 'author', 'title', 'status']
         template_name = 'django_tables2/bootstrap4.html'
         attrs = {'class': 'table table-striped table-bordered text-center'}
         empty_text = "Ничего не найдено"
@@ -35,4 +38,4 @@ class EntryFilter(filters.FilterSet):
 
     class Meta:
         model = Entry
-        fields = ['created_on', 'author', 'is_published']
+        fields = ['created_on', 'author', 'status']
