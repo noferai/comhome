@@ -24,3 +24,4 @@ tablib
 django-filter
 django-debug-toolbar
 django-model-utils
+django-widget-tweaks

@@ -19,7 +19,7 @@ urlpatterns = [
     path('news/', include('news.urls', namespace='news')),
     path('logout/', views.LogoutView, {'next_page': '/login/'}, name="logout"),
     path('comment/', include('comment.urls')),
-    # path('calendar/', include('work_calendar.urls', namespace='work_calendar'))
+    path('calendar/', include('work_calendar.urls', namespace='work_calendar'))
 ]
 
 if settings.DEBUG:
