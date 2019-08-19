@@ -42,14 +42,13 @@ INSTALLED_APPS += [
     'news',
     'apartments',
     'invoices',
+    'work_calendar',
+    'webclient',
     'polls',
     'addresses',
-    'phones',
-    # 'work_calendar',
-    'webclient'
+    'phones'
     # 'api',
 ]
-
 
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',

@@ -4,6 +4,7 @@
 {% block extralinks %}
     <link href="{% static 'vendor/full-calendar/css/fullcalendar.css' %}" rel='stylesheet' />
     <link href="{%  static 'vendor/full-calendar/css/fullcalendar.print.css' %}" rel='stylesheet' media='print' />
+    <link rel="stylesheet" href="{% static 'vendor/fonts/fontawesome/css/fontawesome-all.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -15,21 +16,23 @@
 
 
     {% block extrajs %}
-        <script src="{% static 'vendor/full-calendar/js/fullcalendar.js' %}"></script>
         <script src="{% static 'vendor/full-calendar/js/moment.min.js' %}"></script>
+        <script src="{% static 'vendor/full-calendar/js/fullcalendar.js' %}"></script>
         <script src="{% static 'vendor/full-calendar/js/jquery-ui.min.js' %}"></script>
+        <script src="{% static 'vendor/full-calendar/js/calendar.js' %}"></script>
         <script>
             $(document).ready(function() {
 
-                $('#calendar1').fullCalendar({
-                    header: {
-                        left: 'prev,next today',
-                        center: 'title',
-                        right: 'month,agendaWeek,agendaDay,listWeek'
-                    },
-                    navLinks: true, // can click day/week names to navigate views
-                    editable: true,
-                    eventLimit: true, // allow "more" link when too many events
+                $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay,listWeek'
+            },
+            defaultDate: '2018-03-12',
+            navLinks: true, // can click day/week names to navigate views
+            editable: true,
+            eventLimit: true, // allow "more" link when too many events
                     events: [
                         {% for i in eventlist %}
                             {
@@ -41,6 +44,7 @@
                         {% endfor %}
                     ]
                 });
+
 
             });
 
