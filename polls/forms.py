@@ -8,7 +8,7 @@ class PollForm(forms.ModelForm):
 
     class Meta:
         model = Poll
-        fields = ['question']
+        fields = ['question', 'status']
 
 
 class ChoiceForm(forms.ModelForm):

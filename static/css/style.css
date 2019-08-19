@@ -2600,7 +2600,7 @@ Pageheader
     position: relative;
 }
 
-.product-colors input[type=checkbox], input[type=radio] {
+.product-colors input[type=checkbox] {
     box-sizing: border-box;
     padding: 0;
     display: none;
