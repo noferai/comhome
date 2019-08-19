@@ -9,7 +9,8 @@
         <div class="page-breadcrumb">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{% url urls.list %}">{% verbose_name_plural view.model %}</a></li>
+                    <li class="breadcrumb-item"><a href="{% url urls.list %}">{% verbose_name_plural view.model %}</a>
+                    </li>
                     <li class="breadcrumb-item active" aria-current="page">{% if object %}
                         Редактировать {% else %}Добавить {% endif %}
                     </li>
@@ -25,6 +26,12 @@
                 <div class="card">
                     <div class="card-body">
                         {% bootstrap_form form %}
+                        {% if formset %}
+                            <h4>{{ formset_title }}</h4>
+                            <div class="formset-form">
+                                {% bootstrap_formset formset %}
+                            </div>
+                        {% endif %}
                     </div>
                     <div class="card-footer  p-0 text-left d-flex justify-content-center">
                         <div class="card-footer-item card-footer-item-bordered">
@@ -45,3 +52,13 @@
         </div>
     </form>
 {% endblock %}
+{% if formset %}
+    {% block extra_js %}
+        <script src="{% static 'vendor/jquery.formset.js' %}"></script>
+        <script>
+        $('.formset-form').formset({
+            prefix: "{{ formset_prefix }}"
+        });
+        </script>
+    {% endblock %}
+{% endif %}

@@ -29,22 +29,27 @@ INSTALLED_APPS = [
     'django_filters',
     'debug_toolbar',
     'widget_tweaks',
-    'comment',
-    'rest_framework',
     'bootstrap4',
+    'rest_framework'
+]
+
+INSTALLED_APPS += [
+    'comment',
     'users',
     'staff',
     'requests',
     'homeowners',
     'news',
     'apartments',
-    'catalog',
     'invoices',
     'polls',
+    'addresses',
+    'phones',
     # 'work_calendar',
     'webclient'
     # 'api',
 ]
+
 
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',

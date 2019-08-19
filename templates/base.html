@@ -96,8 +96,8 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav flex-column">
-                            <li class="nav-divider">
-                            </li>
+                        <li class="nav-divider">
+                        </li>
                         {% if request.user.is_admin %}
                             <li class="nav-item ">
                                 <a id="home" class="nav-link" href="/"><i
@@ -120,9 +120,14 @@
                                         class="fas fa-user-friends"></i>Собственники</a>
                             </li>
 
-{#                            <li class="nav-item">#}
-{#                                <a class="nav-link" href="{% url 'polls:list' %}"><i class="fas fa-poll"></i>Опросы</a>#}
-{#                            </li>#}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'polls:list' %}"><i class="fas fa-poll"></i>Опросы</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'invoices:list' %}"><i
+                                        class="fas fa-file-invoice"></i>Взаиморасчеты</a>
+                            </li>
 
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'requests:list' %}"><i class="fas fa-clipboard"></i>Заявки</a>
@@ -137,21 +142,22 @@
                                    data-target="#submenu-8" aria-controls="submenu-8"><i class="fas fa-book"></i>Справочники</a>
                                 <div id="submenu-8" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
-                                        <li class="nav-item"><a class="nav-link" id="contacts"
-                                                                href="{% url 'catalog:addresses_list' %}">Адреса</a>
+                                        <li class="nav-item"><a class="nav-link"
+                                                                href="{% url 'addresses:list' %}">Адреса</a>
                                         </li>
-                                        <li class="nav-item"><a class="nav-link" id="contacts"
-                                                                href="#">Документы</a>
+                                        <li class="nav-item"><a class="nav-link"
+                                                                href="{% url 'phones:list' %}">Телефоны</a>
                                         </li>
-                                        <li class="nav-item"><a class="nav-link" id="contacts"
-                                                                href="{% url 'invoices:list' %}">Взаиморасчеты</a>
-                                        </li>
+                                        {#                                        <li class="nav-item"><a class="nav-link" id="contacts"#}
+                                        {#                                                                href="#">Документы</a>#}
+                                        {#                                        </li>#}
+
                                     </ul>
                                 </div>
                             </li>
                             <li class="nav-divider">
                             </li>
-                            {% else %}
+                        {% else %}
                             <li class="nav-item ">
                                 <a id="home" class="nav-link" href="{% url 'client:home' %}"><i
                                         class="fas fa-home"></i>Главная</a>
@@ -162,10 +168,10 @@
                                         class="fas fa-newspaper"></i>Новости</a>
                             </li>
 
-{#                            <li class="nav-item ">#}
-{#                                <a id="home" class="nav-link" href="{% url 'client:polls' %}"><i#}
-{#                                        class="fas fa-poll"></i>Опросы</a>#}
-{#                            </li>#}
+                            {#                            <li class="nav-item ">#}
+                            {#                                <a id="home" class="nav-link" href="{% url 'client:polls' %}"><i#}
+                            {#                                        class="fas fa-poll"></i>Опросы</a>#}
+                            {#                            </li>#}
                         {% endif %}
                     </ul>
                 </div>

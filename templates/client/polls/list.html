@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{#{% load custom_tags %}#}
+{#{% block title %} {% website_title objects %} {% endblock %}#}
+{##}
+{#{% block breadcrumb %}#}
+{#    <div class="page-header">#}
+{#        <h2 class="pageheader-title">{% verbose_name_plural view.model %}</h2>#}
+{#    </div>#}
+{#{% endblock breadcrumb %}#}
+
+{% block content %}
+    {% for object in objects %}
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">{{ object.question }}</h3>
+                <a href="{% url 'polls:detail' object.pk %}">{{ object.question }}</a>
+{#                <p class="card-text">{{ object.description }}</p>#}
+{#                <p class="text-muted">{{ object.created_on }}</p>#}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

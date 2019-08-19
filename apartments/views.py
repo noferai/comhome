@@ -3,7 +3,7 @@ from django.views.generic import (CreateView, UpdateView, DetailView, DeleteView
 from apartments.forms import ApartmentForm
 from apartments.models import Apartment
 from requests.models import Request
-from catalog.models import Address
+from addresses.models import Address
 from invoices.models import Invoice
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin

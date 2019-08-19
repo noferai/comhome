@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.contenttypes.fields import GenericRelation
 from comment.models import Comment
-from users.models import User
-from catalog.models import Address
+from users.models import Admin
+from addresses.models import Address
 from ComfortableHome.utils import ApartmentStatusChoices
 from django.urls import reverse
 
@@ -16,7 +16,7 @@ class Apartment(models.Model):
     area = models.FloatField('Площадь', null=True, blank=True)
     number_of_business_account = models.PositiveIntegerField('№ лицевого счёта', unique=True)
     balance_of_business_account = models.IntegerField('Баланс лицевого счёта', default=0)
-    created_by = models.ForeignKey(User, related_name='apartment_created_by', null=True, on_delete=models.SET_NULL)
+    created_by = models.ForeignKey(Admin, related_name='apartment_created_by', null=True, on_delete=models.SET_NULL)
     created_on = models.DateField('Создано', auto_now_add=True)
     modified_on = models.DateField('Изменено', auto_now=True)
     status = models.CharField('Статус', choices=ApartmentStatusChoices.choices, max_length=64,

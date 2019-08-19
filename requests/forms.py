@@ -8,8 +8,7 @@ class RequestForm(forms.ModelForm):
         homeowners = kwargs.pop('homeowners', [])
         apartments = kwargs.pop('apartments', [])
         super(RequestForm, self).__init__(*args, **kwargs)
-        for field in self.fields.values():
-            field.widget.attrs = {"class": "form-control"}
+
         self.fields['description'].widget.attrs.update({
             'rows': '4'})
         self.fields['applicant'] = forms.ModelChoiceField(widget=forms.widgets.Select(attrs={'class': 'select2'}),

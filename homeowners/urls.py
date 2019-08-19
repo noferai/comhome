@@ -6,7 +6,7 @@ app_name = 'homeowners'
 
 
 urlpatterns = [
-    path('list/', HomeownerListView.as_view(), name='list'),
+    path('', HomeownerListView.as_view(), name='list'),
     path('create/', CreateHomeownerView.as_view(), name='create'),
     path('<int:pk>/view/', HomeownerDetailView.as_view(), name="view"),
     path('<int:pk>/edit/', UpdateHomeownerView.as_view(), name="edit"),

@@ -1,36 +1,33 @@
 from django.shortcuts import redirect
-from django.views.generic import (
-    CreateView, UpdateView, DeleteView)
-from catalog.models import Address
-from catalog.forms import AddressForm
-from django_filters.views import FilterView
+from django.views.generic import CreateView, UpdateView, DeleteView, ListView
+from .models import PhoneNumber
+from .forms import PhoneForm
 from django_tables2.views import SingleTableMixin
 from django_tables2.export.views import ExportMixin
-from .tables import AddressTable, AddressFilter
+from .tables import PhoneTable
 from users.views import AdminRequiredMixin
 
 
-class AddressesListView(AdminRequiredMixin, ExportMixin, SingleTableMixin, FilterView):
-    model = Address
-    table_class = AddressTable
+class PhonesListView(AdminRequiredMixin, ExportMixin, SingleTableMixin, ListView):
+    model = PhoneNumber
+    table_class = PhoneTable
     template_name = "crm/list.html"
-    export_name = "Adresa"
-    filterset_class = AddressFilter
+    export_name = "Telefony"
 
     def get_context_data(self, **kwargs):
-        context = super(AddressesListView, self).get_context_data(**kwargs)
+        context = super(PhonesListView, self).get_context_data(**kwargs)
         custom_context = {
             'objects': self.model.objects.all(),
             'urls': {
-                'add': 'catalog:address_add',
+                'add': 'phones:create',
             }
         }
         return {**context, **custom_context}
 
 
-class AddressAddView(AdminRequiredMixin, CreateView):
-    model = Address
-    form_class = AddressForm
+class PhoneAddView(AdminRequiredMixin, CreateView):
+    model = PhoneNumber
+    form_class = PhoneForm
     template_name = "crm/create.html"
 
     def post(self, request, *args, **kwargs):
@@ -46,9 +43,9 @@ class AddressAddView(AdminRequiredMixin, CreateView):
         instance.created_by = self.request.user
         instance.save()
         if self.request.POST.get("save_new"):
-            return redirect("catalog:address_add")
+            return redirect("phones:create")
         else:
-            return redirect("catalog:addresses_list")
+            return redirect("phones:list")
 
     def form_invalid(self, form):
         return self.render_to_response(
@@ -57,16 +54,16 @@ class AddressAddView(AdminRequiredMixin, CreateView):
         )
 
     def get_context_data(self, **kwargs):
-        context = super(AddressAddView, self).get_context_data(**kwargs)
+        context = super(PhoneAddView, self).get_context_data(**kwargs)
         custom_context = {
             'urls': {
-                'list': 'catalog:addresses_list',
+                'list': 'phones:list',
             }
         }
         return {**context, **custom_context}
 
 
-class AddressEditView(AddressAddView, UpdateView):
+class PhoneEditView(PhoneAddView, UpdateView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form = self.get_form()
@@ -78,13 +75,13 @@ class AddressEditView(AddressAddView, UpdateView):
     def form_valid(self, form):
         instance = form.save(commit=False)
         instance.save()
-        return redirect("catalog:addresses_list")
+        return redirect("phones:list")
 
 
-class AddressDeleteView(AdminRequiredMixin, DeleteView):
-    model = Address
+class PhoneDeleteView(AdminRequiredMixin, DeleteView):
+    model = PhoneNumber
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         self.object.delete()
-        return redirect("catalog:addresses_list")
+        return redirect("phones:list")

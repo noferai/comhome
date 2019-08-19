@@ -11,8 +11,7 @@ class InvoiceModelChoiceField(forms.ModelChoiceField):
 class InvoiceForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(InvoiceForm, self).__init__(*args, **kwargs)
-        for field in self.fields.values():
-            field.widget.attrs = {"class": "form-control"}
+
         self.fields['apartment'] = InvoiceModelChoiceField(
             widget=forms.widgets.Select(attrs={'class': 'select2'}),
             label="Квартира (№ лиц. счета)", queryset=Apartment.objects.all())

@@ -1,13 +1,13 @@
+from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect
-from django.views.generic import (
-    CreateView, UpdateView, DetailView, View)
+from django.views.generic import CreateView, UpdateView, DetailView, View
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 from django_tables2.export.views import ExportMixin
 from apartments.models import Apartment
 from requests.models import Request
-from homeowners.models import Homeowner
-from homeowners.forms import HomeownerForm
+from .models import Homeowner
+from .forms import HomeownerForm, PhoneFormSet
 from .tables import HomeownerTable, HomeownerFilter, HomeownerRequestTable
 from users.views import AdminRequiredMixin
 
@@ -53,11 +53,17 @@ class CreateHomeownerView(AdminRequiredMixin, CreateView):
             return self.form_invalid(form)
 
     def form_valid(self, form):
+        formset = self.get_context_data()['formset']
         instance = form.save(commit=False)
         instance.created_by = self.request.user
         instance.save()
         if self.apartments.count() > 0:
             form.save_m2m()
+        with transaction.atomic():
+            self.object = form.save()
+            if formset.is_valid():
+                formset.instance = self.object
+                formset.save()
         if self.request.POST.get("save_new"):
             return redirect("homeowners:create")
         else:
@@ -69,7 +75,13 @@ class CreateHomeownerView(AdminRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(CreateHomeownerView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            context['formset'] = PhoneFormSet(self.request.POST)
+        else:
+            context['formset'] = PhoneFormSet()
         custom_context = {
+            'formset_prefix': 'phones',
+            'formset_title': 'Контактные телефоны',
             'urls': {
                 'list': 'homeowners:list',
             }

@@ -7,7 +7,7 @@ from staff.views import (
 app_name = 'staff'
 
 urlpatterns = [
-	path('list/', StaffListView.as_view(), name='list'),
+	path('', StaffListView.as_view(), name='list'),
 	path('create/', CreateStaffView.as_view(), name='create'),
 	path('<int:pk>/view/', StaffDetailView.as_view(), name="view"),
 	path('<int:pk>/edit/', StaffUpdateView.as_view(), name="edit"),

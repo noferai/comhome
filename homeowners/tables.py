@@ -9,15 +9,25 @@ from requests.tables import RequestTable
 class HomeownerTable(tables.Table):
     date_joined = tables.DateColumn(format="d.m.Y")
     apartments = tables.ManyToManyColumn(verbose_name="Квартиры", linkify_item=True)
+    phones = tables.TemplateColumn(verbose_name="Телефоны", orderable=False,
+                                   template_code='''
+                                        {% for val in value %}
+                                            {{ val }}{% if not forloop.last %},<br>{% endif %}
+                                        {%endfor%}
+                                        ''', accessor='homeowner.phones.all')
     actions = tables.TemplateColumn(verbose_name="Действия", template_name="misc/linkbuttons.html", extra_context={
         'view_link': 'homeowners:view',
         'edit_link': 'homeowners:edit',
         'remove_link': 'homeowners:remove'
     }, orderable=False, exclude_from_export=True)
 
+    #
+    # def render_phones(self, value):
+    #     return [value.first(), value.last()]
+
     class Meta:
         model = Homeowner
-        fields = ['date_joined', 'name', 'debt', 'apartments']
+        fields = ['date_joined', 'name', 'phones', 'debt', 'apartments']
         template_name = 'django_tables2/bootstrap4.html'
         attrs = {'class': 'table table-striped table-bordered text-center'}
         empty_text = "Ничего не найдено"

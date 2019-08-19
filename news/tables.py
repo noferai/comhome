@@ -2,7 +2,7 @@ import django_tables2 as tables
 import django_filters as filters
 from django.forms import widgets
 from .models import Entry
-from users.models import User
+from users.models import Admin
 from ComfortableHome.utils import PostStatusChoices
 
 
@@ -29,7 +29,7 @@ class EntryFilter(filters.FilterSet):
     created_on = filters.DateFromToRangeFilter(
         widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range', 'type': 'date'}))
     author = filters.ModelMultipleChoiceFilter(widget=widgets.SelectMultiple(attrs={'class': 'select2'}),
-                                               queryset=User.objects.all())
+                                               queryset=Admin.objects.all())
 
     def __init__(self, *args, **kwargs):
         super(EntryFilter, self).__init__(*args, **kwargs)

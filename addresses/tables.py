@@ -4,10 +4,10 @@ from .models import Address
 
 
 class AddressTable(tables.Table):
-    address_str = tables.Column(verbose_name="Адрес", accessor=tables.A('__str__'),)
+    address_str = tables.Column(verbose_name="Адрес", accessor=tables.A('__str__'), )
     actions = tables.TemplateColumn(verbose_name="Действия", template_name="misc/linkbuttons.html", extra_context={
-        'edit_link': 'catalog:address_edit',
-        'remove_link': 'catalog:address_remove'
+        'edit_link': 'addresses:edit',
+        'remove_link': 'addresses:remove'
     }, orderable=False, exclude_from_export=True)
 
     class Meta:

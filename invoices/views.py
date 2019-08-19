@@ -77,7 +77,7 @@ class InvoiceEditView(InvoiceAddView, UpdateView):
     def form_valid(self, form):
         account_object = form.save(commit=False)
         account_object.save()
-        return redirect("catalog:invoices_list")
+        return redirect("invoices:list")
 
 
 class InvoiceDeleteView(AdminRequiredMixin, DeleteView):
@@ -86,7 +86,7 @@ class InvoiceDeleteView(AdminRequiredMixin, DeleteView):
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         self.object.delete()
-        return redirect("catalog:invoices_list")
+        return redirect("invoices:list")
 
 #   Todo: Карточка взаиморасчета
 # class InvoiceDetailView(AdminRequiredMixin, DetailView):

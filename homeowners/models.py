@@ -1,9 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from django.contrib.auth.models import (
-    AbstractBaseUser, PermissionsMixin
-)
-from phonenumber_field.modelfields import PhoneNumberField
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.contrib.contenttypes.fields import GenericRelation
 from comment.models import Comment
 from staff.models import Staff
@@ -15,7 +12,6 @@ from homeowners.utils import RequestChoicesGender, RequestChoicesDebtStatus, \
 
 class Homeowner(User):
     gender = models.CharField('Пол', max_length=10, choices=RequestChoicesGender.choices, null=True)
-    phone = PhoneNumberField('Телефон', max_length=255)
     birthday = models.DateField('Дата рождения', null=True)
     debt = models.BooleanField('Задолженность', null=True)
     status_of_work_with_debt = models.CharField('Статус работы по взысканию задолженности',

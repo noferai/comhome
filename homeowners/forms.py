@@ -1,18 +1,13 @@
 from django import forms
-from phonenumber_field.widgets import PhoneNumberInternationalFallbackWidget
-from phonenumber_field.formfields import PhoneNumberField
-from homeowners.models import Homeowner
+from .models import Homeowner
+from phones.models import PhoneNumber
+from phones.forms import PhoneForm
 
 
 class HomeownerForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         apartments = kwargs.pop('apartments', [])
         super(HomeownerForm, self).__init__(*args, **kwargs)
-        for field in self.fields.values():
-            field.widget.attrs = {"class": "form-control"}
-        self.fields['phone'] = PhoneNumberField(
-            widget=PhoneNumberInternationalFallbackWidget(attrs={'class': 'form-control international-inputmask'}),
-            label="Телефон")
         self.fields['birthday'] = forms.DateField(
             widget=forms.widgets.DateInput(attrs={'type': 'date'}), label="День рождения")
         self.fields['passport_date'] = forms.DateField(
@@ -33,7 +28,10 @@ class HomeownerForm(forms.ModelForm):
 
     class Meta:
         model = Homeowner
-        fields = ('name', 'gender', 'phone', 'email', 'birthday', 'debt', 'status_of_work_with_debt',
+        fields = ('name', 'gender', 'email', 'birthday', 'debt', 'status_of_work_with_debt',
                   'garbage_payment', 'passport_date', 'passport_series', 'passport_id', 'issued_by', 'unit_code',
                   'type_of_passport', 'birthday_reminder', 'hard_case', 'loyal', 'vip', 'calls', 'sms', 'mail',
                   'apartments', 'password')
+
+
+PhoneFormSet = forms.inlineformset_factory(Homeowner, PhoneNumber, form=PhoneForm, extra=1, can_delete=False)

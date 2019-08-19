@@ -1,18 +1,17 @@
 from django import forms
 from phonenumber_field.widgets import PhoneNumberInternationalFallbackWidget
 from phonenumber_field.formfields import PhoneNumberField
-from .models import Staff
+from .models import PhoneNumber
 
 
-class StaffForm(forms.ModelForm):
-
+class PhoneForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(StaffForm, self).__init__(*args, **kwargs)
-
-        self.fields['phone'] = PhoneNumberField(
+        super(PhoneForm, self).__init__(*args, **kwargs)
+        self.fields['number'] = PhoneNumberField(
             widget=PhoneNumberInternationalFallbackWidget(attrs={'class': 'form-control international-inputmask'}),
             label="Телефон")
 
     class Meta:
-        model = Staff
-        fields = ('name', 'phone', 'email', 'occupation')
+        model = PhoneNumber
+        fields = ['number', 'note']
+        exclude = ()

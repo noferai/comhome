@@ -6,8 +6,7 @@ class ApartmentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         addresses = kwargs.pop('addresses', [])
         super(ApartmentForm, self).__init__(*args, **kwargs)
-        for field in self.fields.values():
-            field.widget.attrs = {"class": "form-control"}
+
         self.fields['address'] = forms.ModelChoiceField(
             widget=forms.widgets.Select(attrs={'class': 'select2'}),
             queryset=addresses, label="Адрес")

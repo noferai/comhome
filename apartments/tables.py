@@ -2,7 +2,7 @@ import django_tables2 as tables
 import django_filters as filters
 from django.forms import widgets
 from .models import Apartment
-from catalog.models import Address
+from addresses.models import Address
 from homeowners.models import Homeowner
 from requests.tables import RequestTable
 from invoices.tables import InvoiceTable
