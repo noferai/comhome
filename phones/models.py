@@ -16,4 +16,4 @@ class PhoneNumber(models.Model):
     class Meta:
         verbose_name = 'Телефон'
         verbose_name_plural = 'Телефоны'
-        ordering = ['-created_on']
+        ordering = ['created_on']

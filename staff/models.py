@@ -25,4 +25,4 @@ class Staff(models.Model):
     class Meta:
         verbose_name = 'Исполнитель'
         verbose_name_plural = 'Исполнители'
-        ordering = ['-created_on']
+        ordering = ['created_on']

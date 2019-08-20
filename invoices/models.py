@@ -13,4 +13,4 @@ class Invoice(models.Model):
     class Meta:
         verbose_name = 'Взаиморасчет'
         verbose_name_plural = 'Взаиморасчеты'
-        ordering = ['-created_on']
+        ordering = ['created_on']

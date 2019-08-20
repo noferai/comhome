@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.contrib.contenttypes.fields import GenericRelation
+from users.models import Admin
 from comment.models import Comment
 from staff.models import Staff
 from users.models import User
@@ -21,6 +22,9 @@ class Homeowner(User):
                                           choices=RequestChoicesGarbagePayment.choices)
     date_of_issue = models.DateField('Дата выдачи паспорта', null=True)
     apartments = models.ManyToManyField(Apartment, related_name='homeowner', blank=True)
+    car_numbers = models.CharField("Номера автомобилей", max_length=2000, blank=True)
+    assigned_to = models.ForeignKey(Admin, on_delete=models.DO_NOTHING, null=True, blank=True)
+    registration = models.CharField("Место регистрации", max_length=2000)
     comments = GenericRelation(Comment)
 
     # Поля паспорта
@@ -40,9 +44,6 @@ class Homeowner(User):
     calls = models.BooleanField('Звонки')
     sms = models.BooleanField('СМС')
     mail = models.BooleanField('Email')
-
-    def __str__(self):
-        return self.name
 
     def get_absolute_url(self):
         return reverse('homeowners:view', args=[str(self.id)])

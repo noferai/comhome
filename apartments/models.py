@@ -9,11 +9,12 @@ from django.urls import reverse
 
 class Apartment(models.Model):
     address = models.ForeignKey(Address, null=True, on_delete=models.SET_NULL)
-    apartment_number = models.PositiveSmallIntegerField('Номер')
+    apartment_number = models.PositiveSmallIntegerField('№ квартиры')
     entrance = models.PositiveSmallIntegerField('Подъезд')
     floor = models.PositiveSmallIntegerField('Этаж')
     number_of_rooms = models.PositiveSmallIntegerField('Количество комнат')
     area = models.FloatField('Площадь', null=True, blank=True)
+    part_of_area = models.FloatField("Доля в общей площади", blank=True)
     number_of_business_account = models.PositiveIntegerField('№ лицевого счёта', unique=True)
     balance_of_business_account = models.IntegerField('Баланс лицевого счёта', default=0)
     created_by = models.ForeignKey(Admin, related_name='apartment_created_by', null=True, on_delete=models.SET_NULL)
@@ -32,4 +33,4 @@ class Apartment(models.Model):
     class Meta:
         verbose_name = 'Квартира'
         verbose_name_plural = 'Квартиры'
-        ordering = ['-created_on']
+        ordering = ['created_on']

@@ -1,8 +1,5 @@
-from django.urls import reverse
 from django.db import transaction
 from django.shortcuts import redirect
-from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 from django_tables2.export.views import ExportMixin
@@ -53,13 +50,12 @@ class PollCreateView(CreateView):
 
     def form_valid(self, form):
         context = self.get_context_data()
-        choices = context['formset']
+        formset = context['formset']
         with transaction.atomic():
             self.object = form.save()
-
-            if choices.is_valid():
-                choices.instance = self.object
-                choices.save()
+            if formset.is_valid():
+                formset.instance = self.object
+                formset.save()
         if self.request.POST.get("save_new"):
             return redirect("polls:create")
         else:

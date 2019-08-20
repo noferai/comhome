@@ -21,4 +21,4 @@ class Entry(models.Model):
     class Meta:
         verbose_name = 'Новость'
         verbose_name_plural = 'Новости'
-        ordering = ['-created_on']
+        ordering = ['created_on']

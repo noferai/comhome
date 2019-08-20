@@ -54,6 +54,11 @@
                                    href="#activity-information" role="tab" aria-controls="contact"
                                    aria-selected="false">Обращения</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="documents" data-toggle="tab"
+                                   href="#documents" role="tab" aria-controls="contact"
+                                   aria-selected="false">Документы</a>
+                            </li>
                         </ul>
                         <div class="tab-content" id="myTabContent5">
                             <div class="tab-pane fade active show" id="main-information" role="tabpanel"
@@ -94,7 +99,11 @@
                             </div>
                             <div class="tab-pane fade" id="activity-information" role="tabpanel"
                                  aria-labelledby="activity-tab-simple">
-                                {% render_table table %}
+                                {% render_table requests_table %}
+                            </div>
+                            <div class="tab-pane fade" id="documents" role="tabpanel"
+                                 aria-labelledby="documents-tab">
+                                {% render_table documents_table %}
                             </div>
                         </div>
                     </div>

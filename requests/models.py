@@ -37,4 +37,4 @@ class Request(models.Model):
     class Meta:
         verbose_name = 'Заявка'
         verbose_name_plural = 'Заявки'
-        ordering = ['-created_on']
+        ordering = ['created_on']

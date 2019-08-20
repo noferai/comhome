@@ -79,13 +79,14 @@
 
         $$.each(function(i) {
             var row = $(this),
-                del = row.find('input:checkbox[id $= "-DELETE"]');
+                del = row.find('input:checkbox[id $= "-DELETE"]'),
+                del2 = row.find('label[for $= "-DELETE"]');
             if (del.length) {
                 // If you specify "can_delete = True" when creating an inline formset,
                 // Django adds a checkbox to each form in the formset.
                 // Replace the default checkbox with a hidden field:
                 del.before('<input type="hidden" name="' + del.attr('name') +'" id="' + del.attr('id') +'" />');
-                del.remove();
+                del.remove(); del2.remove();
             }
             if (hasChildElements(row)) {
                 insertDeleteLink(row);
@@ -161,7 +162,7 @@
         addText: 'добавить ещё',          // Text for the add link
         deleteText: 'удалить',            // Text for the delete link
         addCssClass: 'btn btn-outline-success btn-sm',          // CSS class applied to the add link
-        deleteCssClass: 'btn btn-outline-danger btn-sm',    // CSS class applied to the delete link
+        deleteCssClass: 'btn-sm',    // CSS class applied to the delete link
         formCssClass: 'dynamic-form',    // CSS class applied to each form in a formset
         extraClasses: [],                // Additional CSS classes, which will be applied to each form in turn
         added: null,                     // Function called each time a new form is added

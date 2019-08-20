@@ -48,6 +48,11 @@
                            href="#invoice-information" role="tab" aria-controls="contact"
                            aria-selected="false">Взаиморасчеты</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="documents-tab" data-toggle="tab"
+                           href="#documents" role="tab" aria-controls="contact"
+                           aria-selected="false">Документы</a>
+                    </li>
                 </ul>
                 <div class="tab-content" id="myTabContent5">
                     <div class="tab-pane fade active show" id="main-information" role="tabpanel"
@@ -58,6 +63,7 @@
                         <p class="text-left">Этаж: {{ apartment.floor }}</p>
                         <p class="text-left">Количество комнат: {{ apartment.number_of_rooms }}</p>
                         <p class="text-left">Площадь: {{ apartment.area }}</p>
+                        <p class="text-left">Доля в общей площади: {{ apartment.part_of_area }}</p>
                         <p class="text-left">Статус: {{ apartment.status }}</p>
                         <p class="text-left">Номер лицевого счета: {{ apartment.number_of_business_account }}</p>
                         <p class="text-left">Баланс лицевого счёта: {{ apartment.balance_of_business_account }}</p>
@@ -70,6 +76,12 @@
                          aria-labelledby="invoice-tab-simple">
                         {% render_table invoices_table %}
                     </div>
+
+                    <div class="tab-pane fade" id="documents" role="tabpanel"
+                         aria-labelledby="documents-tab">
+                        {% render_table documents_table %}
+                    </div>
+
                 </div>
             </div>
             <div class="card-footer  p-0 text-left d-flex justify-content-center">

@@ -30,8 +30,10 @@
                     {% if filter %}<a data-toggle="collapse" href="#filters" role="button" aria-expanded="false"
                                       aria-controls="filters" class="btn btn-light btn-sm">
                         <i class="fas fa-filter"></i> Фильтры</a> {% endif %}
-                    <a href="{% url urls.add %}" class="btn btn-light btn-sm add-btn"><i
-                            class="fas fa-plus"></i> Добавить</a>
+                    {% if urls.add %}
+                        <a href="{% url urls.add %}" class="btn btn-light btn-sm add-btn"><i
+                                class="fas fa-plus"></i> Добавить</a>
+                    {% endif %}
                 </div>
             </div>
             {% if filter %}

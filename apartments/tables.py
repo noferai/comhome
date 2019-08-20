@@ -6,6 +6,7 @@ from addresses.models import Address
 from homeowners.models import Homeowner
 from requests.tables import RequestTable
 from invoices.tables import InvoiceTable
+from documents.tables import DocumentTable
 
 
 class ApartmentTable(tables.Table):
@@ -15,13 +16,15 @@ class ApartmentTable(tables.Table):
     homeowner = tables.ManyToManyColumn(verbose_name="Собственники", linkify_item=True)
     actions = tables.TemplateColumn(verbose_name="Действия", template_name="misc/linkbuttons.html", extra_context={
         'view_link': 'apartments:view',
-        'edit_link': 'apartments:edit',
+        # TODO: Не работает. Починить
+        # 'edit_link': 'apartments:edit',
         'remove_link': 'apartments:remove'
     }, orderable=False, exclude_from_export=True)
 
     class Meta:
         model = Apartment
-        fields = ['number_of_business_account', 'address', 'area', 'homeowner', 'balance_of_business_account']
+        fields = ['number_of_business_account', 'address', 'apartment_number', 'area', 'homeowner',
+                  'balance_of_business_account']
         template_name = 'django_tables2/bootstrap4.html'
         attrs = {'class': 'table table-striped table-bordered text-center'}
         empty_text = "Ничего не найдено"

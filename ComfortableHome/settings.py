@@ -46,7 +46,8 @@ INSTALLED_APPS += [
     'webclient',
     'polls',
     'addresses',
-    'phones'
+    'phones',
+    'documents'
     # 'api',
 ]
 

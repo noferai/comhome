@@ -1,10 +1,13 @@
+from django.db import transaction
 from django.shortcuts import redirect
 from django.views.generic import (CreateView, UpdateView, DetailView, DeleteView)
-from apartments.forms import ApartmentForm
+from apartments.forms import ApartmentForm, DocumentFormSet
 from apartments.models import Apartment
 from requests.models import Request
 from addresses.models import Address
 from invoices.models import Invoice
+from documents.models import Document
+from documents.tables import DocumentTable
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 from django_tables2.export.views import ExportMixin
@@ -45,6 +48,7 @@ class ApartmentAddView(AdminRequiredMixin, CreateView):
         return kwargs
 
     def post(self, request, *args, **kwargs):
+        self.object = None
         form = self.get_form()
         if form.is_valid():
             return self.form_valid(form)
@@ -52,9 +56,13 @@ class ApartmentAddView(AdminRequiredMixin, CreateView):
             return self.form_invalid(form)
 
     def form_valid(self, form):
-        instance = form.save(commit=False)
-        instance.created_by = self.request.user
-        instance.save()
+        context = self.get_context_data()
+        formset = context['formset']
+        with transaction.atomic():
+            self.object = form.save()
+            if formset.is_valid():
+                formset.instance = self.object
+                formset.save()
         if self.request.POST.get("save_new"):
             return redirect("apartments:create")
         else:
@@ -68,7 +76,13 @@ class ApartmentAddView(AdminRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(ApartmentAddView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            context['formset'] = DocumentFormSet(self.request.POST, self.request.FILES or None)
+        else:
+            context['formset'] = DocumentFormSet()
         custom_context = {
+            'formset_prefix': 'documents',
+            'formset_title': 'Документы',
             'urls': {
                 'list': 'apartments:list',
             }
@@ -103,7 +117,9 @@ class ApartmentDetailView(AdminRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(ApartmentDetailView, self).get_context_data(**kwargs)
         context.update({'requests_table': ApartmentRequestTable(Request.objects.filter(apartment__id=self.object.id)),
-                        'invoices_table': ApartmentInvoiceTable(Invoice.objects.filter(apartment__id=self.object.id))})
+                        'invoices_table': ApartmentInvoiceTable(Invoice.objects.filter(apartment__id=self.object.id)),
+                        'documents_table': DocumentTable(Document.objects.filter(apartment__id=self.object.id))
+                        })
         return context
 
 
