@@ -9,7 +9,7 @@ from apartments.models import Apartment
 from documents.models import Document
 from requests.models import Request
 from .models import Homeowner
-from .forms import HomeownerForm, PhoneFormSet
+from .forms import HomeownerForm, PhoneFormSet, DocumentFormSet
 from .tables import HomeownerTable, HomeownerFilter, HomeownerRequestTable
 from documents.tables import DocumentTable
 from users.views import AdminRequiredMixin
@@ -60,17 +60,18 @@ class CreateHomeownerView(AdminRequiredMixin, CreateView):
             return self.form_invalid(form)
 
     def form_valid(self, form):
-        formset = self.get_context_data()['formset']
+        formsets = self.get_context_data()['formsets']
         instance = form.save(commit=False)
         instance.created_by = self.request.user
         instance.save()
         if self.apartments.count() > 0:
             form.save_m2m()
-        with transaction.atomic():
-            self.object = form.save()
-            if formset.is_valid():
-                formset.instance = self.object
-                formset.save()
+        for formset in formsets:
+            with transaction.atomic():
+                self.object = form.save()
+                if formset['form'].is_valid():
+                    formset['form'].instance = self.object
+                    formset['form'].save()
         if self.request.POST.get("save_new"):
             return redirect("homeowners:create")
         else:
@@ -82,13 +83,27 @@ class CreateHomeownerView(AdminRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(CreateHomeownerView, self).get_context_data(**kwargs)
+        formsets = []
         if self.request.POST:
-            context['formset'] = PhoneFormSet(self.request.POST)
+            formsets.append({'form': PhoneFormSet(self.request.POST),
+                             'title': 'Контактные номера',
+                             'prefix': 'phones'
+                             })
+            formsets.append({'form': DocumentFormSet(self.request.POST, self.request.FILES or None),
+                             'title': 'Документы',
+                             'prefix': 'documents'
+                             })
         else:
-            context['formset'] = PhoneFormSet()
+            formsets.append({'form': PhoneFormSet(),
+                             'title': 'Контактные номера',
+                             'prefix': 'phones'
+                             })
+            formsets.append({'form': DocumentFormSet(),
+                             'title': 'Документы',
+                             'prefix': 'documents'
+                             })
         custom_context = {
-            'formset_prefix': 'phones',
-            'formset_title': 'Контактные телефоны',
+            'formsets': formsets,
             'urls': {
                 'list': 'homeowners:list',
             }

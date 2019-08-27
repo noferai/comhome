@@ -7388,6 +7388,33 @@ th.orderable.desc:after {
     border-radius: .25rem;
 }
 
+.btn-outline-delete {
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 5px;
+    margin: 1px;
+    color: #ef172c;
+    background-color: transparent;
+    border: 1px solid #ef172c;
+}
+
+.btn-outline-delete:hover {
+    color: #fff;
+    background-color: #ef172c;
+    border-color: #ef172c;
+}
+
+.btn-outline-delete.focus,
+.btn-outline-delete:focus {
+    color: #fff;
+    background-color: #ef172c;
+    border-color: #ef172c;
+    box-shadow: 0 0 0 1px rgb(239, 23, 44);
+}
+
+.formset-title {
+    margin: 10px 0;
+}
 
 /* Custom, iPhone Retina */
 @media only screen and (max-width: 320px) {

@@ -26,11 +26,13 @@
                 <div class="card">
                     <div class="card-body">
                         {% bootstrap_form form %}
-                        {% if formset %}
-                            <h4>{{ formset_title }}</h4>
-                            <div class="formset-form">
-                                {% bootstrap_formset formset %}
+                        {% if formsets %}
+                            {% for formset in formsets %}
+                            <h4 class="formset-title">{{ formset.title }}</h4>
+                            <div class="formset-form form-{{ formset.prefix }}">
+                                {% bootstrap_formset formset.form %}
                             </div>
+                            {% endfor %}
                         {% endif %}
                     </div>
                     <div class="card-footer  p-0 text-left d-flex justify-content-center">
@@ -56,9 +58,11 @@
     {% block extra_js %}
         <script src="{% static 'vendor/jquery.formset.js' %}"></script>
         <script>
-        $('.formset-form').formset({
-            prefix: "{{ formset_prefix }}"
+        {% for formset in formsets %}
+        $('.form-{{ formset.prefix }}').formset({
+            prefix: "{{ formset.prefix }}"
         });
+        {% endfor %}
         </script>
     {% endblock %}
 {% endif %}

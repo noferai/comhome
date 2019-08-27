@@ -37,17 +37,17 @@
                             <li class="nav-item">
                                 <a class="nav-link border-left-0 active show" id="main-information-tab"
                                    data-toggle="tab" href="#main-information" role="tab" aria-controls="home"
-                                   aria-selected="true">Подробная информация</a>
+                                   aria-selected="true">Основное</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="passport-information-tab" data-toggle="tab"
                                    href="#passport-information" role="tab" aria-controls="profile"
-                                   aria-selected="false">Паспортные данные</a>
+                                   aria-selected="false">Паспорт</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="additional-information-tab" data-toggle="tab"
                                    href="#additional-information" role="tab" aria-controls="contact"
-                                   aria-selected="false">Дополнительная информация</a>
+                                   aria-selected="false">Дополнительно</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="activity-information-tab" data-toggle="tab"
@@ -55,7 +55,7 @@
                                    aria-selected="false">Обращения</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="documents" data-toggle="tab"
+                                <a class="nav-link" id="documents-tab" data-toggle="tab"
                                    href="#documents" role="tab" aria-controls="contact"
                                    aria-selected="false">Документы</a>
                             </li>
@@ -95,7 +95,6 @@
                                 <p>Звонки: {% if homeowner.calls %} Да {% else %} Нет {% endif %}</p>
                                 <p>SMS: {% if homeowner.sms %} Да {% else %} Нет {% endif %}</p>
                                 <p>Email: {% if homeowner.mail %} Да {% else %} Нет {% endif %}</p>
-                                <p>Комментарий: {{ homeowner.comments }}</p>
                             </div>
                             <div class="tab-pane fade" id="activity-information" role="tabpanel"
                                  aria-labelledby="activity-tab-simple">

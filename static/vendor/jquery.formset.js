@@ -161,8 +161,8 @@
         formTemplate: null,              // The jQuery selection cloned to generate new form instances
         addText: 'добавить ещё',          // Text for the add link
         deleteText: 'удалить',            // Text for the delete link
-        addCssClass: 'btn btn-outline-success btn-sm',          // CSS class applied to the add link
-        deleteCssClass: 'btn-sm',    // CSS class applied to the delete link
+        addCssClass: 'btn btn-outline-success',          // CSS class applied to the add link
+        deleteCssClass: 'btn-outline-delete',    // CSS class applied to the delete link
         formCssClass: 'dynamic-form',    // CSS class applied to each form in a formset
         extraClasses: [],                // Additional CSS classes, which will be applied to each form in turn
         added: null,                     // Function called each time a new form is added

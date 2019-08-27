@@ -56,13 +56,13 @@ class ApartmentAddView(AdminRequiredMixin, CreateView):
             return self.form_invalid(form)
 
     def form_valid(self, form):
-        context = self.get_context_data()
-        formset = context['formset']
-        with transaction.atomic():
-            self.object = form.save()
-            if formset.is_valid():
-                formset.instance = self.object
-                formset.save()
+        formsets = self.get_context_data()['formsets']
+        for formset in formsets:
+            with transaction.atomic():
+                self.object = form.save()
+                if formset['form'].is_valid():
+                    formset['form'].instance = self.object
+                    formset['form'].save()
         if self.request.POST.get("save_new"):
             return redirect("apartments:create")
         else:
@@ -76,13 +76,19 @@ class ApartmentAddView(AdminRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(ApartmentAddView, self).get_context_data(**kwargs)
+        formsets = []
         if self.request.POST:
-            context['formset'] = DocumentFormSet(self.request.POST, self.request.FILES or None)
+            formsets.append({'form': DocumentFormSet(self.request.POST, self.request.FILES or None),
+                             'title': 'Документы',
+                             'prefix': 'documents'
+                             })
         else:
-            context['formset'] = DocumentFormSet()
+            formsets.append({'form': DocumentFormSet(),
+                             'title': 'Документы',
+                             'prefix': 'documents'
+                             })
         custom_context = {
-            'formset_prefix': 'documents',
-            'formset_title': 'Документы',
+            'formsets': formsets,
             'urls': {
                 'list': 'apartments:list',
             }
