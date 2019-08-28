@@ -50,7 +50,6 @@ class HomeownerFilter(filters.FilterSet):
 
 
 class HomeownerRequestTable(RequestTable):
-    class Meta:
+    class Meta(RequestTable.Meta):
         exclude = ['applicant']
-        template_name = 'django_tables2/bootstrap4.html'
-        attrs = {'class': 'table table-striped table-bordered text-center'}
+

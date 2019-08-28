@@ -7,10 +7,24 @@ from ComfortableHome.mixins import AdminRequiredMixin
 from django.contrib.auth.views import PasswordResetView
 from users.forms import LoginForm, ChangePasswordForm, PasswordResetEmailForm
 from django.views.generic import TemplateView, View
+from .utils import RequestStatusChoices
+from .tables import RequestHomeTable
+from requests.models import Request
 
 
 class CRMHomeView(AdminRequiredMixin, TemplateView):
     template_name = "crm/index.html"
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.requests = Request.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(CRMHomeView, self).get_context_data(**kwargs)
+        context.update(
+            {'requests_table': RequestHomeTable(Request.objects.filter(status=RequestStatusChoices.new)[:5])
+             })
+        return context
 
 
 class LoginView(TemplateView):
@@ -51,6 +65,7 @@ class LoginView(TemplateView):
                 "error": True,
                 "message": "Неправильный email или пароль"
             })
+
 
 #
 # class ForgotPasswordView(TemplateView):

@@ -11,7 +11,10 @@ class PhoneNumber(models.Model):
     modified_on = models.DateField('Изменено', auto_now=True)
 
     def __str__(self):
-        return str(self.number) + " (" + self.note + ")"
+        if self.note:
+            return str(self.number) + " (" + self.note + ")"
+        else:
+            return str(self.number)
 
     class Meta:
         verbose_name = 'Телефон'

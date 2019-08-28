@@ -42,14 +42,11 @@ class ApartmentFilter(filters.FilterSet):
 
 
 class ApartmentRequestTable(RequestTable):
-    class Meta:
+    class Meta(RequestTable.Meta):
         exclude = ['apartment']
-        template_name = 'django_tables2/bootstrap4.html'
-        attrs = {'class': 'table table-striped table-bordered text-center'}
 
 
 class ApartmentInvoiceTable(InvoiceTable):
-    class Meta:
+    class Meta(InvoiceTable.Meta):
         exclude = ['apartment']
-        template_name = 'django_tables2/bootstrap4.html'
-        attrs = {'class': 'table table-striped table-bordered text-center'}
+
