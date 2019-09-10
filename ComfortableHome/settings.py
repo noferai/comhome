@@ -11,7 +11,7 @@ SECRET_KEY = 'mwx@&97%!$fx_*zgj(2ygi^(s=oh5j(cqb$=+-mkd9scbt!0v0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['http://127.0.0.1:8000/', 'https://comhome.herokuapp.com/']
 
 LOGIN_URL = '/login/'
 
@@ -48,7 +48,6 @@ INSTALLED_APPS += [
     'addresses',
     'phones',
     'documents'
-    # 'api',
 ]
 
 MIDDLEWARE = [
@@ -214,9 +213,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-STATIC_URL = '/static/'
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -227,39 +223,39 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 AUTHENTICATION_BACKENDS = ('ComfortableHome.backends.UserModelBackend',)
 AUTH_USER_MODEL = 'users.User'
 
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = os.getenv('SG_USER', '')
-EMAIL_HOST_PASSWORD = os.getenv('SG_PWD', '')
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.sendgrid.net'
+# EMAIL_HOST_USER = os.getenv('SG_USER', '')
+# EMAIL_HOST_PASSWORD = os.getenv('SG_PWD', '')
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+# Static files (CSS, JavaScript, Images)
+
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (BASE_DIR + '/static',)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder'
 )
 
-DEFAULT_FROM_EMAIL = 'no-reply@django-ComfortableHome.com'
-MAIL_SENDER = 'AMAZON'
-INACTIVE_MAIL_SENDER = 'MANDRILL'
+# DEFAULT_FROM_EMAIL = 'no-reply@django-ComfortableHome.com'
+# MAIL_SENDER = 'AMAZON'
+# INACTIVE_MAIL_SENDER = 'MANDRILL'
+#
+# AM_ACCESS_KEY = os.getenv('AM_ACCESS_KEY', '')
+# AM_PASS_KEY = os.getenv('AM_PASS_KEY', '')
+# AWS_REGION = os.getenv('AWS_REGION', '')
+#
+# MGUN_API_URL = os.getenv('MGUN_API_URL', '')
+# MGUN_API_KEY = os.getenv('MGUN_API_KEY', '')
+#
+# SG_USER = os.getenv('SG_USER', '')
+# SG_PWD = os.getenv('SG_PWD', '')
 
-AM_ACCESS_KEY = os.getenv('AM_ACCESS_KEY', '')
-AM_PASS_KEY = os.getenv('AM_PASS_KEY', '')
-AWS_REGION = os.getenv('AWS_REGION', '')
-
-MGUN_API_URL = os.getenv('MGUN_API_URL', '')
-MGUN_API_KEY = os.getenv('MGUN_API_KEY', '')
-
-SG_USER = os.getenv('SG_USER', '')
-SG_PWD = os.getenv('SG_PWD', '')
-
-# MANDRILL_API_KEY = os.getenv('MANDRILL_API_KEY', '')
-
-# ADMIN_EMAIL = ""
 
 # Configure Django App for Heroku.
 django_heroku.settings(locals())

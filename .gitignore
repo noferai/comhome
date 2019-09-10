@@ -8,3 +8,4 @@ media/
 __pycache__/
 venv/
 */migrations/[0-9]*.py
+staticfiles/
