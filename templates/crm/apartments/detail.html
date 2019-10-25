@@ -8,13 +8,13 @@
 {% block title %}{{ apartment.address }} - Comfortable Home{% endblock %}
 {% block breadcrumb %}
     <div class="page-header">
-        <h2 class="pageheader-title">{{ apartment.address }}, квартира {{ apartment.apartment_number }}</h2>
+        <h2 class="pageheader-title">{{ apartment.address }}, помещение {{ apartment.apartment_number }}</h2>
         <div class="page-breadcrumb">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{% url 'apartments:list' %}">Квартиры</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'apartments:list' %}">Помещения</a></li>
                     <li class="breadcrumb-item active" aria-current="page">{{ apartment.address }},
-                        квартира {{ apartment.apartment_number }}</li>
+                        помещение {{ apartment.apartment_number }}</li>
                 </ol>
             </nav>
         </div>
@@ -58,12 +58,11 @@
                     <div class="tab-pane fade active show" id="main-information" role="tabpanel"
                          aria-labelledby="home-tab-simple">
                         <p class="text-left">Адрес: {{ apartment.address }}</p>
-                        <p class="text-left">Номер квартиры: {{ apartment.apartment_number }}</p>
+                        <p class="text-left">Номер помещения: {{ apartment.apartment_number }}</p>
                         <p class="text-left">Подъезд: {{ apartment.entrance }}</p>
                         <p class="text-left">Этаж: {{ apartment.floor }}</p>
                         <p class="text-left">Количество комнат: {{ apartment.number_of_rooms }}</p>
                         <p class="text-left">Площадь: {{ apartment.area }}</p>
-                        <p class="text-left">Доля в общей площади: {{ apartment.part_of_area }}</p>
                         <p class="text-left">Статус: {{ apartment.status }}</p>
                         <p class="text-left">Номер лицевого счета: {{ apartment.number_of_business_account }}</p>
                         <p class="text-left">Баланс лицевого счёта: {{ apartment.balance_of_business_account }}</p>

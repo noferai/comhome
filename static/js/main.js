@@ -8,8 +8,6 @@ $(document).ready(function () {
         }
     });
 
-    $(".date input").attr("type", "date");
-
     $('.select2').select2({
         placeholder: "Выберите значения"
     });
@@ -22,8 +20,8 @@ $(document).ready(function () {
     });
 
     $("body").on('DOMSubtreeModified',   function() {
-        $(".date-inputmask").inputmask("дд/мм/гггг");
-        $(".international-inputmask").inputmask("+9(999)999-99-99");
+        $(".date-inputmask").inputmask({mask:"дд/мм/гггг"});
+        $(".international-inputmask").inputmask({mask:"+9(999)999-99-99"});
 });
 
 });

@@ -14,7 +14,7 @@ class InvoiceForm(forms.ModelForm):
 
         self.fields['apartment'] = InvoiceModelChoiceField(
             widget=forms.widgets.Select(attrs={'class': 'select2'}),
-            label="Квартира (№ лиц. счета)", queryset=Apartment.objects.all())
+            label="Помещение (№ лиц. счета)", queryset=Apartment.objects.all())
 
     class Meta:
         model = Invoice

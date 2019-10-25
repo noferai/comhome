@@ -1,5 +1,5 @@
 from django.db import models
-from homeowners.models import Homeowner
+from clients.models import Client
 from apartments.models import Apartment
 from ComfortableHome.utils import DocumentTypeChoices
 
@@ -10,7 +10,7 @@ class Document(models.Model):
     note = models.TextField("Комментарий", blank=True)
     attachment = models.FileField("Прикрепления", upload_to='documents/%Y/%m/', blank=True)
     apartment = models.ForeignKey(Apartment, related_name='documents', null=True, on_delete=models.CASCADE)
-    homeowner = models.ForeignKey(Homeowner, related_name='documents', null=True, on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, related_name='documents', null=True, on_delete=models.CASCADE)
     created_on = models.DateField('Создано', auto_now_add=True)
     modified_on = models.DateField('Изменено', auto_now=True)
 

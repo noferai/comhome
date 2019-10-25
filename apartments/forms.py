@@ -16,7 +16,7 @@ class ApartmentForm(forms.ModelForm):
     class Meta:
         model = Apartment
         fields = ['number_of_business_account', 'address', 'apartment_number', 'entrance', 'floor', 'number_of_rooms', 'area',
-                  'part_of_area', 'status']
+                  'type']
 
 
 DocumentFormSet = forms.inlineformset_factory(Apartment, Document, form=DocumentForm, extra=1, can_delete=True)

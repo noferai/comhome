@@ -7416,6 +7416,10 @@ th.orderable.desc:after {
     margin: 10px 0;
 }
 
+.form-group.required label:after {
+  content:"*";
+}
+
 /* Custom, iPhone Retina */
 @media only screen and (max-width: 320px) {
 }

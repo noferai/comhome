@@ -32,14 +32,6 @@ class InvoiceAddView(AdminRequiredMixin, CreateView):
     form_class = InvoiceForm
     template_name = "crm/create.html"
 
-    def post(self, request, *args, **kwargs):
-        self.object = None
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
-
     def form_valid(self, form):
         service_object = form.save(commit=False)
         service_object.created_by = self.request.user
@@ -48,12 +40,6 @@ class InvoiceAddView(AdminRequiredMixin, CreateView):
             return redirect("invoices:create")
         else:
             return redirect("invoices:list")
-
-    def form_invalid(self, form):
-        return self.render_to_response(
-            self.get_context_data(
-                form=form)
-        )
 
     def get_context_data(self, **kwargs):
         context = super(InvoiceAddView, self).get_context_data(**kwargs)
@@ -66,14 +52,6 @@ class InvoiceAddView(AdminRequiredMixin, CreateView):
 
 
 class InvoiceEditView(InvoiceAddView, UpdateView):
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
-
     def form_valid(self, form):
         account_object = form.save(commit=False)
         account_object.save()
@@ -89,16 +67,4 @@ class InvoiceDeleteView(AdminRequiredMixin, DeleteView):
         return redirect("invoices:list")
 
 #   Todo: Карточка взаиморасчета
-# class InvoiceDetailView(AdminRequiredMixin, DetailView):
-#     model = Invoice
-#     context_object_name = "service"
-#     template_name = "crm/catalog/detail_list.html"
-#
-#     def dispatch(self, request, *args, **kwargs):
-#         self.service = Invoice.objects.all()
-#         return super(InvoiceDetailView, self).dispatch(request, *args, **kwargs)
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(InvoiceDetailView, self).get_context_data(**kwargs)
-#         return context
 

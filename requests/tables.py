@@ -9,7 +9,7 @@ class RequestTable(tables.Table):
     created_on = tables.DateColumn(format="d.m.Y")
     assigned_to = tables.ManyToManyColumn(verbose_name="Исполнители", linkify_item=True)
     applicant = tables.Column(verbose_name="Заявитель", linkify=True, accessor="applicant")
-    apartment = tables.Column(verbose_name="Квартира", linkify=True)
+    apartment = tables.Column(verbose_name="Помещение", linkify=True)
     actions = tables.TemplateColumn(verbose_name="Действия", template_name="misc/linkbuttons.html", extra_context={
         'view_link': 'requests:view',
         'edit_link': 'requests:edit',

@@ -6,7 +6,7 @@ from django_tables2.export.views import ExportMixin
 from requests.models import Request
 from requests.forms import RequestForm
 from staff.models import Staff
-from homeowners.models import Homeowner
+from clients.models import Client
 from apartments.models import Apartment
 from .tables import RequestTable, RequestFilter
 from users.views import AdminRequiredMixin
@@ -38,26 +38,15 @@ class CreateRequestView(AdminRequiredMixin, CreateView):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.assigned_to = Staff.objects.all()
-        self.homeowners = Homeowner.objects.all()
+        self.clients = Client.objects.all()
         self.apartments = Apartment.objects.all()
-
-    def dispatch(self, request, *args, **kwargs):
-        return super(CreateRequestView, self).dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
         kwargs = super(CreateRequestView, self).get_form_kwargs()
         kwargs.update({'assigned_to': self.assigned_to,
-                       'homeowners': self.homeowners,
+                       'clients': self.clients,
                        'apartments': self.apartments})
         return kwargs
-
-    def post(self, request, *args, **kwargs):
-        self.object = None
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
 
     def form_valid(self, form):
         instance = form.save(commit=False)
@@ -68,12 +57,6 @@ class CreateRequestView(AdminRequiredMixin, CreateView):
             return redirect("requests:create")
         else:
             return redirect("requests:list")
-
-    def form_invalid(self, form):
-        return self.render_to_response(
-            self.get_context_data(
-                form=form)
-        )
 
     def get_context_data(self, **kwargs):
         context = super(CreateRequestView, self).get_context_data(**kwargs)
@@ -86,14 +69,6 @@ class CreateRequestView(AdminRequiredMixin, CreateView):
 
 
 class UpdateRequestView(CreateRequestView, UpdateView):
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
-
     def form_valid(self, form):
         instance = form.save(commit=False)
         instance.save()
@@ -109,10 +84,6 @@ class RequestDetailView(AdminRequiredMixin, DetailView):
     def dispatch(self, request, *args, **kwargs):
         self.assigned_to = Request.objects.all()
         return super(RequestDetailView, self).dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super(RequestDetailView, self).get_context_data(**kwargs)
-        return context
 
 
 class RemoveRequestView(AdminRequiredMixin, DeleteView):

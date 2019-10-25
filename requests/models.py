@@ -3,7 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 from staff.models import Staff
 from users.models import User
-from homeowners.models import Homeowner
+from clients.models import Client
 from apartments.models import Apartment
 from ComfortableHome.utils import RequestTypeChoices, RequestPriorityChoices, RequestStatusChoices
 
@@ -19,7 +19,7 @@ class Request(models.Model):
     closed_on = models.DateField('Закрыта', blank=True, null=True)
     description = models.TextField('Описание', blank=True, null=True)
     created_by = models.ForeignKey(User, related_name='request_created_by', on_delete=models.DO_NOTHING)
-    applicant = models.ForeignKey(Homeowner, on_delete=models.DO_NOTHING)
+    applicant = models.ForeignKey(Client, on_delete=models.DO_NOTHING)
     apartment = models.ForeignKey(Apartment, on_delete=models.DO_NOTHING)
     created_on = models.DateField('Создано', auto_now_add=True)
     modified_on = models.DateField('Изменено', auto_now=True)

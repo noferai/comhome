@@ -35,18 +35,6 @@ class CreateStaffView(AdminRequiredMixin, CreateView):
     form_class = StaffForm
     template_name = "crm/create.html"
 
-    def get_form_kwargs(self):
-        kwargs = super(CreateStaffView, self).get_form_kwargs()
-        return kwargs
-
-    def post(self, request, *args, **kwargs):
-        self.object = None
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
-
     def form_valid(self, form):
         instance = form.save(commit=False)
         instance.created_by = self.request.user
@@ -55,12 +43,6 @@ class CreateStaffView(AdminRequiredMixin, CreateView):
             return redirect("staff:create")
         else:
             return redirect("staff:list")
-
-    def form_invalid(self, form):
-        return self.render_to_response(
-            self.get_context_data(
-                form=form)
-        )
 
     def get_context_data(self, **kwargs):
         context = super(CreateStaffView, self).get_context_data(**kwargs)
@@ -77,20 +59,8 @@ class StaffDetailView(AdminRequiredMixin, DetailView):
     context_object_name = "staff"
     template_name = "crm/staff/detail.html"
 
-    def get_context_data(self, **kwargs):
-        context = super(StaffDetailView, self).get_context_data(**kwargs)
-        return context
-
 
 class StaffUpdateView(CreateStaffView, UpdateView):
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
-
     def form_valid(self, form):
         instance = form.save(commit=False)
         instance.save()

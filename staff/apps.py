@@ -2,7 +2,7 @@
 #
 #
 # class LeadsConfig(AppConfig):
-#     name = 'homeowners'
+#     name = 'clients'
 
 
 

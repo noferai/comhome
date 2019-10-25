@@ -4,60 +4,47 @@ from django.views.generic import CreateView, UpdateView, DetailView, View
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 from django_tables2.export.views import ExportMixin
-from users.models import Admin
 from apartments.models import Apartment
 from documents.models import Document
 from requests.models import Request
-from .models import Homeowner
-from .forms import HomeownerForm, PhoneFormSet, DocumentFormSet
-from .tables import HomeownerTable, HomeownerFilter, HomeownerRequestTable
+from .models import Client
+from .forms import ClientForm, PhoneFormSet, DocumentFormSet
+from .tables import ClientTable, ClientFilter, ClientRequestTable
 from documents.tables import DocumentTable
 from users.views import AdminRequiredMixin
 
 
-class HomeownerListView(AdminRequiredMixin, ExportMixin, SingleTableMixin, FilterView):
-    model = Homeowner
-    table_class = HomeownerTable
+class ClientListView(AdminRequiredMixin, ExportMixin, SingleTableMixin, FilterView):
+    model = Client
+    table_class = ClientTable
     template_name = "crm/list.html"
     export_name = "Sobstvenniki"
-    filterset_class = HomeownerFilter
+    filterset_class = ClientFilter
 
     def get_context_data(self, **kwargs):
-        context = super(HomeownerListView, self).get_context_data(**kwargs)
+        context = super(ClientListView, self).get_context_data(**kwargs)
         custom_context = {
             'objects': self.model.objects.all(),
             'urls': {
-                'add': 'homeowners:create',
+                'add': 'clients:create',
             }
         }
         return {**context, **custom_context}
 
 
-class CreateHomeownerView(AdminRequiredMixin, CreateView):
-    model = Homeowner
-    form_class = HomeownerForm
+class CreateClientView(AdminRequiredMixin, CreateView):
+    model = Client
+    form_class = ClientForm
     template_name = "crm/create.html"
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.apartments = Apartment.objects.all()
-        self.managers = Admin.objects.all()
-
-    def dispatch(self, request, *args, **kwargs):
-        return super(CreateHomeownerView, self).dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
-        kwargs = super(CreateHomeownerView, self).get_form_kwargs()
-        kwargs.update({'apartments': self.apartments, 'managers': self.managers})
+        kwargs = super(CreateClientView, self).get_form_kwargs()
+        kwargs.update({'apartments': self.apartments})
         return kwargs
-
-    def post(self, request, *args, **kwargs):
-        self.object = None
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
 
     def form_valid(self, form):
         formsets = self.get_context_data()['formsets']
@@ -73,16 +60,12 @@ class CreateHomeownerView(AdminRequiredMixin, CreateView):
                     formset['form'].instance = self.object
                     formset['form'].save()
         if self.request.POST.get("save_new"):
-            return redirect("homeowners:create")
+            return redirect("clients:create")
         else:
-            return redirect('homeowners:list')
-
-    def form_invalid(self, form):
-        return self.render_to_response(
-            self.get_context_data(form=form))
+            return redirect('clients:list')
 
     def get_context_data(self, **kwargs):
-        context = super(CreateHomeownerView, self).get_context_data(**kwargs)
+        context = super(CreateClientView, self).get_context_data(**kwargs)
         formsets = []
         if self.request.POST:
             formsets.append({'form': PhoneFormSet(self.request.POST),
@@ -105,47 +88,39 @@ class CreateHomeownerView(AdminRequiredMixin, CreateView):
         custom_context = {
             'formsets': formsets,
             'urls': {
-                'list': 'homeowners:list',
+                'list': 'clients:list',
             }
         }
         return {**context, **custom_context}
 
 
-class UpdateHomeownerView(CreateHomeownerView, UpdateView):
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
-
+class UpdateClientView(CreateClientView, UpdateView):
     def form_valid(self, form):
         instance = form.save(commit=False)
         instance.save()
         form.save_m2m()
-        return redirect('homeowners:list')
+        return redirect('clients:list')
 
 
-class HomeownerDetailView(AdminRequiredMixin, DetailView):
-    model = Homeowner
-    context_object_name = "homeowner"
-    template_name = "crm/homeowners/detail.html"
+class ClientDetailView(AdminRequiredMixin, DetailView):
+    model = Client
+    context_object_name = "client"
+    template_name = "crm/clients/detail.html"
 
     def get_context_data(self, **kwargs):
-        context = super(HomeownerDetailView, self).get_context_data(**kwargs)
+        context = super(ClientDetailView, self).get_context_data(**kwargs)
         context.update({
-            'requests_table': HomeownerRequestTable(Request.objects.filter(applicant__id=self.object.id)),
+            'requests_table': ClientRequestTable(Request.objects.filter(applicant__id=self.object.id)),
             'documents_table': DocumentTable(Document.objects.filter(apartment__id=self.object.id))
         })
         return context
 
 
-class DeleteHomeownerView(AdminRequiredMixin, View):
+class DeleteClientView(AdminRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         return self.post(**kwargs)
 
     def post(self, **kwargs):
-        self.object = get_object_or_404(Homeowner, id=kwargs.get("pk"))
+        self.object = get_object_or_404(Client, id=kwargs.get("pk"))
         self.object.delete()
-        return redirect("homeowners:list")
+        return redirect("clients:list")

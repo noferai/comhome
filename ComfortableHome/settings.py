@@ -38,7 +38,7 @@ INSTALLED_APPS += [
     'users',
     'staff',
     'requests',
-    'homeowners',
+    'clients',
     'news',
     'apartments',
     'invoices',
@@ -179,7 +179,7 @@ BOOTSTRAP4 = {
     'set_placeholder': True,
 
     # Class to indicate required (better to set this in your Django form)
-    'required_css_class': '',
+    'required_css_class': 'required',
 
     # Class to indicate error (better to set this in your Django form)
     'error_css_class': 'has-error',

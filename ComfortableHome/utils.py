@@ -2,9 +2,25 @@ from django.utils.translation import ugettext_lazy as _
 from djchoices import DjangoChoices, ChoiceItem
 
 
+class ClientTypeChoices(DjangoChoices):
+    individual = ChoiceItem('Физ. лицо', _('Физ. лицо'))
+    entity = ChoiceItem('Юр. лицо', _('Юр. лицо'))
+
+
+class ClientGenderChoices(DjangoChoices):
+    male = ChoiceItem('Мужской', _('Мужской'))
+    female = ChoiceItem('Женский', _('Женский'))
+    none = ChoiceItem('Не указан', _('Не указан'))
+
+
+class ApartmentTypeChoices(DjangoChoices):
+    residential = ChoiceItem('Жилое', _('Жилое'))
+    non_residential = ChoiceItem('Нежилое', _('Нежилое'))
+
+
 class ApartmentStatusChoices(DjangoChoices):
     empty = ChoiceItem('Не заселена', _('Не заселена'))
-    populated = ChoiceItem('Заселена', _('Заселена'))
+    occupied = ChoiceItem('Заселена', _('Заселена'))
 
 
 class RequestTypeChoices(DjangoChoices):
@@ -54,16 +70,10 @@ class PostStatusChoices(DjangoChoices):
 
 class DocumentTypeChoices(DjangoChoices):
     h1 = ChoiceItem('Заявление на застройщика', _('Заявление на застройщика'))
-    h2 = ChoiceItem('АПП', _('АПП'))
-    h3 = ChoiceItem('Акт осмотра', _('Акт осмотра'))
-    h4 = ChoiceItem('ДУ', _('ДУ'))
-    h5 = ChoiceItem('Акт приема-передачи документов и ключей', _('Акт приема-передачи документов и ключей'))
-    h6 = ChoiceItem('Договор возмездного оказания услуг', _('Договор возмездного оказания услуг'))
-    h7 = ChoiceItem('Соглашение об отсутствии общественного транспорта на территории ЖК',
+    h2 = ChoiceItem('Акт осмотра', _('Акт осмотра'))
+    h3 = ChoiceItem('Акт приема-передачи документов и ключей', _('Акт приема-передачи документов и ключей'))
+    h4 = ChoiceItem('Договор возмездного оказания услуг', _('Договор возмездного оказания услуг'))
+    h5 = ChoiceItem('Соглашение об отсутствии общественного транспорта на территории ЖК',
                     _('Соглашение об отсутствии общественного транспорта на территории ЖК'))
-    h8 = ChoiceItem('Согласие на обр.перс.данных', _('Согласие на обр.перс.данных'))
-    h9 = ChoiceItem('Гарантийное письмо', _('Гарантийное письмо'))
-    h10 = ChoiceItem('Заявление на КГМ (просто заявление, без факта оплаты)',
-                     _('Заявление на КГМ (просто заявление, без факта оплаты)'))
-    h11 = ChoiceItem('КГМ (ДАТА ОПЛАТЫ)', _('КГМ (ДАТА ОПЛАТЫ)'))
-    h12 = ChoiceItem('Соглашение о компенсации', _('Соглашение о компенсации'))
+    h6 = ChoiceItem('Согласие на обр.перс.данных', _('Согласие на обр.перс.данных'))
+    h7 = ChoiceItem('Гарантийное письмо', _('Гарантийное письмо'))

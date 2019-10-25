@@ -3,9 +3,9 @@ from django.shortcuts import redirect
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 from django_tables2.export.views import ExportMixin
-from django.views.generic import CreateView, DetailView
+from django.views.generic import CreateView
 from ComfortableHome.mixins import AdminRequiredMixin
-from .models import Choice, Poll
+from .models import Poll
 from .tables import PollsTable, PollFilter
 from .forms import PollForm, ChoiceFormSet
 

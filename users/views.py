@@ -10,12 +10,6 @@ from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 from django_tables2.export.views import ExportMixin
 from .tables import *
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-# from users.serializers import UserSerializer
-
-import json
 
 
 class ProfileView(LoginRequiredMixin, TemplateView):
@@ -98,13 +92,7 @@ class AdminDetailView(AdminRequiredMixin, DetailView):
 
 
 class UpdateAdminView(CreateAdminView, UpdateView):
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
+    pass
 
 
 class AdminDeleteView(AdminRequiredMixin, DeleteView):

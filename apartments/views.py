@@ -47,14 +47,6 @@ class ApartmentAddView(AdminRequiredMixin, CreateView):
         kwargs.update({"addresses": self.addresses})
         return kwargs
 
-    def post(self, request, *args, **kwargs):
-        self.object = None
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
-
     def form_valid(self, form):
         formsets = self.get_context_data()['formsets']
         for formset in formsets:
@@ -67,12 +59,6 @@ class ApartmentAddView(AdminRequiredMixin, CreateView):
             return redirect("apartments:create")
         else:
             return redirect("apartments:list")
-
-    def form_invalid(self, form):
-        return self.render_to_response(
-            self.get_context_data(
-                form=form)
-        )
 
     def get_context_data(self, **kwargs):
         context = super(ApartmentAddView, self).get_context_data(**kwargs)
@@ -96,15 +82,7 @@ class ApartmentAddView(AdminRequiredMixin, CreateView):
         return {**context, **custom_context}
 
 
-class ApartmentEditView(AdminRequiredMixin, UpdateView):
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
-
+class ApartmentEditView(ApartmentAddView, UpdateView):
     def form_valid(self, form):
         instance = form.save(commit=False)
         instance.save()

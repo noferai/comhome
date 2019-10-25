@@ -1,12 +1,12 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
-from homeowners.models import Homeowner
+from clients.models import Client
 
 
 class PhoneNumber(models.Model):
     number = PhoneNumberField('Телефон')
     note = models.CharField('Заметка', blank=True, max_length=200)
-    homeowner = models.ForeignKey(Homeowner, related_name='phones', on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, related_name='phones', on_delete=models.CASCADE)
     created_on = models.DateField('Создано', auto_now_add=True)
     modified_on = models.DateField('Изменено', auto_now=True)
 

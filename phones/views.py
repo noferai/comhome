@@ -30,14 +30,6 @@ class PhoneAddView(AdminRequiredMixin, CreateView):
     form_class = PhoneForm
     template_name = "crm/create.html"
 
-    def post(self, request, *args, **kwargs):
-        self.object = None
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
-
     def form_valid(self, form):
         instance = form.save(commit=False)
         instance.created_by = self.request.user
@@ -46,12 +38,6 @@ class PhoneAddView(AdminRequiredMixin, CreateView):
             return redirect("phones:create")
         else:
             return redirect("phones:list")
-
-    def form_invalid(self, form):
-        return self.render_to_response(
-            self.get_context_data(
-                form=form)
-        )
 
     def get_context_data(self, **kwargs):
         context = super(PhoneAddView, self).get_context_data(**kwargs)
@@ -64,14 +50,6 @@ class PhoneAddView(AdminRequiredMixin, CreateView):
 
 
 class PhoneEditView(PhoneAddView, UpdateView):
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
-
     def form_valid(self, form):
         instance = form.save(commit=False)
         instance.save()
