@@ -33,25 +33,16 @@ class ApartmentListView(AdminRequiredMixin, ExportMixin, SingleTableMixin, Filte
         return {**context, **custom_context}
 
 
-class ApartmentAddView(AdminRequiredMixin, CreateView):
+class ApartmentCreateView(AdminRequiredMixin, CreateView):
     model = Apartment
     form_class = ApartmentForm
     template_name = "crm/create.html"
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.addresses = Address.objects.all()
-
-    def get_form_kwargs(self):
-        kwargs = super(ApartmentAddView, self).get_form_kwargs()
-        kwargs.update({"addresses": self.addresses})
-        return kwargs
-
     def form_valid(self, form):
         formsets = self.get_context_data()['formsets']
-        for formset in formsets:
-            with transaction.atomic():
-                self.object = form.save()
+        with transaction.atomic():
+            self.object = form.save()
+            for formset in formsets:
                 if formset['form'].is_valid():
                     formset['form'].instance = self.object
                     formset['form'].save()
@@ -61,7 +52,7 @@ class ApartmentAddView(AdminRequiredMixin, CreateView):
             return redirect("apartments:list")
 
     def get_context_data(self, **kwargs):
-        context = super(ApartmentAddView, self).get_context_data(**kwargs)
+        context = super(ApartmentCreateView, self).get_context_data(**kwargs)
         formsets = []
         if self.request.POST:
             formsets.append({'form': DocumentFormSet(self.request.POST, self.request.FILES or None),
@@ -82,11 +73,20 @@ class ApartmentAddView(AdminRequiredMixin, CreateView):
         return {**context, **custom_context}
 
 
-class ApartmentEditView(ApartmentAddView, UpdateView):
-    def form_valid(self, form):
-        instance = form.save(commit=False)
-        instance.save()
-        return redirect("apartments:list")
+class ApartmentUpdateView(ApartmentCreateView, UpdateView):
+    def get_context_data(self, **kwargs):
+        context = super(ApartmentCreateView, self).get_context_data(**kwargs)
+        formsets = [{'form': DocumentFormSet(instance=Apartment.objects.get(id=self.kwargs['pk'])),
+                     'title': 'Документы',
+                     'prefix': 'documents'
+                     }]
+        custom_context = {
+            'formsets': formsets,
+            'urls': {
+                'list': 'apartments:list',
+            }
+        }
+        return {**context, **custom_context}
 
 
 class ApartmentDetailView(AdminRequiredMixin, DetailView):

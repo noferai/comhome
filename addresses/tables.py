@@ -20,7 +20,7 @@ class AddressTable(tables.Table):
 
 class AddressFilter(filters.FilterSet):
     created_on = filters.DateFromToRangeFilter(
-        widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range', 'type': 'date'}))
+        widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range date'}))
 
     def __init__(self, *args, **kwargs):
         super(AddressFilter, self).__init__(*args, **kwargs)

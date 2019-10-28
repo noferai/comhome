@@ -13,9 +13,10 @@
     {% bootstrap_javascript jquery='full' %}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
           integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'vendor/inputmask/css/inputmask.css' %}"/>
+    <link rel="stylesheet" href="{% static 'vendor/select2/css/select2.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     {% block extralinks %} {% endblock %}
     <title>{% block title %} {% endblock %}</title>
 </head>
@@ -213,7 +214,9 @@
     </div>
 </div>
 <script src="{% static 'vendor/slimscroll/jquery.slimscroll.js' %}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"></script>
+<script src="{% static 'vendor/select2/js/select2.full.min.js' %}"></script>
+<script src="{% static 'vendor/moment-with-locales.js' %}"></script>
+<script src="{% static 'vendor/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
 <script src="{% static 'vendor/inputmask/js/jquery.inputmask.bundle.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
 {% block extra_js %} {% endblock %}

@@ -9,6 +9,7 @@ class PhoneForm(forms.ModelForm):
         super(PhoneForm, self).__init__(*args, **kwargs)
         self.fields['number'] = PhoneNumberField(
             widget=PhoneNumberInternationalFallbackWidget(attrs={'class': 'form-control international-inputmask'}),
+            required=True,
             label="Телефон")
 
     class Meta:

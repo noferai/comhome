@@ -22,7 +22,7 @@ class InvoiceTable(tables.Table):
 
 class InvoiceFilter(filters.FilterSet):
     created_on = filters.DateFromToRangeFilter(
-        widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range', 'type': 'date'}))
+        widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range date'}))
 
     def __init__(self, *args, **kwargs):
         super(InvoiceFilter, self).__init__(*args, **kwargs)

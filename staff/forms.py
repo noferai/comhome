@@ -12,6 +12,7 @@ class StaffForm(forms.ModelForm):
         self.fields['phone'] = PhoneNumberField(
             widget=PhoneNumberInternationalFallbackWidget(attrs={'class': 'form-control international-inputmask'}),
             label="Телефон")
+        self.fields['occupation'].widget.attrs.update({'class': 'form-control select2'})
 
     class Meta:
         model = Staff

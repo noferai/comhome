@@ -27,7 +27,7 @@ class EntryTable(tables.Table):
 
 class EntryFilter(filters.FilterSet):
     created_on = filters.DateFromToRangeFilter(
-        widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range', 'type': 'date'}))
+        widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range date'}))
     author = filters.ModelMultipleChoiceFilter(widget=widgets.SelectMultiple(attrs={'class': 'select2'}),
                                                queryset=Admin.objects.all())
 

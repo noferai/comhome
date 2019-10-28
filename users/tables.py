@@ -21,7 +21,7 @@ class AdminTable(tables.Table):
 
 class AdminFilter(filters.FilterSet):
     date_joined = filters.DateFromToRangeFilter(
-        widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range', 'type': 'date'}))
+        widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range date'}))
 
     def __init__(self, *args, **kwargs):
         super(AdminFilter, self).__init__(*args, **kwargs)

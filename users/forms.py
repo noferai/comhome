@@ -5,11 +5,11 @@ from users.models import User, Admin
 
 
 class AdminForm(forms.ModelForm):
-    password = forms.CharField(max_length=100, required=False)
+    password = forms.CharField(widget=forms.PasswordInput, label="Пароль")
 
     class Meta:
         model = Admin
-        fields = ['email', 'name', 'profile_pic']
+        fields = ['name', 'email', 'password', 'profile_pic']
 
     def clean_password(self):
         password = self.cleaned_data.get('password')
@@ -86,10 +86,3 @@ class PasswordResetEmailForm(PasswordResetForm):
         if not User.objects.filter(email__iexact=email, is_active=True).exists():
             raise forms.ValidationError("User doesn't exist with this Email")
         return email
-
-#
-# class DocumentForm(forms.ModelForm):
-#
-#     class Meta:
-#         model = Document
-#         fields = ['title', 'document_file']

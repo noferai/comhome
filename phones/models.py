@@ -4,7 +4,7 @@ from clients.models import Client
 
 
 class PhoneNumber(models.Model):
-    number = PhoneNumberField('Телефон')
+    number = PhoneNumberField('Телефон', unique=True)
     note = models.CharField('Заметка', blank=True, max_length=200)
     client = models.ForeignKey(Client, related_name='phones', on_delete=models.CASCADE)
     created_on = models.DateField('Создано', auto_now_add=True)

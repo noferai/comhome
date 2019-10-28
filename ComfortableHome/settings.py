@@ -182,10 +182,10 @@ BOOTSTRAP4 = {
     'required_css_class': 'required',
 
     # Class to indicate error (better to set this in your Django form)
-    'error_css_class': 'has-error',
+    'error_css_class': 'is-invalid',
 
     # Class to indicate success, meaning the field has valid input (better to set this in your Django form)
-    'success_css_class': 'has-success',
+    'success_css_class': 'is-valid',
 
     # Renderers (only set these if you have studied the source and understand the inner workings)
     'formset_renderers': {

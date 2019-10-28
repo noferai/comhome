@@ -21,10 +21,6 @@ class ClientTable(tables.Table):
         'remove_link': 'clients:remove'
     }, orderable=False, exclude_from_export=True)
 
-    #
-    # def render_phones(self, value):
-    #     return [value.first(), value.last()]
-
     class Meta:
         model = Client
         fields = ['date_joined', 'name', 'phones', 'apartments']
@@ -35,7 +31,7 @@ class ClientTable(tables.Table):
 
 class ClientFilter(filters.FilterSet):
     created_on = filters.DateFromToRangeFilter(
-        widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range', 'type': 'date'}))
+        widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range date'}))
     apartments = filters.ModelMultipleChoiceFilter(widget=widgets.SelectMultiple(attrs={'class': 'select2'}),
                                                    queryset=Apartment.objects.all())
 

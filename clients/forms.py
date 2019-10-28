@@ -8,16 +8,17 @@ from documents.forms import DocumentForm
 
 class ClientForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        apartments = kwargs.pop('apartments', [])
         super(ClientForm, self).__init__(*args, **kwargs)
         self.fields['birthday'] = forms.DateField(
-            widget=forms.widgets.DateInput(attrs={'type': 'date'}), label="Дата рождения")
-        self.fields['apartments'] = forms.ModelMultipleChoiceField(
-            widget=forms.widgets.SelectMultiple(attrs={'class': 'select2'}),
-            queryset=apartments, label="Помещения")
-        for name in ['calls', 'sms', 'mail']:
-            self.fields[name] = forms.BooleanField(widget=forms.widgets.CheckboxInput,
-                                                   label=self.fields[name].label, initial=False, required=False)
+            widget=forms.widgets.DateInput(attrs={'class': 'form-control date'}), label="Дата рождения")
+        self.fields['email'] = forms.EmailField(widget=forms.widgets.EmailInput)
+        self.fields['password'] = forms.CharField(widget=forms.PasswordInput, label="Пароль")
+        for field_name in ['type', 'apartments', 'gender']:
+            self.fields[field_name].widget.attrs.update({'class': 'form-control select2'})
+        for field_name in ['calls', 'sms', 'mail']:
+            self.fields[field_name] = forms.BooleanField(widget=forms.widgets.CheckboxInput,
+                                                         label=self.fields[field_name].label, initial=False,
+                                                         required=False)
 
     def save(self, commit=True):
         client = super().save(commit=False)
@@ -28,7 +29,7 @@ class ClientForm(forms.ModelForm):
 
     class Meta:
         model = Client
-        fields = ('type', 'name', 'gender', 'email', 'birthday', 'car_numbers', 'registration',  'calls', 'sms', 'mail',
+        fields = ('type', 'name', 'gender', 'email', 'birthday', 'car_numbers', 'registration', 'calls', 'sms', 'mail',
                   'apartments', 'passport', 'password')
 
 

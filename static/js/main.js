@@ -9,7 +9,8 @@ $(document).ready(function () {
     });
 
     $('.select2').select2({
-        placeholder: "Выберите значения"
+        placeholder: "Выберите значения",
+        minimumResultsForSearch: 10
     });
 
     $("#table-search").on("keyup", function () {
@@ -20,9 +21,17 @@ $(document).ready(function () {
     });
 
     $("body").on('DOMSubtreeModified',   function() {
-        $(".date-inputmask").inputmask({mask:"дд/мм/гггг"});
-        $(".international-inputmask").inputmask({mask:"+9(999)999-99-99"});
+        // $(".date-inputmask").inputmask({mask:"дд/мм/гггг"});
+        // $(".international-inputmask").inputmask({mask:"+9(999)999-99-99"});
 });
+
+    $('.form-control.date').datetimepicker({
+            "allowInputToggle": true,
+            "showClose": true,
+            "showClear": true,
+            "showTodayButton": false,
+            "format": "DD.MM.YYYY",
+        });
 
 });
 

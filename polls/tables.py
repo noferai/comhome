@@ -20,7 +20,7 @@ class PollsTable(tables.Table):
 
 class PollFilter(filters.FilterSet):
     created_on = filters.DateFromToRangeFilter(
-        widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range', 'type': 'date'}))
+        widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range date'}))
 
     def __init__(self, *args, **kwargs):
         super(PollFilter, self).__init__(*args, **kwargs)

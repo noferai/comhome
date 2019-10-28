@@ -47,16 +47,12 @@ class RequestStatusChoices(DjangoChoices):
 
 
 class StaffOccupationChoices(DjangoChoices):
+    none = ChoiceItem('Не указано', _('Не указано'))
     electrical = ChoiceItem('Электрик', _('Электрик'))
     plumb = ChoiceItem('Сантехник', _('Сантехник'))
     locksmith = ChoiceItem('Слесарь', _('Слесарь'))
     low_voltage_master = ChoiceItem('Слаботочник', _('Слаботочник'))
     security = ChoiceItem('Охранник', _('Охранник'))
-
-
-class OrganizationChoices(DjangoChoices):
-    admiral = ChoiceItem('AD', _('ООО «УК АДМИРАЛ»'))
-    alyans = ChoiceItem('AL', _('ООО «УК АЛЬЯНС»'))
 
 
 class CityChoices(DjangoChoices):
@@ -69,6 +65,7 @@ class PostStatusChoices(DjangoChoices):
 
 
 class DocumentTypeChoices(DjangoChoices):
+    h0 = ChoiceItem('Не указано', _('Не указано'))
     h1 = ChoiceItem('Заявление на застройщика', _('Заявление на застройщика'))
     h2 = ChoiceItem('Акт осмотра', _('Акт осмотра'))
     h3 = ChoiceItem('Акт приема-передачи документов и ключей', _('Акт приема-передачи документов и ключей'))

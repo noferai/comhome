@@ -33,7 +33,7 @@ class DocumentAddView(AdminRequiredMixin, CreateView):
     template_name = "crm/create.html"
 
     def form_valid(self, form):
-        self.object = form.save()
+        form.save()
         if self.request.POST.get("save_new"):
             return redirect("documents:create")
         else:

@@ -8,7 +8,7 @@ from django.urls import reverse
 
 
 class Apartment(models.Model):
-    address = models.ForeignKey(Address, null=True, on_delete=models.SET_NULL)
+    address = models.ForeignKey(Address, null=True, on_delete=models.SET_NULL, verbose_name="Адрес")
     apartment_number = models.PositiveSmallIntegerField('№ помещения')
     entrance = models.PositiveSmallIntegerField('Подъезд')
     floor = models.PositiveSmallIntegerField('Этаж')

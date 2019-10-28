@@ -35,19 +35,6 @@ class CreateRequestView(AdminRequiredMixin, CreateView):
     form_class = RequestForm
     template_name = "crm/create.html"
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.assigned_to = Staff.objects.all()
-        self.clients = Client.objects.all()
-        self.apartments = Apartment.objects.all()
-
-    def get_form_kwargs(self):
-        kwargs = super(CreateRequestView, self).get_form_kwargs()
-        kwargs.update({'assigned_to': self.assigned_to,
-                       'clients': self.clients,
-                       'apartments': self.apartments})
-        return kwargs
-
     def form_valid(self, form):
         instance = form.save(commit=False)
         instance.created_by = self.request.user

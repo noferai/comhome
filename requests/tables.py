@@ -27,8 +27,7 @@ class RequestTable(tables.Table):
 
 class RequestFilter(filters.FilterSet):
     created_on = filters.DateFromToRangeFilter(
-        widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range', 'type': 'date'}))
-    # closed_on = filters.DateFromToRangeFilter(widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range','type': 'date'}))
+        widget=filters.widgets.RangeWidget(attrs={'class': 'form-control date-range date'}))
     assigned_to = filters.ModelMultipleChoiceFilter(widget=widgets.SelectMultiple(attrs={'class': 'select2'}),
                                                     queryset=Staff.objects.all())
 

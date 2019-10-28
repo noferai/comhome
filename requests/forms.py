@@ -4,20 +4,10 @@ from requests.models import Request
 
 class RequestForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        assigned_users = kwargs.pop('assigned_to', [])
-        clients = kwargs.pop('clients', [])
-        apartments = kwargs.pop('apartments', [])
         super(RequestForm, self).__init__(*args, **kwargs)
-
-        self.fields['description'].widget.attrs.update({
-            'rows': '4'})
-        self.fields['applicant'] = forms.ModelChoiceField(widget=forms.widgets.Select(attrs={'class': 'select2'}),
-                                                          queryset=clients, label='Заявитель')
-        self.fields['assigned_to'] = forms.ModelMultipleChoiceField(
-            widget=forms.widgets.SelectMultiple(attrs={'class': 'select2'}),
-            queryset=assigned_users, required=False, label='Исполнители')
-        self.fields['apartment'] = forms.ModelChoiceField(widget=forms.widgets.Select(attrs={'class': 'select2'}),
-                                                          queryset=apartments, label='Помещение')
+        self.fields['description'].widget.attrs.update({'rows': '4'})
+        for field_name in ['applicant', 'assigned_to', 'apartment', 'status', 'priority', 'request_type']:
+            self.fields[field_name].widget.attrs.update({'class': 'form-control select2'})
 
     class Meta:
         model = Request

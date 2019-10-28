@@ -10,7 +10,7 @@ class Staff(models.Model):
     email = models.EmailField('Email', blank=True)
     phone = PhoneNumberField('Телефон', null=True)
     occupation = models.CharField('Тип деятельности', max_length=255, choices=StaffOccupationChoices.choices,
-                                  blank=True, null=True)
+                                  default=StaffOccupationChoices.none)
     created_by = models.ForeignKey(User, related_name='account_created_by', on_delete=models.DO_NOTHING)
     created_on = models.DateField('Создано', auto_now_add=True)
     modified_on = models.DateField('Изменено', auto_now=True)

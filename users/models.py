@@ -37,8 +37,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     file_prepend = "users/profile_pics"
     name = models.CharField('ФИО', max_length=150, blank=True)
     email = models.EmailField('Email', max_length=255, unique=True)
-    is_active = models.BooleanField(default=True)
-    is_admin = models.BooleanField(default=False)
+    is_active = models.BooleanField("Активный", default=True)
+    is_admin = models.BooleanField("Администратор", default=False)
     date_joined = models.DateField('Дата', auto_now_add=True)
     modified_on = models.DateField('Изменено', auto_now=True)
     profile_pic = models.FileField('Аватар', max_length=1000, upload_to=img_url, null=True, blank=True)

@@ -5,7 +5,7 @@ from ComfortableHome.utils import DocumentTypeChoices
 
 
 class Document(models.Model):
-    type = models.CharField("Тип документа", choices=DocumentTypeChoices.choices, max_length=200)
+    type = models.CharField("Тип документа", choices=DocumentTypeChoices.choices, default=DocumentTypeChoices.h0, max_length=200)
     date = models.DateField("Дата")
     note = models.TextField("Комментарий", blank=True)
     attachment = models.FileField("Прикрепления", upload_to='documents/%Y/%m/', blank=True)

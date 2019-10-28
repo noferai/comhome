@@ -18,9 +18,9 @@ class PhonesListView(AdminRequiredMixin, ExportMixin, SingleTableMixin, ListView
         context = super(PhonesListView, self).get_context_data(**kwargs)
         custom_context = {
             'objects': self.model.objects.all(),
-            'urls': {
-                'add': 'phones:create',
-            }
+            # 'urls': {
+            #     'add': 'phones:create',
+            # }
         }
         return {**context, **custom_context}
 
@@ -29,15 +29,6 @@ class PhoneAddView(AdminRequiredMixin, CreateView):
     model = PhoneNumber
     form_class = PhoneForm
     template_name = "crm/create.html"
-
-    def form_valid(self, form):
-        instance = form.save(commit=False)
-        instance.created_by = self.request.user
-        instance.save()
-        if self.request.POST.get("save_new"):
-            return redirect("phones:create")
-        else:
-            return redirect("phones:list")
 
     def get_context_data(self, **kwargs):
         context = super(PhoneAddView, self).get_context_data(**kwargs)
@@ -50,10 +41,7 @@ class PhoneAddView(AdminRequiredMixin, CreateView):
 
 
 class PhoneEditView(PhoneAddView, UpdateView):
-    def form_valid(self, form):
-        instance = form.save(commit=False)
-        instance.save()
-        return redirect("phones:list")
+    pass
 
 
 class PhoneDeleteView(AdminRequiredMixin, DeleteView):

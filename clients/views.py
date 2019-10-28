@@ -4,7 +4,6 @@ from django.views.generic import CreateView, UpdateView, DetailView, View
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 from django_tables2.export.views import ExportMixin
-from apartments.models import Apartment
 from documents.models import Document
 from requests.models import Request
 from .models import Client
@@ -32,30 +31,19 @@ class ClientListView(AdminRequiredMixin, ExportMixin, SingleTableMixin, FilterVi
         return {**context, **custom_context}
 
 
-class CreateClientView(AdminRequiredMixin, CreateView):
+class ClientCreateView(AdminRequiredMixin, CreateView):
     model = Client
     form_class = ClientForm
     template_name = "crm/create.html"
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.apartments = Apartment.objects.all()
-
-    def get_form_kwargs(self):
-        kwargs = super(CreateClientView, self).get_form_kwargs()
-        kwargs.update({'apartments': self.apartments})
-        return kwargs
-
     def form_valid(self, form):
         formsets = self.get_context_data()['formsets']
-        instance = form.save(commit=False)
-        instance.created_by = self.request.user
-        instance.save()
-        if self.apartments.count() > 0:
+        with transaction.atomic():
+            self.object = form.save(commit=False)
+            form.instance.created_by = self.request.user
+            self.object.save()
             form.save_m2m()
-        for formset in formsets:
-            with transaction.atomic():
-                self.object = form.save()
+            for formset in formsets:
                 if formset['form'].is_valid():
                     formset['form'].instance = self.object
                     formset['form'].save()
@@ -65,7 +53,7 @@ class CreateClientView(AdminRequiredMixin, CreateView):
             return redirect('clients:list')
 
     def get_context_data(self, **kwargs):
-        context = super(CreateClientView, self).get_context_data(**kwargs)
+        context = super(ClientCreateView, self).get_context_data(**kwargs)
         formsets = []
         if self.request.POST:
             formsets.append({'form': PhoneFormSet(self.request.POST),
@@ -94,12 +82,29 @@ class CreateClientView(AdminRequiredMixin, CreateView):
         return {**context, **custom_context}
 
 
-class UpdateClientView(CreateClientView, UpdateView):
+class UpdateClientView(ClientCreateView, UpdateView):
     def form_valid(self, form):
         instance = form.save(commit=False)
         instance.save()
         form.save_m2m()
         return redirect('clients:list')
+
+    def get_context_data(self, **kwargs):
+        context = super(ClientCreateView, self).get_context_data(**kwargs)
+        formsets = [{'form': PhoneFormSet(instance=Client.objects.get(id=self.kwargs['pk'])),
+                     'title': 'Контактные номера',
+                     'prefix': 'phones'
+                     }, {'form': DocumentFormSet(instance=Client.objects.get(id=self.kwargs['pk'])),
+                         'title': 'Документы',
+                         'prefix': 'documents'
+                         }]
+        custom_context = {
+            'formsets': formsets,
+            'urls': {
+                'list': 'clients:list',
+            }
+        }
+        return {**context, **custom_context}
 
 
 class ClientDetailView(AdminRequiredMixin, DetailView):
@@ -111,7 +116,7 @@ class ClientDetailView(AdminRequiredMixin, DetailView):
         context = super(ClientDetailView, self).get_context_data(**kwargs)
         context.update({
             'requests_table': ClientRequestTable(Request.objects.filter(applicant__id=self.object.id)),
-            'documents_table': DocumentTable(Document.objects.filter(apartment__id=self.object.id))
+            'documents_table': DocumentTable(Document.objects.filter(client__id=self.object.id))
         })
         return context
 

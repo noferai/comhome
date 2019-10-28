@@ -1,5 +1,4 @@
 import django_tables2 as tables
-import django_filters as filters
 from .models import PhoneNumber
 
 
