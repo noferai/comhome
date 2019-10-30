@@ -35,13 +35,17 @@ class PollCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(CreateView, self).get_context_data(**kwargs)
+        formsets = []
         if self.request.POST:
-            context['formset'] = ChoiceFormSet(self.request.POST)
+            formsets.append({'form': ChoiceFormSet(self.request.POST),
+                             'title': 'Варианты ответов',
+                             'prefix': 'choices'})
         else:
-            context['formset'] = ChoiceFormSet()
+            formsets.append({'form': ChoiceFormSet(),
+                             'title': 'Варианты ответов',
+                             'prefix': 'choices'})
         custom_context = {
-            'formset_prefix': 'choice_set',
-            'formset_title': 'Варианты ответов',
+            'formsets': formsets,
             'urls': {
                 'list': 'polls:list',
             }
@@ -49,13 +53,13 @@ class PollCreateView(CreateView):
         return {**context, **custom_context}
 
     def form_valid(self, form):
-        context = self.get_context_data()
-        formset = context['formset']
+        formsets = self.get_context_data()['formsets']
         with transaction.atomic():
             self.object = form.save()
-            if formset.is_valid():
-                formset.instance = self.object
-                formset.save()
+            for formset in formsets:
+                if formset['form'].is_valid():
+                    formset['form'].instance = self.object
+                    formset['form'].save()
         if self.request.POST.get("save_new"):
             return redirect("polls:create")
         else:
