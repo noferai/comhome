@@ -20,7 +20,7 @@ urlpatterns = [
     path('invoices/', include('invoices.urls', namespace="invoices")),
     path('documents/', include('documents.urls', namespace="documents")),
     path('news/', include('news.urls', namespace='news')),
-    path('logout/', views.LogoutView, {'next_page': '/login/'}, name="logout"),
+    path('logout/', views.LogoutView.as_view(), {'next_page': '/login/'}, name="logout"),
     path('comment/', include('comment.urls')),
     path('calendar/', include('work_calendar.urls', namespace='work_calendar'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
